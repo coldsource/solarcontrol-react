@@ -30,7 +30,6 @@ export class Meter
 
 	disconnect()
 	{
-		console.log(this);
 		this.ws.close();
 	}
 }
