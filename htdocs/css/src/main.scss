@@ -1,0 +1,22 @@
+@import 'app/App';
+
+@import 'device/Devices';
+@import 'device/Device';
+
+@import 'meter/Global';
+
+@import 'ui/Subscreen';
+@import 'ui/Loader';
+@import 'ui/TimeRange';
+
+@import 'layout/form';
+
+body {
+	font-family: Arial;
+}
+
+.fa {
+	cursor: pointer;
+}
+
+@import '../vendor/font-awesome-all';

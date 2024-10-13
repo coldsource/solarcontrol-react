@@ -1,0 +1,17 @@
+div.sc-subscreen {
+	.title-bar {
+		position: relative;
+		text-align: center;
+		font-weight: bold;
+
+		i {
+			position: absolute;
+			right: 0px;
+			font-size: 1.5rem;
+		}
+	}
+
+	.content {
+		margin-top: 1rem;
+	}
+}

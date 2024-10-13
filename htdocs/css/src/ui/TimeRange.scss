@@ -1,0 +1,13 @@
+div.sc-timerange {
+	display: inline-block;
+
+	input {
+		&:nth-of-type(1) {
+			margin-right: 0.5rem;
+		}
+
+		border: 1px solid #6bc9e6;
+		border-radius: 5px;
+		padding: 0.5rem;
+	}
+}

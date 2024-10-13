@@ -1,0 +1,14 @@
+div.sc-loader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+
+	i {
+		display: block;
+		font-size: 5rem;
+		text-align: center;
+		margin-top: calc(50vh - 5rem);
+	}
+}

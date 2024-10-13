@@ -1,0 +1,8 @@
+div.sc-app {
+	.menu {
+		font-size: 2.5rem;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, 4rem);
+		margin-bottom: 1rem;
+	}
+}

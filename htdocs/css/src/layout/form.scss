@@ -1,0 +1,43 @@
+.layout-form {
+	dl {
+		margin: 0px;
+		dt {
+			padding: 0.5rem;
+			background-color: #b0e8e3;
+			border-radius: 10px;
+			font-weight: bold;
+		}
+
+		dd {
+			margin-bottom: 1rem;
+		}
+
+		dd:not(:has(*)) {
+			margin-left: 0px;
+			padding: 0.5rem;
+		}
+
+		dd:has(*) {
+			margin-left: 0px;
+		}
+
+		dd:has(input[type="text"]) {
+			input {
+				width: 100%;
+				border: 1px solid #6bc9e6;
+				border-radius: 5px;
+				padding: 0.5rem;
+				margin-top: 0.5rem;
+			}
+		}
+	}
+
+	.submit {
+		text-align: center;
+		font-weight: bold;
+		background-color: #e8e8e8;
+		padding: 0.5rem;
+		border-radius: 10px;
+		cursor: pointer;
+	}
+}

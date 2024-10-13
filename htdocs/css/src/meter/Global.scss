@@ -1,0 +1,18 @@
+.sc-meter-global {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+
+	div.item {
+		text-align: center;
+		margin-bottom: 2rem;
+
+		div.value {
+			font-size: 2rem;
+			font-weight: bold;
+		}
+
+		div.label {
+			font-style: italic;
+		}
+	}
+}
