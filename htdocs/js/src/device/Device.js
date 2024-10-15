@@ -37,6 +37,8 @@ export class Device extends React.Component
 		this.state.device.device_id = parseInt(this.state.device.device_id);
 		this.state.device.device_prio = parseInt(this.state.device.device_prio);
 		this.state.device.device_config.expected_consumption = parseInt(this.state.device.device_config.expected_consumption);
+		this.state.device.device_config.min_on_time = parseInt(this.state.device.device_config.min_on_time);
+		this.state.device.device_config.min_on_for_last = parseInt(this.state.device.device_config.min_on_for_last);
 		const device = this.state.device;
 		API.instance.command('device', 'set', device).then(res => {
 			this.props.onClose();
@@ -132,6 +134,12 @@ export class Device extends React.Component
 							<dd>{this.renderTimeRangesArray('offload', config.offload)}</dd>
 							<dt>Force</dt>
 							<dd>{this.renderTimeRangesArray('force', config.force)}</dd>
+							<dt>Ensure minimum on for (s)</dt>
+							<dd><input type="text" name="min_on_time" value={config.min_on_time} onChange={this.changeConfig} /></dd>
+							<dt>Since last (s)</dt>
+							<dd><input type="text" name="min_on_for_last" value={config.min_on_for_last} onChange={this.changeConfig} /></dd>
+							<dt>During this period</dt>
+							<dd>{this.renderTimeRangesArray('remainder', config.remainder)}</dd>
 						</dl>
 						<div className="submit" onClick={this.save}>Save</div>
 					</div>
