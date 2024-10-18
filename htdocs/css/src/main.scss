@@ -1,3 +1,6 @@
+@import 'global/variables';
+@import 'global/common';
+
 @import 'app/App';
 
 @import 'device/Devices';
@@ -10,13 +13,5 @@
 @import 'ui/TimeRange';
 
 @import 'layout/form';
-
-body {
-	font-family: Arial;
-}
-
-.fa {
-	cursor: pointer;
-}
 
 @import '../vendor/font-awesome-all';

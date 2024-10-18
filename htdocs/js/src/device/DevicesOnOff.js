@@ -33,12 +33,19 @@ export class DevicesOnOff extends React.Component
 		this.setState({editing: id});
 	}
 
+	setManualState(id, state) {
+		API.instance.command('deviceonoff', 'setstate', {device_id: id, state: state}).then(devices => {
+			this.reload();
+		});
+	}
+
 	renderDevices() {
 		return this.state.devices.map(device => {
 			return (
 				<tr key={device.device_id}>
 					<td>{device.device_name}</td>
-					<td>{device.device_state?'On':'Offf'}</td>
+					<td className={device.state?'on':'off'} onClick={() => this.setManualState(device.device_id, device.state?"off":"on")}>{device.state?'On':'Off'}</td>
+					<td onClick={() => { if(device.manual) this.setManualState(device.device_id, "auto") }}>{device.manual?'Manual':'Auto'}</td>
 					<td><i className="fa fa-eye" onClick={ () => this.edit(device.device_id) }/></td>
 				</tr>
 			);
@@ -54,7 +61,8 @@ export class DevicesOnOff extends React.Component
 					<thead>
 						<tr>
 							<th>Name</th>
-							<th>State</th>
+							<th style={{width: "4rem"}}>State</th>
+							<th style={{width: "7rem"}}>Mode</th>
 							<th style={{width: "2rem"}}></th>
 						</tr>
 					</thead>
