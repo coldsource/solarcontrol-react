@@ -11,11 +11,20 @@ export class DevicesOnOff extends React.Component
 			editing: false
 		};
 
+		this.interval = null;
+
 		this.close = this.close.bind(this);
 	}
 
 	componentDidMount() {
 		this.reload();
+
+		this.interval = setInterval(() => this.reload(), 2000);
+	}
+
+	componentWillUnmount() {
+		if(this.interval!==null)
+			clearInterval(this.interval);
 	}
 
 	reload() {

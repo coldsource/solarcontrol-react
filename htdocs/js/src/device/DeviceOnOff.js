@@ -39,6 +39,8 @@ export class DeviceOnOff extends React.Component
 		this.state.device.device_config.expected_consumption = parseInt(this.state.device.device_config.expected_consumption);
 		this.state.device.device_config.min_on_time = parseInt(this.state.device.device_config.min_on_time);
 		this.state.device.device_config.min_on_for_last = parseInt(this.state.device.device_config.min_on_for_last);
+		this.state.device.device_config.min_on = parseInt(this.state.device.device_config.min_on);
+		this.state.device.device_config.min_off = parseInt(this.state.device.device_config.min_off);
 		const device = this.state.device;
 		API.instance.command('deviceonoff', 'set', device).then(res => {
 			this.props.onClose();
@@ -140,6 +142,10 @@ export class DeviceOnOff extends React.Component
 							<dd><input type="text" name="min_on_for_last" value={config.min_on_for_last} onChange={this.changeConfig} /></dd>
 							<dt>During this period</dt>
 							<dd>{this.renderTimeRangesArray('remainder', config.remainder)}</dd>
+							<dt>Minium on time (s)</dt>
+							<dd><input type="text" name="min_on" value={config.min_on} onChange={this.changeConfig} /></dd>
+							<dt>Minium off time (s)</dt>
+							<dd><input type="text" name="min_off" value={config.min_off} onChange={this.changeConfig} /></dd>
 						</dl>
 						<div className="submit" onClick={this.save}>Save</div>
 					</div>
