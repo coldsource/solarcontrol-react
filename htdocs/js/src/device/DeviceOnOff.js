@@ -2,6 +2,8 @@ import {API} from '../websocket/API.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {Loader} from '../ui/Loader.js';
 import {TimeRange} from '../ui/TimeRange.js';
+import {SelectDeviceType} from '../ui/SelectDeviceType.js';
+import {SelectHTDevice} from '../ui/SelectHTDevice.js';
 
 export class DeviceOnOff extends React.Component
 {
@@ -9,7 +11,8 @@ export class DeviceOnOff extends React.Component
 		super(props);
 
 		this.state = {
-			device: null
+			device: null,
+			ht_devices: []
 		};
 
 		this.save = this.save.bind(this);
@@ -34,7 +37,9 @@ export class DeviceOnOff extends React.Component
 					min_on_time: 0,
 					min_on_for_last: 0,
 					min_on: 0,
-					min_off: 0
+					min_off: 0,
+					ht_device_id: 0,
+					max_temperature: 0
 				}
 			}});
 		}
@@ -75,6 +80,12 @@ export class DeviceOnOff extends React.Component
 				min_off: parseInt(config.min_off)
 			}
 		};
+
+		if(device.device_type=='heater')
+		{
+			params.device_config.ht_device_id = parseInt(config.ht_device_id);
+			params.device_config.max_temperature = parseFloat(config.max_temperature);
+		}
 
 		let cmd;
 		if(this.props.id!=0)
@@ -163,6 +174,41 @@ export class DeviceOnOff extends React.Component
 		);
 	}
 
+	renderDeviceType() {
+		if(this.props.id!=0)
+			return;
+
+		const device = this.state.device;
+
+		return (
+			<SelectDeviceType name="device_type" value={device.device_type} onChange={this.changeDevice} />
+		);
+
+		return (
+			<div className="type">
+				<i className={"fa fa-plug" + ((this.state.device.device_type=='timerange-plug')?' selected':'')} onClick={() => this.changeDevice({target: {name: 'device_type', value: 'timerange-plug'}})}></i>
+				<i className={"fa fa-temperature-arrow-up" + ((this.state.device.device_type=='heater')?' selected':'')} onClick={() => this.changeDevice({target: {name: 'device_type', value: 'heater'}})}></i>
+			</div>
+		);
+	}
+
+	renderHeaterFields() {
+		const device = this.state.device;
+		const config = device.device_config;
+
+		if(device.device_type!='heater')
+			return;
+
+		return (
+			<React.Fragment>
+				<dt>Linked thermometer</dt>
+				<dd><SelectHTDevice  name="ht_device_id" value={config.ht_device_id} onChange={this.changeConfig} /></dd>
+				<dt>Target temperature (°C)</dt>
+				<dd><input type="text" name="max_temperature" value={config.max_temperature} onChange={this.changeConfig} /></dd>
+			</React.Fragment>
+		);
+	}
+
 	renderDelete() {
 		if(this.props.id==0)
 			return;
@@ -186,6 +232,7 @@ export class DeviceOnOff extends React.Component
 		return (
 			<div className="sc-device">
 				<Subscreen title={device.device_name} onClose={this.props.onClose}>
+					{this.renderDeviceType()}
 					<div className="layout-form">
 						<dl>
 							<dt>Name</dt>
@@ -194,6 +241,7 @@ export class DeviceOnOff extends React.Component
 							<dd><input type="text" name="prio" value={config.prio} onChange={this.changeConfig} /></dd>
 							<dt>IP address</dt>
 							<dd><input type="text" name="ip" value={config.ip} onChange={this.changeConfig} /></dd>
+							{this.renderHeaterFields()}
 							<dt>Expected consumption (W)</dt>
 							<dd><input type="text" name="expected_consumption" value={config.expected_consumption} onChange={this.changeConfig} /></dd>
 							<dt>Offload</dt>
