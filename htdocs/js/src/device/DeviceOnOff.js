@@ -3,7 +3,7 @@ import {Subscreen} from '../ui/Subscreen.js';
 import {Loader} from '../ui/Loader.js';
 import {TimeRange} from '../ui/TimeRange.js';
 
-export class Device extends React.Component
+export class DeviceOnOff extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -18,7 +18,7 @@ export class Device extends React.Component
 	}
 
 	componentDidMount() {
-		API.instance.command('device', 'get', {device_id: parseInt(this.props.id)}).then(device => {
+		API.instance.command('deviceonoff', 'get', {device_id: parseInt(this.props.id)}).then(device => {
 			this.setState({device: device});
 		});
 	}
@@ -40,7 +40,7 @@ export class Device extends React.Component
 		this.state.device.device_config.min_on_time = parseInt(this.state.device.device_config.min_on_time);
 		this.state.device.device_config.min_on_for_last = parseInt(this.state.device.device_config.min_on_for_last);
 		const device = this.state.device;
-		API.instance.command('device', 'set', device).then(res => {
+		API.instance.command('deviceonoff', 'set', device).then(res => {
 			this.props.onClose();
 		});
 	}
