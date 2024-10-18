@@ -3,7 +3,7 @@ import {DevicesOnOff} from '../device/DevicesOnOff.js';
 import {DevicesHT} from '../device/DevicesHT.js';
 import {Global} from '../meter/Global.js';
 
-class App extends React.Component
+export class App extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -12,7 +12,8 @@ class App extends React.Component
 		let get = new URLSearchParams(url.search);
 
 		this.state = {
-			get: get
+			get: get,
+			error: ''
 		};
 
 		let self = this;
@@ -43,6 +44,19 @@ class App extends React.Component
 		});
 	}
 
+	renderError() {
+		if(this.state.error=='')
+			return ;
+
+		setTimeout(() => this.setState({error: ''}), 5000);
+
+		return (
+			<div className="error" onClick={() => this.setState({error: ''})}>
+				{this.state.error}
+			</div>
+		);
+	}
+
 	renderScreen() {
 		let path = this.getPath();
 
@@ -65,9 +79,15 @@ class App extends React.Component
 				<div>
 					{this.renderScreen()}
 				</div>
+
+				{this.renderError()}
 			</div>
 		);
 	}
+}
+
+App.error = (msg) => {
+	App.instance.setState({error: msg});
 }
 
 let el = document.getElementById('main');
