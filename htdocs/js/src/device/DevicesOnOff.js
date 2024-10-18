@@ -55,7 +55,7 @@ export class DevicesOnOff extends React.Component
 					<td>{device.device_name}</td>
 					<td className={device.state?'on':'off'} onClick={() => this.setManualState(device.device_id, device.state?"off":"on")}>{device.state?'On':'Off'}</td>
 					<td onClick={() => { if(device.manual) this.setManualState(device.device_id, "auto") }}>{device.manual?'Manual':'Auto'}</td>
-					<td><i className="fa fa-eye" onClick={ () => this.edit(device.device_id) }/></td>
+					<td style={{textAlign: 'center'}}><i className="fa fa-cogs" onClick={ () => this.edit(device.device_id) } /></td>
 				</tr>
 			);
 		});
@@ -72,7 +72,7 @@ export class DevicesOnOff extends React.Component
 							<th>Name</th>
 							<th style={{width: "4rem"}}>State</th>
 							<th style={{width: "7rem"}}>Mode</th>
-							<th style={{width: "2rem"}}></th>
+							<th style={{width: "2rem", textAlign: 'center'}}><i className="fa fa-plus" onClick={ () => this.edit(0) }></i></th>
 						</tr>
 					</thead>
 					<tbody>

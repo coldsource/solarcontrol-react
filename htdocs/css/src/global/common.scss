@@ -13,3 +13,12 @@ body {
 .off {
 	color: $color-off;
 }
+
+.warning-btn {
+	text-align: center;
+	font-weight: bold;
+	background-color: $color-warning;
+	padding: 0.5rem;
+	border-radius: 10px;
+	cursor: pointer;
+}

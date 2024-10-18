@@ -13,14 +13,37 @@ export class DeviceOnOff extends React.Component
 		};
 
 		this.save = this.save.bind(this);
+		this.deletedevice = this.deletedevice.bind(this);
 		this.changeDevice = this.changeDevice.bind(this);
 		this.changeConfig = this.changeConfig.bind(this);
 	}
 
 	componentDidMount() {
-		API.instance.command('deviceonoff', 'get', {device_id: parseInt(this.props.id)}).then(device => {
-			this.setState({device: device});
-		});
+		if(this.props.id==0)
+		{
+			this.setState({device: {
+				device_type: 'timerange-plug',
+				device_name: 'New device',
+				device_config: {
+					ip: '',
+					prio: 0,
+					expected_consumption: 0,
+					offload: [],
+					force: [],
+					remainder: [],
+					min_on_time: 0,
+					min_on_for_last: 0,
+					min_on: 0,
+					min_off: 0
+				}
+			}});
+		}
+		else
+		{
+			API.instance.command('deviceonoff', 'get', {device_id: parseInt(this.props.id)}).then(device => {
+				this.setState({device: device});
+			});
+		}
 	}
 
 	normalize_time(t) {
@@ -34,15 +57,44 @@ export class DeviceOnOff extends React.Component
 	}
 
 	save() {
-		this.state.device.device_id = parseInt(this.state.device.device_id);
-		this.state.device.device_prio = parseInt(this.state.device.device_prio);
-		this.state.device.device_config.expected_consumption = parseInt(this.state.device.device_config.expected_consumption);
-		this.state.device.device_config.min_on_time = parseInt(this.state.device.device_config.min_on_time);
-		this.state.device.device_config.min_on_for_last = parseInt(this.state.device.device_config.min_on_for_last);
-		this.state.device.device_config.min_on = parseInt(this.state.device.device_config.min_on);
-		this.state.device.device_config.min_off = parseInt(this.state.device.device_config.min_off);
 		const device = this.state.device;
-		API.instance.command('deviceonoff', 'set', device).then(res => {
+		const config = device.device_config;
+
+		let params = {
+			device_name: device.device_name,
+			device_config: {
+				ip: config.ip,
+				prio: parseInt(config.prio),
+				expected_consumption: parseInt(config.expected_consumption),
+				offload: config.offload,
+				force: config.force,
+				remainder: config.remainder,
+				min_on_time: parseInt(config.min_on_time),
+				min_on_for_last: parseInt(config.min_on_for_last),
+				min_on: parseInt(config.min_on),
+				min_off: parseInt(config.min_off)
+			}
+		};
+
+		let cmd;
+		if(this.props.id!=0)
+		{
+			params.device_id = parseInt(device.device_id);
+			cmd = 'set';
+		}
+		else
+		{
+			params.device_type = device.device_type;
+			cmd = 'create';
+		}
+
+		API.instance.command('deviceonoff', cmd, params).then(res => {
+			this.props.onClose();
+		});
+	}
+
+	deletedevice() {
+		API.instance.command('deviceonoff', 'delete', {device_id:parseInt(this.state.device.device_id)}).then(res => {
 			this.props.onClose();
 		});
 	}
@@ -111,6 +163,18 @@ export class DeviceOnOff extends React.Component
 		);
 	}
 
+	renderDelete() {
+		if(this.props.id==0)
+			return;
+
+		return (
+			<React.Fragment>
+				<br />
+				<div className="warning-btn" onClick={this.deletedevice}>Remove device</div>
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		const device = this.state.device;
 
@@ -127,7 +191,7 @@ export class DeviceOnOff extends React.Component
 							<dt>Name</dt>
 							<dd><input type="text" name="device_name" value={device.device_name} onChange={this.changeDevice} /></dd>
 							<dt>Priority</dt>
-							<dd><input type="text" name="device_prio" value={device.device_prio} onChange={this.changeDevice} /></dd>
+							<dd><input type="text" name="prio" value={config.prio} onChange={this.changeConfig} /></dd>
 							<dt>IP address</dt>
 							<dd><input type="text" name="ip" value={config.ip} onChange={this.changeConfig} /></dd>
 							<dt>Expected consumption (W)</dt>
@@ -148,6 +212,7 @@ export class DeviceOnOff extends React.Component
 							<dd><input type="text" name="min_off" value={config.min_off} onChange={this.changeConfig} /></dd>
 						</dl>
 						<div className="submit" onClick={this.save}>Save</div>
+						{this.renderDelete()}
 					</div>
 				</Subscreen>
 			</div>
