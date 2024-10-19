@@ -8,7 +8,7 @@ export class DevicesOnOff extends React.Component
 
 		this.state = {
 			devices: [],
-			editing: false
+			editing: false,
 		};
 
 		this.interval = null;

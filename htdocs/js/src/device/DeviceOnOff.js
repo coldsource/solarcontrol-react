@@ -4,6 +4,7 @@ import {Loader} from '../ui/Loader.js';
 import {TimeRange} from '../ui/TimeRange.js';
 import {SelectDeviceType} from '../ui/SelectDeviceType.js';
 import {SelectHTDevice} from '../ui/SelectHTDevice.js';
+import {SliderDuration} from '../ui/SliderDuration.js';
 
 export class DeviceOnOff extends React.Component
 {
@@ -204,7 +205,26 @@ export class DeviceOnOff extends React.Component
 				<dt>Linked thermometer</dt>
 				<dd><SelectHTDevice  name="ht_device_id" value={config.ht_device_id} onChange={this.changeConfig} /></dd>
 				<dt>Target temperature (°C)</dt>
-				<dd><input type="text" name="max_temperature" value={config.max_temperature} onChange={this.changeConfig} /></dd>
+				<dd><input type="number" name="max_temperature" value={config.max_temperature} onChange={this.changeConfig} /></dd>
+			</React.Fragment>
+		);
+	}
+
+	renderRemainderFields() {
+		const device = this.state.device;
+		const config = device.device_config;
+
+		if(device.device_type!='timerange-plug')
+			return;
+
+		return (
+			<React.Fragment>
+				<dt>Ensure minimum on for (s)</dt>
+				<dd><SliderDuration name="min_on_time" value={config.min_on_time} onChange={this.changeConfig} /></dd>
+				<dt>Since last (s)</dt>
+				<dd><SliderDuration name="min_on_for_last" value={config.min_on_for_last} long={true} onChange={this.changeConfig} /></dd>
+				<dt>During this period</dt>
+				<dd>{this.renderTimeRangesArray('remainder', config.remainder)}</dd>
 			</React.Fragment>
 		);
 	}
@@ -232,32 +252,26 @@ export class DeviceOnOff extends React.Component
 		return (
 			<div className="sc-device">
 				<Subscreen title={device.device_name} onClose={this.props.onClose}>
-					{this.renderDeviceType()}
 					<div className="layout-form">
 						<dl>
 							<dt>Name</dt>
 							<dd><input type="text" name="device_name" value={device.device_name} onChange={this.changeDevice} /></dd>
 							<dt>Priority</dt>
-							<dd><input type="text" name="prio" value={config.prio} onChange={this.changeConfig} /></dd>
+							<dd><input type="number" name="prio" value={config.prio} onChange={this.changeConfig} /></dd>
 							<dt>IP address</dt>
 							<dd><input type="text" name="ip" value={config.ip} onChange={this.changeConfig} /></dd>
 							{this.renderHeaterFields()}
 							<dt>Expected consumption (W)</dt>
-							<dd><input type="text" name="expected_consumption" value={config.expected_consumption} onChange={this.changeConfig} /></dd>
+							<dd><input type="number" name="expected_consumption" value={config.expected_consumption} onChange={this.changeConfig} /></dd>
 							<dt>Offload</dt>
 							<dd>{this.renderTimeRangesArray('offload', config.offload)}</dd>
 							<dt>Force</dt>
 							<dd>{this.renderTimeRangesArray('force', config.force)}</dd>
-							<dt>Ensure minimum on for (s)</dt>
-							<dd><input type="text" name="min_on_time" value={config.min_on_time} onChange={this.changeConfig} /></dd>
-							<dt>Since last (s)</dt>
-							<dd><input type="text" name="min_on_for_last" value={config.min_on_for_last} onChange={this.changeConfig} /></dd>
-							<dt>During this period</dt>
-							<dd>{this.renderTimeRangesArray('remainder', config.remainder)}</dd>
-							<dt>Minium on time (s)</dt>
-							<dd><input type="text" name="min_on" value={config.min_on} onChange={this.changeConfig} /></dd>
-							<dt>Minium off time (s)</dt>
-							<dd><input type="text" name="min_off" value={config.min_off} onChange={this.changeConfig} /></dd>
+							{this.renderRemainderFields()}
+							<dt>Minimum on time</dt>
+							<dd><SliderDuration name="min_on" value={config.min_on} onChange={this.changeConfig} /></dd>
+							<dt>Minimum off time</dt>
+							<dd><SliderDuration name="min_off" value={config.min_off} onChange={this.changeConfig} /></dd>
 						</dl>
 						<div className="submit" onClick={this.save}>Save</div>
 						{this.renderDelete()}

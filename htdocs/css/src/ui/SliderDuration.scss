@@ -1,0 +1,23 @@
+.sc-slider-duration {
+	.slider {
+		position: relative;
+
+		.track {
+			position: absolute;
+			top: calc(50% - 1px);
+			width: 100%;
+			border: 1px solid $color-form-border;
+			z-index: -1;
+		}
+
+		i {
+			font-size: 2rem;
+		}
+	}
+
+	.label {
+		font-style: italic;
+		text-align: center;
+		margin-top: 0.5rem;
+	}
+}
