@@ -10,11 +10,14 @@ export class API
 		this.api_promise = null;
 	}
 
-	connect()
+	async connect()
 	{
+		const response = await fetch('/conf/global.json');
+		const config = await response.json();
+
 		var self = this;
 
-		self.ws = new WebSocket("ws://192.168.16.81:7000", "api");
+		self.ws = new WebSocket(config.websocket, "api");
 
 		// Event on connection
 		self.ws.onopen = function (event) {
