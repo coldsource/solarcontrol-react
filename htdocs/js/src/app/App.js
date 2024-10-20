@@ -1,7 +1,8 @@
 import {API} from '../websocket/API.js';
+import {Global} from '../meter/Global.js';
 import {DevicesOnOff} from '../device/DevicesOnOff.js';
 import {DevicesHT} from '../device/DevicesHT.js';
-import {Global} from '../meter/Global.js';
+import {LogsState} from '../logs/LogsState.js';
 
 export class App extends React.Component
 {
@@ -66,6 +67,8 @@ export class App extends React.Component
 			return (<DevicesOnOff />);
 		else if(path=='devicesht')
 			return (<DevicesHT />);
+		else if(path=='logs')
+			return (<LogsState />);
 	}
 
 	render() {
@@ -75,6 +78,7 @@ export class App extends React.Component
 					<i className="fa fa-regular fa-gauge-simple-min" onClick={() => this.changeURL('?loc=meter')} />
 					<i className="fa fa-plug" onClick={() => this.changeURL('?loc=devicesonoff')} />
 					<i className="fa fa-temperature-half" onClick={() => this.changeURL('?loc=devicesht')} />
+					<i className="fa fa-regular fa-file-lines" onClick={() => this.changeURL('?loc=logs')} />
 				</div>
 				<div>
 					{this.renderScreen()}
