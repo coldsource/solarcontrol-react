@@ -7,7 +7,7 @@ export class Meter
 		this.connect();
 	}
 
-	connect()
+	async connect()
 	{
 		const response = await fetch('/conf/global.json');
 		const config = await response.json();
