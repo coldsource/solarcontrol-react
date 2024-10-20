@@ -40,7 +40,8 @@ export class DeviceOnOff extends React.Component
 					min_on: 0,
 					min_off: 0,
 					ht_device_id: 0,
-					max_temperature: 0
+					force_max_temperature: 0,
+					offload_max_temperature: 0
 				}
 			}});
 		}
@@ -85,7 +86,8 @@ export class DeviceOnOff extends React.Component
 		if(device.device_type=='heater')
 		{
 			params.device_config.ht_device_id = parseInt(config.ht_device_id);
-			params.device_config.max_temperature = parseFloat(config.max_temperature);
+			params.device_config.force_max_temperature = parseFloat(config.force_max_temperature);
+			params.device_config.offload_max_temperature = parseFloat(config.offload_max_temperature);
 		}
 
 		let cmd;
@@ -184,13 +186,6 @@ export class DeviceOnOff extends React.Component
 		return (
 			<SelectDeviceType name="device_type" value={device.device_type} onChange={this.changeDevice} />
 		);
-
-		return (
-			<div className="type">
-				<i className={"fa fa-plug" + ((this.state.device.device_type=='timerange-plug')?' selected':'')} onClick={() => this.changeDevice({target: {name: 'device_type', value: 'timerange-plug'}})}></i>
-				<i className={"fa fa-temperature-arrow-up" + ((this.state.device.device_type=='heater')?' selected':'')} onClick={() => this.changeDevice({target: {name: 'device_type', value: 'heater'}})}></i>
-			</div>
-		);
 	}
 
 	renderHeaterFields() {
@@ -204,8 +199,10 @@ export class DeviceOnOff extends React.Component
 			<React.Fragment>
 				<dt>Linked thermometer</dt>
 				<dd><SelectHTDevice  name="ht_device_id" value={config.ht_device_id} onChange={this.changeConfig} /></dd>
-				<dt>Target temperature (°C)</dt>
-				<dd><input type="number" name="max_temperature" value={config.max_temperature} onChange={this.changeConfig} /></dd>
+				<dt>Forced mode target temperature (°C)</dt>
+				<dd><input type="number" name="force_max_temperature" value={config.force_max_temperature} onChange={this.changeConfig} /></dd>
+				<dt>Offload mode target temperature (°C)</dt>
+				<dd><input type="number" name="offload_max_temperature" value={config.offload_max_temperature} onChange={this.changeConfig} /></dd>
 			</React.Fragment>
 		);
 	}
@@ -219,9 +216,9 @@ export class DeviceOnOff extends React.Component
 
 		return (
 			<React.Fragment>
-				<dt>Ensure minimum on for (s)</dt>
+				<dt>Ensure minimum charging time of</dt>
 				<dd><SliderDuration name="min_on_time" value={config.min_on_time} onChange={this.changeConfig} /></dd>
-				<dt>Since last (s)</dt>
+				<dt>For the last</dt>
 				<dd><SliderDuration name="min_on_for_last" value={config.min_on_for_last} long={true} onChange={this.changeConfig} /></dd>
 				<dt>During this period</dt>
 				<dd>{this.renderTimeRangesArray('remainder', config.remainder)}</dd>
@@ -254,6 +251,7 @@ export class DeviceOnOff extends React.Component
 				<Subscreen title={device.device_name} onClose={this.props.onClose}>
 					<div className="layout-form">
 						<dl>
+							{this.renderDeviceType()}
 							<dt>Name</dt>
 							<dd><input type="text" name="device_name" value={device.device_name} onChange={this.changeDevice} /></dd>
 							<dt>Priority</dt>
