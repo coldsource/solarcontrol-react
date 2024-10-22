@@ -31,11 +31,15 @@ export class API
 		}
 
 		self.ws.onmessage = function (ev) {
+			if(ev.data=="")
+				return; // Keepalive answer
+
 			let ret = JSON.parse(ev.data);
 			if(ret!==null && ret.status!==undefined && ret.status=='error')
 			{
 				App.error(ret.message);
 				self.api_reject(ret.message);
+				return;
 			}
 
 			self.api_resolve(ret);
