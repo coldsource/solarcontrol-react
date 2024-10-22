@@ -1,3 +1,4 @@
+import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {Loader} from '../ui/Loader.js';
@@ -103,12 +104,14 @@ export class DeviceOnOff extends React.Component
 		}
 
 		API.instance.command('deviceonoff', cmd, params).then(res => {
+			App.message("Device saved");
 			this.props.onClose();
 		});
 	}
 
 	deletedevice() {
 		API.instance.command('deviceonoff', 'delete', {device_id:parseInt(this.state.device.device_id)}).then(res => {
+			App.message("Device removed");
 			this.props.onClose();
 		});
 	}

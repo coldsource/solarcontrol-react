@@ -6,7 +6,7 @@ div.sc-app {
 		margin-bottom: 1rem;
 	}
 
-	.error {
+	.error, .message {
 		position: fixed;
 		width: 90vw;
 		left: 5vw;
@@ -14,8 +14,15 @@ div.sc-app {
 		box-sizing: border-box;
 		padding: 10px;
 		border-radius: 10px;
-		background-color: $color-warning;
 		font-weight: bold;
 		text-align: center;
+
+		&.error {
+			background-color: $color-warning;
+		}
+
+		&.message {
+			background-color: $color-ok;
+		}
 	}
 }

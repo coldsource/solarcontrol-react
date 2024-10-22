@@ -14,7 +14,8 @@ export class App extends React.Component
 
 		this.state = {
 			get: get,
-			error: ''
+			error: '',
+			message: ''
 		};
 
 		let self = this;
@@ -58,6 +59,19 @@ export class App extends React.Component
 		);
 	}
 
+	renderMessage() {
+		if(this.state.message=='')
+			return ;
+
+		setTimeout(() => this.setState({message: ''}), 3000);
+
+		return (
+			<div className="message" onClick={() => this.setState({message: ''})}>
+				{this.state.message}
+			</div>
+		);
+	}
+
 	renderScreen() {
 		let path = this.getPath();
 
@@ -85,6 +99,7 @@ export class App extends React.Component
 				</div>
 
 				{this.renderError()}
+				{this.renderMessage()}
 			</div>
 		);
 	}
@@ -92,6 +107,10 @@ export class App extends React.Component
 
 App.error = (msg) => {
 	App.instance.setState({error: msg});
+}
+
+App.message = (msg) => {
+	App.instance.setState({message: msg});
 }
 
 let el = document.getElementById('main');
