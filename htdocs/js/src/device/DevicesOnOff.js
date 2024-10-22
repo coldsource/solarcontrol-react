@@ -19,12 +19,23 @@ export class DevicesOnOff extends React.Component
 	componentDidMount() {
 		this.reload();
 
-		this.interval = setInterval(() => this.reload(), 2000);
+		this.startAutoRefresh();
 	}
 
 	componentWillUnmount() {
-		if(this.interval!==null)
-			clearInterval(this.interval);
+		this.stopAutoRefresh();
+	}
+
+	startAutoRefresh() {
+		this.interval = setInterval(() => this.reload(), 2000);
+	}
+
+	stopAutoRefresh() {
+		if(this.interval===null)
+			return;
+
+		clearInterval(this.interval);
+		this.interval = null;
 	}
 
 	reload() {
@@ -34,11 +45,13 @@ export class DevicesOnOff extends React.Component
 	}
 
 	close() {
+		this.startAutoRefresh();
 		this.setState({editing: false});
 		this.reload();
 	}
 
 	edit(id) {
+		this.stopAutoRefresh();
 		this.setState({editing: id});
 	}
 

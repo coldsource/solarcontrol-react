@@ -152,7 +152,7 @@ export class DeviceOnOff extends React.Component
 	renderTimeRange(name, time_range, idx) {
 		return (
 			<div className="timerange">
-				<TimeRange value={{from: time_range.from, to: time_range.to}} onChange={ev => this.changeTimeRange(name, idx, ev.target.value)} />
+				<TimeRange value={time_range} onChange={ev => this.changeTimeRange(name, idx, ev.target.value)} />
 				<i className="fa fa-remove" onClick={ev => this.removeTimeRange(name, idx)} />
 			</div>
 		);
