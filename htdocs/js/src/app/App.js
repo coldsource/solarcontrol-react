@@ -3,6 +3,7 @@ import {Global} from '../meter/Global.js';
 import {DevicesOnOff} from '../device/DevicesOnOff.js';
 import {DevicesHT} from '../device/DevicesHT.js';
 import {LogsState} from '../logs/LogsState.js';
+import {Energy} from '../logs/Energy.js';
 
 export class App extends React.Component
 {
@@ -83,6 +84,8 @@ export class App extends React.Component
 			return (<DevicesHT />);
 		else if(path=='logs')
 			return (<LogsState />);
+		else if(path=='energy')
+			return (<Energy />);
 	}
 
 	render() {
@@ -93,6 +96,7 @@ export class App extends React.Component
 					<i className="fa fa-plug" onClick={() => this.changeURL('?loc=devicesonoff')} />
 					<i className="fa fa-temperature-half" onClick={() => this.changeURL('?loc=devicesht')} />
 					<i className="fa fa-regular fa-file-lines" onClick={() => this.changeURL('?loc=logs')} />
+					<i className="fa fa-bolt-lightning" onClick={() => this.changeURL('?loc=energy')} />
 				</div>
 				<div>
 					{this.renderScreen()}

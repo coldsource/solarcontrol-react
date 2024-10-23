@@ -7,6 +7,7 @@
 @import 'device/Device';
 
 @import 'logs/LogsState';
+@import 'logs/Energy';
 
 @import 'meter/Global';
 
@@ -18,5 +19,6 @@
 @import 'ui/SliderDuration';
 
 @import 'layout/form';
+@import 'layout/evenodd';
 
 @import '../vendor/font-awesome-all';

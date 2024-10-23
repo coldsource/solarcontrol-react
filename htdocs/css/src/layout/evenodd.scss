@@ -1,0 +1,13 @@
+table.layout-evenodd {
+	border-collapse: collapse;
+
+	tbody {
+		tr:nth-child(even) {
+			background-color: #ffffff;
+		}
+
+		tr:nth-child(odd) {
+			background-color: #e4e4e4;
+		}
+	}
+}

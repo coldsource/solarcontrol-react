@@ -1,0 +1,29 @@
+div.sc-logsenergy {
+	table {
+		width: 100%;
+
+		th {
+			text-align: left;
+			font-style: italic;
+			text-align: center;
+		}
+
+		thead {
+			tr:nth-child(2) {
+				th {
+					padding-bottom: 1rem;
+				}
+			}
+		}
+
+		td {
+			padding: 0.5rem;
+			width: 20%;
+			text-align: center;
+		}
+
+		td:first-child {
+			font-style: italic;
+		}
+	}
+}
