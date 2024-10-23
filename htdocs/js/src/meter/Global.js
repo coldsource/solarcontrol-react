@@ -1,4 +1,6 @@
 import {Meter} from '../websocket/Meter.js';
+import {KWh} from '../ui/KWh.js';
+import {KW} from '../ui/KW.js';
 
 export class Global extends React.Component
 {
@@ -19,40 +21,6 @@ export class Global extends React.Component
 		this.meter.disconnect();
 	}
 
-	formatPower(f) {
-		if(f===undefined || f==='')
-			return '';
-
-		f = parseFloat(f);
-
-		let unit = 'W';
-		if(f>=1000)
-		{
-			f = f / 1000;
-			unit = 'kW';
-		}
-
-		return f.toFixed(1) + unit;
-	}
-
-	formatEnergy(f) {
-		if(f===undefined || f==='')
-			return '';
-
-		f = parseFloat(f);
-
-		let unit = 'Wh';
-		let digits = 0;
-		if(f>=1000)
-		{
-			f = f / 1000;
-			unit = 'kWh';
-			digits = 1;
-		}
-
-		return f.toFixed(digits) + unit;
-	}
-
 	update(data) {
 		this.setState(data);
 	}
@@ -61,44 +29,44 @@ export class Global extends React.Component
 		return (
 			<div className="sc-meter-global">
 				<div className="item">
-					<div className="value">{this.formatPower(this.state.grid)}</div>
+					<div className="value"><KW value={this.state.grid} /></div>
 					<div className="label">Grid power</div>
 				</div>
 				<div className="item">
-					<div className="value">{this.formatPower(this.state.pv)}</div>
+					<div className="value"><KW value={this.state.pv} /></div>
 					<div className="label">PV power</div>
 				</div>
 				<div className="item">
-					<div className="value">{this.formatPower(this.state.net_available)}</div>
+					<div className="value"><KW value={this.state.net_available} /></div>
 					<div className="label">Net available</div>
 				</div>
 				<div className="item">
-					<div className="value">{this.formatPower(this.state.gross_available)}</div>
+					<div className="value"><KW value={this.state.gross_available} /></div>
 					<div className="label">Gross available</div>
 				</div>
 				<div className="item">
-					<div className="value">{this.formatPower(this.state.total)}</div>
+					<div className="value"><KW value={this.state.total} /></div>
 					<div className="label">Total consumption</div>
 				</div>
 				<div className="item">
-					<div className="value">{this.formatPower(this.state.excess)}</div>
+					<div className="value"><KW value={this.state.excess} /></div>
 					<div className="label">Excess</div>
 				</div>
 
 				<div className="item">
-					<div className="value">{this.formatEnergy(this.state.grid_energy)}</div>
+					<div className="value"><KWh value={this.state.grid_energy} /></div>
 					<div className="label">Imported</div>
 				</div>
 				<div className="item">
-					<div className="value">{this.formatEnergy(this.state.grid_exported_energy)}</div>
+					<div className="value"><KWh value={this.state.grid_exported_energy} /></div>
 					<div className="label">Exported</div>
 				</div>
 				<div className="item">
-					<div className="value">{this.formatEnergy(this.state.pv_energy)}</div>
+					<div className="value"><KWh value={this.state.pv_energy} /></div>
 					<div className="label">Produced</div>
 				</div>
 				<div className="item">
-					<div className="value">{this.formatEnergy(this.state.hws_energy)}</div>
+					<div className="value"><KWh value={this.state.hws_energy} /></div>
 					<div className="label">HWS</div>
 				</div>
 			</div>
