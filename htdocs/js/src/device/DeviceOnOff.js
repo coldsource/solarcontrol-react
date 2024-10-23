@@ -49,6 +49,9 @@ export class DeviceOnOff extends React.Component
 		else
 		{
 			API.instance.command('deviceonoff', 'get', {device_id: parseInt(this.props.id)}).then(device => {
+				if(device.device_type=='hws')
+					device.device_config.min_energy_for_last = device.device_config.min_energy_for_last * 86400; // Convert days to seconds
+
 				this.setState({device: device});
 			});
 		}
@@ -91,6 +94,12 @@ export class DeviceOnOff extends React.Component
 			params.device_config.offload_max_temperature = parseFloat(config.offload_max_temperature);
 		}
 
+		if(device.device_type=='hws')
+		{
+			params.device_config.min_energy = parseFloat(config.min_energy);
+			params.device_config.min_energy_for_last = parseInt(config.min_energy_for_last) / 86400;
+		}
+
 		let cmd;
 		if(this.props.id!=0)
 		{
@@ -105,6 +114,9 @@ export class DeviceOnOff extends React.Component
 
 		API.instance.command('deviceonoff', cmd, params).then(res => {
 			App.message("Device saved");
+			if(device.device_type=='hws')
+				return;
+
 			this.props.onClose();
 		});
 	}
@@ -191,12 +203,47 @@ export class DeviceOnOff extends React.Component
 		);
 	}
 
+	renderNamePrio() {
+		const device = this.state.device;
+
+		if(device.device_type=='hws')
+			return;
+
+		const config = device.device_config;
+
+		return (
+			<React.Fragment>
+				<dt>Name</dt>
+				<dd><input type="text" name="device_name" value={device.device_name} onChange={this.changeDevice} /></dd>
+				<dt>Priority</dt>
+				<dd><input type="number" name="prio" value={config.prio} onChange={this.changeConfig} /></dd>
+			</React.Fragment>
+		);
+	}
+
+	renderExpectedConsumption() {
+		const device = this.state.device;
+
+		if(device.device_type=='hws')
+			return;
+
+		const config = device.device_config;
+
+		return (
+			<React.Fragment>
+				<dt>Expected consumption (W)</dt>
+				<dd><input type="number" name="expected_consumption" value={config.expected_consumption} onChange={this.changeConfig} /></dd>
+			</React.Fragment>
+		);
+	}
+
 	renderHeaterFields() {
 		const device = this.state.device;
-		const config = device.device_config;
 
 		if(device.device_type!='heater')
 			return;
+
+		const config = device.device_config;
 
 		return (
 			<React.Fragment>
@@ -212,10 +259,11 @@ export class DeviceOnOff extends React.Component
 
 	renderRemainderFields() {
 		const device = this.state.device;
-		const config = device.device_config;
 
 		if(device.device_type!='timerange-plug')
 			return;
+
+		const config = device.device_config;
 
 		return (
 			<React.Fragment>
@@ -229,8 +277,65 @@ export class DeviceOnOff extends React.Component
 		);
 	}
 
+	renderOffloadFields() {
+		const device = this.state.device;
+
+		if(device.device_type=='hws')
+			return;
+
+		const config = device.device_config;
+
+		return (
+			<React.Fragment>
+				<dt>Offload</dt>
+				<dd>{this.renderTimeRangesArray('offload', config.offload)}</dd>
+			</React.Fragment>
+		);
+	}
+
+	renderRemainderFieldsHWS() {
+		const device = this.state.device;
+
+		if(device.device_type!='hws')
+			return;
+
+		const config = device.device_config;
+
+		return (
+			<React.Fragment>
+				<dt>Ensure minimum kWh of</dt>
+				<dd><input type="number" name="min_energy" value={config.min_energy} onChange={this.changeConfig} /></dd>
+				<dt>For the last</dt>
+				<dd><SliderDuration type="days" name="min_energy_for_last" value={config.min_energy_for_last} long={true} onChange={this.changeConfig} /></dd>
+				<dt>During this period</dt>
+				<dd>{this.renderTimeRangesArray('remainder', config.remainder)}</dd>
+			</React.Fragment>
+		);
+	}
+
+	renderMinOnOff() {
+		const device = this.state.device;
+
+		if(device.device_type=='hws')
+			return;
+
+		const config = device.device_config;
+
+		return (
+			<React.Fragment>
+				<dt>Minimum on time</dt>
+				<dd><SliderDuration name="min_on" value={config.min_on} onChange={this.changeConfig} /></dd>
+				<dt>Minimum off time</dt>
+				<dd><SliderDuration name="min_off" value={config.min_off} onChange={this.changeConfig} /></dd>
+			</React.Fragment>
+		);
+	}
+
 	renderDelete() {
 		if(this.props.id==0)
+			return;
+
+		if(this.state.device!==null && this.state.device.device_type=='hws')
 			return;
 
 		return (
@@ -255,24 +360,17 @@ export class DeviceOnOff extends React.Component
 					<div className="layout-form">
 						<dl>
 							{this.renderDeviceType()}
-							<dt>Name</dt>
-							<dd><input type="text" name="device_name" value={device.device_name} onChange={this.changeDevice} /></dd>
-							<dt>Priority</dt>
-							<dd><input type="number" name="prio" value={config.prio} onChange={this.changeConfig} /></dd>
+							{this.renderNamePrio()}
 							<dt>IP address</dt>
 							<dd><input type="text" name="ip" value={config.ip} onChange={this.changeConfig} /></dd>
 							{this.renderHeaterFields()}
-							<dt>Expected consumption (W)</dt>
-							<dd><input type="number" name="expected_consumption" value={config.expected_consumption} onChange={this.changeConfig} /></dd>
-							<dt>Offload</dt>
-							<dd>{this.renderTimeRangesArray('offload', config.offload)}</dd>
+							{this.renderExpectedConsumption()}
+							{this.renderOffloadFields()}
 							<dt>Force</dt>
 							<dd>{this.renderTimeRangesArray('force', config.force)}</dd>
 							{this.renderRemainderFields()}
-							<dt>Minimum on time</dt>
-							<dd><SliderDuration name="min_on" value={config.min_on} onChange={this.changeConfig} /></dd>
-							<dt>Minimum off time</dt>
-							<dd><SliderDuration name="min_off" value={config.min_off} onChange={this.changeConfig} /></dd>
+							{this.renderRemainderFieldsHWS()}
+							{this.renderMinOnOff()}
 						</dl>
 						<div className="submit" onClick={this.save}>Save</div>
 						{this.renderDelete()}
