@@ -4,12 +4,12 @@ export class SliderDuration extends React.Component
 		super(props);
 
 		this.state = {
-			duration: 0
+			duration: 0,
+			container_width_px: 0,
+			cursor_width_px: 0
 		}
 
 		this.dragging = false;
-		this.container_width_px = 0;
-		this.cursor_width_px = 0;
 
 		if(props.long===undefined || !props.long)
 		{
@@ -18,6 +18,12 @@ export class SliderDuration extends React.Component
 				{span: 0.25, steps: 9, step: 60},
 				{span: 0.25, steps: 10, step: 300},
 				{span: 0.25, steps: 23, step: 3600},
+			];
+		}
+		else if(props.type!==undefined && props.type=='days')
+		{
+			this.intervals = [
+				{span: 1, steps: 6, step: 86400},
 			];
 		}
 		else
@@ -39,14 +45,14 @@ export class SliderDuration extends React.Component
 	}
 
 	componentDidMount() {
-		this.container_width_px = this.ref_container.current.getBoundingClientRect().width;
-		this.cursor_width_px = this.ref_cursor.current.getBoundingClientRect().width;
 
 		this.ref_cursor.current.addEventListener('mousedown', this.startDragging, {passive: false});
 		this.ref_cursor.current.addEventListener('touchstart', this.startDragging, {passive: false});
 
 		document.addEventListener('mouseup', this.stopDragging, {passive: false});
 		document.addEventListener('touchend', this.stopDragging, {passive: false});
+
+		this.setState({container_width_px: this.ref_container.current.getBoundingClientRect().width, cursor_width_px: this.ref_cursor.current.getBoundingClientRect().width});
 	}
 
 	componentWillUnmount() {
@@ -80,7 +86,7 @@ export class SliderDuration extends React.Component
 
 	drag(ev) {
 		let X = ev.touches!==undefined?ev.touches[0].clientX:ev.clientX;
-		let new_pos = (X - this.ref_container.current.getBoundingClientRect().left) / this.container_width_px;
+		let new_pos = (X - this.ref_container.current.getBoundingClientRect().left) / this.state.container_width_px;
 		if(new_pos < 0)
 			new_pos = 0;
 		if(new_pos > 1)
@@ -138,7 +144,12 @@ export class SliderDuration extends React.Component
 		let seconds = d - days * 86400 - hours * 3600 - minutes * 60;
 
 		if(d==0)
+		{
+			if(this.props.type!==undefined && this.props.type=="days")
+				return "Today";
+
 			return '0 seconds';
+		}
 
 		let ret = '';
 		if(days>0)
@@ -179,8 +190,8 @@ export class SliderDuration extends React.Component
 
 	render() {
 		let margin = 0;
-		if(this.container_width_px!=0)
-			margin = (this.container_width_px - this.cursor_width_px) * this.getPosition(this.props.value);
+		if(this.state.container_width_px!=0)
+			margin = (this.state.container_width_px - this.state.cursor_width_px) * this.getPosition(this.props.value);
 
 		return (
 			<div ref={this.ref_container} className="sc-slider-duration">
