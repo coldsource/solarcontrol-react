@@ -17,7 +17,7 @@ export class SelectHTDevice extends React.Component
 
 	componentDidMount() {
 		API.instance.command('deviceht', 'list').then(ht_devices => {
-			if(ht_devices.length>0)
+			if(ht_devices.length>0 && this.props.value==0)
 				this.props.onChange({target: {name: this.props.name, value: ht_devices[0].device_id}});
 
 			this.setState({ht_devices: ht_devices});
