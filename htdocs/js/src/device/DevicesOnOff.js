@@ -77,6 +77,7 @@ export class DevicesOnOff extends React.Component
 	render() {
 		if(this.state.editing!==false)
 			return (<DeviceOnOff id={this.state.editing} onClose={this.close} />);
+
 		return (
 			<div className="sc-devices">
 				<table>
