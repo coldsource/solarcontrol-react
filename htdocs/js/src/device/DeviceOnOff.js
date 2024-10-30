@@ -42,8 +42,11 @@ export class DeviceOnOff extends React.Component
 					min_on: 0,
 					min_off: 0,
 					ht_device_id: 0,
+					ht_device_ids: [],
 					force_max_temperature: 0,
-					offload_max_temperature: 0
+					offload_max_temperature: 0,
+					force_max_moisture: 0,
+					offload_max_moisture: 0
 				}
 			}});
 		}
@@ -97,6 +100,13 @@ export class DeviceOnOff extends React.Component
 			params.device_config.ht_device_id = parseInt(config.ht_device_id);
 			params.device_config.force_max_temperature = parseFloat(config.force_max_temperature);
 			params.device_config.offload_max_temperature = parseFloat(config.offload_max_temperature);
+		}
+
+		if(device.device_type=='cmv')
+		{
+			params.device_config.ht_device_ids = config.ht_device_ids;
+			params.device_config.force_max_moisture = parseFloat(config.force_max_moisture);
+			params.device_config.offload_max_moisture = parseFloat(config.offload_max_moisture);
 		}
 
 		if(device.device_type=='hws')
@@ -253,11 +263,31 @@ export class DeviceOnOff extends React.Component
 		return (
 			<React.Fragment>
 				<dt>Linked thermometer</dt>
-				<dd><SelectHTDevice  name="ht_device_id" value={config.ht_device_id} onChange={this.changeConfig} /></dd>
+				<dd><SelectHTDevice type="temperature" name="ht_device_id" value={config.ht_device_id} onChange={this.changeConfig} /></dd>
 				<dt>Forced mode target temperature (°C)</dt>
 				<dd><input type="number" name="force_max_temperature" value={config.force_max_temperature} onChange={this.changeConfig} /></dd>
 				<dt>Offload mode target temperature (°C)</dt>
 				<dd><input type="number" name="offload_max_temperature" value={config.offload_max_temperature} onChange={this.changeConfig} /></dd>
+			</React.Fragment>
+		);
+	}
+
+	renderCMVFields() {
+		const device = this.state.device;
+
+		if(device.device_type!='cmv')
+			return;
+
+		const config = device.device_config;
+
+		return (
+			<React.Fragment>
+				<dt>Linked hygrometer</dt>
+				<dd><SelectHTDevice type="humidity" multiple="yes" name="ht_device_ids" value={config.ht_device_ids} onChange={this.changeConfig} /></dd>
+				<dt>Forced mode target moisture (%)</dt>
+				<dd><input type="number" name="force_max_moisture" value={config.force_max_moisture} onChange={this.changeConfig} /></dd>
+				<dt>Offload mode target moisture (%)</dt>
+				<dd><input type="number" name="offload_max_moisture" value={config.offload_max_moisture} onChange={this.changeConfig} /></dd>
 			</React.Fragment>
 		);
 	}
@@ -368,6 +398,7 @@ export class DeviceOnOff extends React.Component
 							{this.renderNamePrio()}
 							<ConfigDeviceControl name="control" value={config.control} onChange={this.changeConfig} />
 							{this.renderHeaterFields()}
+							{this.renderCMVFields()}
 							{this.renderExpectedConsumption()}
 							{this.renderOffloadFields()}
 							<dt>Force</dt>
