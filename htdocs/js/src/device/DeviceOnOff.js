@@ -6,6 +6,7 @@ import {TimeRange} from '../ui/TimeRange.js';
 import {SelectDeviceType} from '../ui/SelectDeviceType.js';
 import {SelectHTDevice} from '../ui/SelectHTDevice.js';
 import {SliderDuration} from '../ui/SliderDuration.js';
+import {ConfigDeviceControl} from '../ui/ConfigDeviceControl.js';
 
 export class DeviceOnOff extends React.Component
 {
@@ -30,7 +31,7 @@ export class DeviceOnOff extends React.Component
 				device_type: 'timerange-plug',
 				device_name: 'New device',
 				device_config: {
-					ip: '',
+					control: {type: 'plug', ip: ''},
 					prio: 0,
 					expected_consumption: 0,
 					offload: [],
@@ -74,7 +75,7 @@ export class DeviceOnOff extends React.Component
 		let params = {
 			device_name: device.device_name,
 			device_config: {
-				ip: config.ip,
+				control: config.control,
 				prio: parseInt(config.prio),
 				expected_consumption: parseInt(config.expected_consumption),
 				offload: config.offload,
@@ -361,8 +362,7 @@ export class DeviceOnOff extends React.Component
 						<dl>
 							{this.renderDeviceType()}
 							{this.renderNamePrio()}
-							<dt>IP address</dt>
-							<dd><input type="text" name="ip" value={config.ip} onChange={this.changeConfig} /></dd>
+							<ConfigDeviceControl name="control" value={config.control} onChange={this.changeConfig} />
 							{this.renderHeaterFields()}
 							{this.renderExpectedConsumption()}
 							{this.renderOffloadFields()}
