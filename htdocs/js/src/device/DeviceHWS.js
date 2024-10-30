@@ -25,6 +25,12 @@ export class DeviceHWS extends React.Component
 
 		return (
 			<div>
+				<table style={{width: '100%'}}>
+					<tr>
+						<td style={{textAlign: 'left'}}>State</td>
+						<td style={{textAlign: 'right'}} className={this.state.devicehws.state?'off':'on'}><b>{this.state.devicehws.state?'Forced':'Solar offload'}</b></td>
+					</tr>
+				</table>
 				<DeviceOnOff id={this.state.devicehws.device_id} />
 			</div>
 		);
