@@ -40,6 +40,7 @@ export class DeviceOnOff extends React.Component
 					min_on_time: 0,
 					min_on_for_last: 0,
 					min_on: 0,
+					max_on: 0,
 					min_off: 0,
 					ht_device_id: 0,
 					ht_device_ids: [],
@@ -107,6 +108,7 @@ export class DeviceOnOff extends React.Component
 			params.device_config.ht_device_ids = config.ht_device_ids;
 			params.device_config.force_max_moisture = parseFloat(config.force_max_moisture);
 			params.device_config.offload_max_moisture = parseFloat(config.offload_max_moisture);
+			params.device_config.max_on = parseInt(config.max_on);
 		}
 
 		if(device.device_type=='hws')
@@ -348,6 +350,22 @@ export class DeviceOnOff extends React.Component
 		);
 	}
 
+	renderMaxOn() {
+		const device = this.state.device;
+
+		if(device.device_type!='cmv')
+			return;
+
+		const config = device.device_config;
+
+		return (
+			<React.Fragment>
+				<dt>Maximum on time</dt>
+				<dd><SliderDuration name="max_on" value={config.max_on} onChange={this.changeConfig} /></dd>
+			</React.Fragment>
+		);
+	}
+
 	renderMinOnOff() {
 		const device = this.state.device;
 
@@ -360,6 +378,7 @@ export class DeviceOnOff extends React.Component
 			<React.Fragment>
 				<dt>Minimum on time</dt>
 				<dd><SliderDuration name="min_on" value={config.min_on} onChange={this.changeConfig} /></dd>
+				{this.renderMaxOn()}
 				<dt>Minimum off time</dt>
 				<dd><SliderDuration name="min_off" value={config.min_off} onChange={this.changeConfig} /></dd>
 			</React.Fragment>
