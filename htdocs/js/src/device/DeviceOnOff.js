@@ -77,16 +77,20 @@ export class DeviceOnOff extends React.Component
 			device_config: {
 				control: config.control,
 				prio: parseInt(config.prio),
-				expected_consumption: parseInt(config.expected_consumption),
-				offload: config.offload,
 				force: config.force,
 				remainder: config.remainder,
-				min_on_time: parseInt(config.min_on_time),
-				min_on_for_last: parseInt(config.min_on_for_last),
-				min_on: parseInt(config.min_on),
-				min_off: parseInt(config.min_off)
 			}
 		};
+
+		if(device.device_type!='hws')
+		{
+			params.device_config.expected_consumption = parseInt(config.expected_consumption);
+			params.device_config.offload = config.offload;
+			params.device_config.min_on_time = parseInt(config.min_on_time);
+			params.device_config.min_on_for_last = parseInt(config.min_on_for_last);
+			params.device_config.min_on = parseInt(config.min_on);
+			params.device_config.min_off = parseInt(config.min_off);
+		}
 
 		if(device.device_type=='heater')
 		{
@@ -304,7 +308,7 @@ export class DeviceOnOff extends React.Component
 
 		return (
 			<React.Fragment>
-				<dt>Ensure minimum kWh of</dt>
+				<dt>Ensure minimum Wh of</dt>
 				<dd><input type="number" name="min_energy" value={config.min_energy} onChange={this.changeConfig} /></dd>
 				<dt>For the last</dt>
 				<dd><SliderDuration type="days" name="min_energy_for_last" value={config.min_energy_for_last} long={true} onChange={this.changeConfig} /></dd>
