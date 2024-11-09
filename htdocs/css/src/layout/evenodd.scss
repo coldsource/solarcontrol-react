@@ -11,3 +11,17 @@ table.layout-evenodd {
 		}
 	}
 }
+
+table.layout-evenodd4 {
+	border-collapse: collapse;
+
+	tbody {
+		tr:nth-child(4n), tr:nth-child(4n-1) {
+			background-color: #ffffff;
+		}
+
+		tr:nth-child(4n-2), tr:nth-child(4n-3) {
+			background-color: #e4e4e4;
+		}
+	}
+}

@@ -25,12 +25,19 @@ export class Global extends React.Component
 		this.setState(data);
 	}
 
+	renderLeaf() {
+		if(!this.state.offpeak)
+			return;
+
+		return (<i className="fa-regular fa-leaf" />);
+	}
+
 	render() {
 		return (
 			<div className="sc-meter-global">
 				<div className="item">
 					<div className="value"><KW value={this.state.grid} /></div>
-					<div className="label">Grid power</div>
+					<div className="label">Grid power {this.renderLeaf()}</div>
 				</div>
 				<div className="item">
 					<div className="value"><KW value={this.state.pv} /></div>
