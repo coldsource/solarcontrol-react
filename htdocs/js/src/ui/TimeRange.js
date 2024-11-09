@@ -38,6 +38,15 @@ export class TimeRange extends React.Component
 		this.props.onChange({target: {name: this.props.name, value: val}});
 	}
 
+	toggleOffpeak() {
+		let val = Object.assign({}, this.props.value);
+		if(val.offpeak===undefined)
+			val.offpeak = false;
+
+		val.offpeak = !val.offpeak;
+		this.props.onChange({target: {name: this.props.name, value: val}});
+	}
+
 	renderWeekDaysDetail() {
 		return ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((day, idx) => {
 			let selected = false;
@@ -71,7 +80,8 @@ export class TimeRange extends React.Component
 			<div>
 				<input type="time" step="60" value={this.normalize_time(this.props.value.from)} onChange={ ev => this.change('from', ev) } />
 				<input type="time" step="60" value={this.normalize_time(this.props.value.to)} onChange={ ev => this.change('to', ev) } />
-				&#160;<i className="fa fa-calendar-days" onClick={() => this.setState({display_days: true})} />
+				<i className="fa fa-calendar-days" onClick={() => this.setState({display_days: true})} />
+				<i className={"fa-regular fa-leaf" + (this.props.value.offpeak?" on":"")} onClick={() => this.toggleOffpeak()} />
 			</div>
 		);
 	}
