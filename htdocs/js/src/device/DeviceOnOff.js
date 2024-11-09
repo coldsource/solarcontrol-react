@@ -28,7 +28,7 @@ export class DeviceOnOff extends React.Component
 		if(this.props.id==0)
 		{
 			this.setState({device: {
-				device_type: 'timerange-plug',
+				device_type: 'timerange',
 				device_name: 'New device',
 				device_config: {
 					control: {type: 'plug', ip: ''},
@@ -297,7 +297,7 @@ export class DeviceOnOff extends React.Component
 	renderRemainderFields() {
 		const device = this.state.device;
 
-		if(device.device_type!='timerange-plug')
+		if(device.device_type!='timerange')
 			return;
 
 		const config = device.device_config;
