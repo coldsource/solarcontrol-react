@@ -14,9 +14,41 @@ export class DeviceHWS extends React.Component
 	}
 
 	componentDidMount() {
+		this.reload();
+	}
+
+	reload() {
 		API.instance.command('deviceonoff', 'gethws', {device_id: parseInt(this.props.id)}).then(devicehws => {
 			this.setState({devicehws: devicehws});
 		});
+	}
+
+	setManualState(state) {
+		API.instance.command('deviceonoff', 'setstate', {device_id: this.state.devicehws.device_id, state: state}).then(devices => {
+			this.reload();
+		});
+	}
+
+	renderStateType() {
+		const device = this.state.devicehws;
+
+		if(device.manual)
+			return (<span onClick={() => this.setManualState("auto")}>Manual</span>);
+
+		return (<span>Auto</span>);
+	}
+
+	renderState() {
+		const device = this.state.devicehws;
+
+		return (
+			<span
+				className={this.state.devicehws.state?'off':'on'}
+				onClick={() => this.setManualState(device.state?"off":"on")}
+			>
+				<b>{this.state.devicehws.state?'Forced':'Solar offload'}</b>
+			</span>
+		);
 	}
 
 	render() {
@@ -24,13 +56,16 @@ export class DeviceHWS extends React.Component
 			return;
 
 		return (
-			<div>
-				<table style={{width: '100%'}}>
-					<tr>
-						<td style={{textAlign: 'left'}}>State</td>
-						<td style={{textAlign: 'right'}} className={this.state.devicehws.state?'off':'on'}><b>{this.state.devicehws.state?'Forced':'Solar offload'}</b></td>
-					</tr>
+			<div className="sc-devicehws">
+				<table className="header">
+					<tbody>
+						<tr>
+							<td style={{textAlign: 'left'}}>{this.renderStateType()}</td>
+							<td style={{textAlign: 'right'}}>{this.renderState()}</td>
+						</tr>
+					</tbody>
 				</table>
+				<br />
 				<DeviceOnOff id={this.state.devicehws.device_id} />
 			</div>
 		);
