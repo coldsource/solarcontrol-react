@@ -21,13 +21,13 @@ export class API
 
 		// Event on connection
 		self.ws.onopen = function (event) {
-			console.log("Connected (api)");
 			self.cnx_resolve();
 		};
 
 		// Event on disconnection
 		self.ws.onclose = function(ev) {
-			console.log("Disconnected : " + ev.reason);
+			if(ev.reason)
+				console.log("Disconnected : " + ev.reason);
 		}
 
 		self.ws.onmessage = function (ev) {

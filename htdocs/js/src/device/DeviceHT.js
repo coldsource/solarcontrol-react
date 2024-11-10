@@ -1,5 +1,6 @@
 import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
+import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {Loader} from '../ui/Loader.js';
 import {SelectDeviceTypeHT} from '../ui/SelectDeviceTypeHT.js';
@@ -34,9 +35,8 @@ export class DeviceHT extends React.Component
 		}
 		else
 		{
-			API.instance.command('deviceht', 'get', {device_id: parseInt(this.props.id)}).then(device => {
-				this.setState({device: device});
-			});
+			let device = ProtocolDevice.instance.GetHT(this.props.id);
+			this.setState({device: device});
 		}
 	}
 
@@ -129,7 +129,6 @@ export class DeviceHT extends React.Component
 			return;
 
 		const config = device.device_config;
-		console.log(config.ble_addr);
 
 		return (
 			<React.Fragment>

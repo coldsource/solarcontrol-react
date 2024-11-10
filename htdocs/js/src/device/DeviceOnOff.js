@@ -1,4 +1,5 @@
 import {App} from '../app/App.js';
+import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {API} from '../websocket/API.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {Loader} from '../ui/Loader.js';
@@ -53,12 +54,11 @@ export class DeviceOnOff extends React.Component
 		}
 		else
 		{
-			API.instance.command('deviceonoff', 'get', {device_id: parseInt(this.props.id)}).then(device => {
-				if(device.device_type=='hws')
-					device.device_config.min_energy_for_last = device.device_config.min_energy_for_last * 86400; // Convert days to seconds
+			let device = ProtocolDevice.instance.GetOnOff(this.props.id);
+			if(device.device_type=='hws')
+				device.device_config.min_energy_for_last = device.device_config.min_energy_for_last * 86400; // Convert days to seconds
 
-				this.setState({device: device});
-			});
+			this.setState({device: device});
 		}
 	}
 

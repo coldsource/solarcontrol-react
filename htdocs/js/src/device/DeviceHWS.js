@@ -1,5 +1,6 @@
 import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
+import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {DeviceOnOff} from './DeviceOnOff.js';
 
 
@@ -11,22 +12,24 @@ export class DeviceHWS extends React.Component
 		this.state = {
 			devicehws: null,
 		};
+
+		this.reload = this.reload.bind(this);
 	}
 
 	componentDidMount() {
-		this.reload();
+		ProtocolDevice.instance.Subscribe('onoff', 'hws', this.reload);
 	}
 
-	reload() {
-		API.instance.command('deviceonoff', 'gethws', {device_id: parseInt(this.props.id)}).then(devicehws => {
-			this.setState({devicehws: devicehws});
-		});
+	componentWillUnmount() {
+		ProtocolDevice.instance.Unsubscribe('onoff', 'hws', this.reload);
+	}
+
+	reload(devicehws) {
+		this.setState({devicehws: devicehws});
 	}
 
 	setManualState(state) {
-		API.instance.command('deviceonoff', 'setstate', {device_id: this.state.devicehws.device_id, state: state}).then(devices => {
-			this.reload();
-		});
+		API.instance.command('deviceonoff', 'setstate', {device_id: this.state.devicehws.device_id, state: state});
 	}
 
 	renderStateType() {

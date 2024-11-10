@@ -1,4 +1,5 @@
-import {API} from '../websocket/API.js';
+import {API as ProtocolAPI} from '../websocket/API.js';
+import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {Global} from '../meter/Global.js';
 import {DevicesOnOff} from '../device/DevicesOnOff.js';
 import {DevicesHT} from '../device/DevicesHT.js';
@@ -26,7 +27,8 @@ export class App extends React.Component
 			return true;
 		};
 
-		this.api = new API();
+		this.api = new ProtocolAPI();
+		this.devices = new ProtocolDevice();
 		this.api.connect();
 
 		App.instance = this;

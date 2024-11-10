@@ -1,3 +1,4 @@
+import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {API} from '../websocket/API.js';
 import {DeviceHT} from './DeviceHT.js';
 
@@ -12,21 +13,23 @@ export class DevicesHT extends React.Component
 		};
 
 		this.close = this.close.bind(this);
+		this.reload = this.reload.bind(this);
 	}
 
 	componentDidMount() {
-		this.reload();
+		ProtocolDevice.instance.Subscribe('ht', 0, this.reload);
 	}
 
-	reload() {
-		API.instance.command('deviceht', 'list').then(devices => {
-			this.setState({devices: devices});
-		});
+	componentWillUnmount() {
+		ProtocolDevice.instance.Unsubscribe('ht', 0, this.reload);
+	}
+
+	reload(devices) {
+		this.setState({devices: devices});
 	}
 
 	close() {
 		this.setState({editing: false});
-		this.reload();
 	}
 
 	edit(id) {

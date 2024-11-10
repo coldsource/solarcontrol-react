@@ -1,3 +1,4 @@
+import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {API} from '../websocket/API.js';
 import {DeviceOnOff} from './DeviceOnOff.js';
 
@@ -14,51 +15,31 @@ export class DevicesOnOff extends React.Component
 		this.interval = null;
 
 		this.close = this.close.bind(this);
+		this.reload = this.reload.bind(this);
 	}
 
 	componentDidMount() {
-		this.reload();
-
-		this.startAutoRefresh();
+		ProtocolDevice.instance.Subscribe('onoff', 0, this.reload);
 	}
 
 	componentWillUnmount() {
-		this.stopAutoRefresh();
+		ProtocolDevice.instance.Unsubscribe('onoff', 0, this.reload);
 	}
 
-	startAutoRefresh() {
-		this.interval = setInterval(() => this.reload(), 2000);
-	}
-
-	stopAutoRefresh() {
-		if(this.interval===null)
-			return;
-
-		clearInterval(this.interval);
-		this.interval = null;
-	}
-
-	reload() {
-		API.instance.command('deviceonoff', 'list').then(devices => {
-			this.setState({devices: devices});
-		});
+	reload(devices) {
+		this.setState({devices: devices});
 	}
 
 	close() {
-		this.startAutoRefresh();
 		this.setState({editing: false});
-		this.reload();
 	}
 
 	edit(id) {
-		this.stopAutoRefresh();
 		this.setState({editing: id});
 	}
 
 	setManualState(id, state) {
-		API.instance.command('deviceonoff', 'setstate', {device_id: id, state: state}).then(devices => {
-			this.reload();
-		});
+		API.instance.command('deviceonoff', 'setstate', {device_id: id, state: state});
 	}
 
 	renderDevices() {

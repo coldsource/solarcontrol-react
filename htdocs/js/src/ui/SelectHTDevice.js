@@ -8,11 +8,6 @@ export class SelectHTDevice extends React.Component
 		this.state = {
 			ht_devices: []
 		}
-
-		this.types = {
-			'timerange-plug': 'fa-plug',
-			'heater': 'fa-temperature-arrow-up'
-		};
 	}
 
 	componentDidMount() {
