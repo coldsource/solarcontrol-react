@@ -1,4 +1,5 @@
 import {API} from '../websocket/API.js';
+import {Device as ProtocolDevice} from '../websocket/Device.js';
 
 export class SelectHTDevice extends React.Component
 {
@@ -6,17 +7,8 @@ export class SelectHTDevice extends React.Component
 		super(props);
 
 		this.state = {
-			ht_devices: []
+			ht_devices: ProtocolDevice.instance.GetHT(0)
 		}
-	}
-
-	componentDidMount() {
-		API.instance.command('deviceht', 'list').then(ht_devices => {
-			if(ht_devices.length>0 && this.props.multiple=="no" && this.props.value==0)
-				this.change(ht_devices[0].device_id);
-
-			this.setState({ht_devices: ht_devices});
-		});
 	}
 
 	isSelected(device_id)

@@ -68,6 +68,9 @@ export class Device extends Events
 
 	GetOnOff(id)
 	{
+		if(id==0)
+			return this.devices_onoff;
+
 		if(this.hws.device_id==id)
 			return this.hws; // Special HWS device is also OnOff device
 
@@ -82,6 +85,9 @@ export class Device extends Events
 
 	GetHT(id)
 	{
+		if(id==0)
+			return this.devices_ht;
+
 		for(const device of this.devices_ht)
 		{
 			if(device.device_id==id)
