@@ -48,25 +48,28 @@ export class DevicesOnOff extends React.Component
 		if(power<0)
 			return;
 
-		return (<span className="power">(<KW value={power} />)</span>);
+		return (
+			<React.Fragment><i className="fa fa-bolt" /> <KW value={power} /></React.Fragment>
+		);
 	}
 
 	renderDevices() {
 		return this.state.devices.map(device => {
 			return (
-				<React.Fragment key={device.device_id}>
-					<tr>
-						<td>
-							<span onClick={ () => this.edit(device.device_id) }>{device.device_name}</span>
+				<div key={device.device_id}>
+					<div>
+						<i className={"fa " + ((device.manual)?'fa-hand':'fa-regular fa-sun-bright')} onClick={() => { if(device.manual) this.setManualState(device.device_id, "auto") }} />
+					</div>
+					<div>
+						<span className="name" onClick={ () => this.edit(device.device_id) }>{device.device_name}</span>
+						<div className="power">
 							{this.renderPower(device.power)}
-						</td>
-						<td>
-							<i className={"fa " + ((device.manual)?'fa-hand':'fa-wand-magic-sparkles')} onClick={() => { if(device.manual) this.setManualState(device.device_id, "auto") }} />
-							&#160;
-							<ControlOnOff device_id={device.device_id} state={device.state} />
-						</td>
-					</tr>
-				</React.Fragment>
+						</div>
+					</div>
+					<div>
+						<ControlOnOff device_id={device.device_id} state={device.state} />
+					</div>
+				</div>
 			);
 		});
 	}
@@ -77,17 +80,12 @@ export class DevicesOnOff extends React.Component
 
 		return (
 			<div className="sc-devices">
-				<table>
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th><i className="fa fa-plus" onClick={ () => this.edit(0) }></i></th>
-						</tr>
-					</thead>
-					<tbody>
-						{this.renderDevices()}
-					</tbody>
-				</table>
+				<div className="actions">
+					<i className="fa fa-plus" onClick={ () => this.edit(0) }></i>
+				</div>
+				<div className="list">
+					{this.renderDevices()}
+				</div>
 			</div>
 		);
 	}

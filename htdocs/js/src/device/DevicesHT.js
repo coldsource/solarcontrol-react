@@ -39,12 +39,23 @@ export class DevicesHT extends React.Component
 	renderDevices() {
 		return this.state.devices.map(device => {
 			return (
-				<tr key={device.device_id}>
-					<td>{device.device_name}</td>
-					<td style={{textAlign: 'center'}}>{device.temperature} °C</td>
-					<td style={{textAlign: 'center'}}>{device.humidity} %</td>
-					<td style={{textAlign: 'center'}}><i className="fa fa-cogs" onClick={ () => this.edit(device.device_id) } /></td>
-				</tr>
+				<div key={device.device_id}>
+					<div>
+						<i className="fa fa-regular fa-droplet-degree" />
+					</div>
+					<div>
+						<span className="name" onClick={ () => this.edit(device.device_id) }>
+							{device.device_name}
+						</span>
+						<div className="ht">
+							<i className="fa fa-temperature-half" /> {device.temperature} °C
+							&#160;&#160;
+							<i className="fa fa-regular fa-droplet" /> {device.humidity} %
+						</div>
+					</div>
+					<div>
+					</div>
+				</div>
 			);
 		});
 	}
@@ -55,19 +66,12 @@ export class DevicesHT extends React.Component
 
 		return (
 			<div className="sc-devices">
-				<table>
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th style={{textAlign: 'center'}}>Temperature</th>
-							<th style={{textAlign: 'center'}}>Humidity</th>
-							<th><i className="fa fa-plus" onClick={ () => this.edit(0) } /></th>
-						</tr>
-					</thead>
-					<tbody>
-						{this.renderDevices()}
-					</tbody>
-				</table>
+				<div className="actions">
+					<i className="fa fa-plus" onClick={ () => this.edit(0) } />
+				</div>
+				<div className="list">
+					{this.renderDevices()}
+				</div>
 			</div>
 		);
 	}
