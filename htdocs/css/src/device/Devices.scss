@@ -8,9 +8,26 @@ div.sc-devices {
 			font-style: italic;
 		}
 
+		th:last-child {
+			font-size: 1.5rem;
+			text-align: center;
+			width: 2rem;
+		}
+
 		td {
 			font-size: 1.5rem;
 			padding-bottom: 1rem;
+		}
+
+		.power {
+			font-style: italic;
+			font-size: 1rem;
+			margin-left: 0.5rem;
+		}
+
+		td:last-child {
+			text-align: center;
+			white-space: nowrap;
 		}
 	}
 }

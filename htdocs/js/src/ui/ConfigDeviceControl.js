@@ -31,6 +31,9 @@ export class ConfigDeviceControl extends React.Component
 				config.outlet = 0;
 		}
 
+		if(name=='mqtt_id' && value=='')
+			delete config.mqtt_id;
+
 		this.props.onChange({target: {name: this.props.name, value: config}});
 	}
 
@@ -60,6 +63,18 @@ export class ConfigDeviceControl extends React.Component
 		);
 	}
 
+	renderMQTTID() {
+		const value = this.props.value;
+		let mqtt_id = value.mqtt_id!==undefined?value.mqtt_id:'';
+
+		return (
+			<React.Fragment>
+				<dt>MQTT ID</dt>
+				<dd><input type="text" name="mqtt_id" value={mqtt_id} onChange={this.change} /></dd>
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		let value = this.props.value;
 		return (
@@ -73,6 +88,7 @@ export class ConfigDeviceControl extends React.Component
 				<dt>IP address</dt>
 				<dd><input type="text" name="ip" value={value.ip} onChange={this.change} /></dd>
 				{this.renderOutlet()}
+				{this.renderMQTTID()}
 			</React.Fragment>
 		);
 	}

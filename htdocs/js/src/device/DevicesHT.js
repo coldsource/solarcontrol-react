@@ -61,7 +61,7 @@ export class DevicesHT extends React.Component
 							<th>Name</th>
 							<th style={{textAlign: 'center'}}>Temperature</th>
 							<th style={{textAlign: 'center'}}>Humidity</th>
-							<th style={{textAlign: 'center'}}><i className="fa fa-plus" onClick={ () => this.edit(0) } /></th>
+							<th><i className="fa fa-plus" onClick={ () => this.edit(0) } /></th>
 						</tr>
 					</thead>
 					<tbody>
