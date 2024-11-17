@@ -40,8 +40,24 @@ export class Global extends React.Component
 					<div className="label">Grid power {this.renderLeaf()}</div>
 				</div>
 				<div className="item">
+					<div className="value"><KWh value={this.state.grid_energy} /></div>
+					<div className="label">Imported</div>
+				</div>
+				<div className="item">
 					<div className="value"><KW value={this.state.pv} /></div>
 					<div className="label">PV power</div>
+				</div>
+				<div className="item">
+					<div className="value"><KWh value={this.state.pv_energy} /></div>
+					<div className="label">PV production</div>
+				</div>
+				<div className="item">
+					<div className="value"><KW value={this.state.hws} /></div>
+					<div className="label">HWS power</div>
+				</div>
+				<div className="item">
+					<div className="value"><KWh value={this.state.hws_energy} /></div>
+					<div className="label">HWS energy</div>
 				</div>
 				<div className="item">
 					<div className="value"><KW value={this.state.net_available} /></div>
@@ -56,25 +72,8 @@ export class Global extends React.Component
 					<div className="label">Total consumption</div>
 				</div>
 				<div className="item">
-					<div className="value"><KW value={this.state.excess} /></div>
-					<div className="label">Excess</div>
-				</div>
-
-				<div className="item">
-					<div className="value"><KWh value={this.state.grid_energy} /></div>
-					<div className="label">Imported</div>
-				</div>
-				<div className="item">
 					<div className="value"><KWh value={this.state.grid_exported_energy} /></div>
 					<div className="label">Exported</div>
-				</div>
-				<div className="item">
-					<div className="value"><KWh value={this.state.pv_energy} /></div>
-					<div className="label">Produced</div>
-				</div>
-				<div className="item">
-					<div className="value"><KWh value={this.state.hws_energy} /></div>
-					<div className="label">HWS</div>
 				</div>
 			</div>
 		);
