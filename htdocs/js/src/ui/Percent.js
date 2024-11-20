@@ -18,6 +18,10 @@ export class Percent extends React.Component
 			return '';
 
 		let pct = d1/(d1 + d2)*100;
+
+		if(isNaN(pct))
+			return '';
+
 		return parseInt(pct) + ' %';
 	}
 

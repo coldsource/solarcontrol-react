@@ -34,6 +34,7 @@ export class Energy extends React.Component
 						<td><DateOnly value={date} /></td>
 						<td><KWh value={data.grid_consumption} /></td>
 						<td><KWh value={data.pv_production} /></td>
+						<td><Percent v1={data.pv_production - data.grid_excess} v2={data.grid_consumption} /></td>
 						<td><KWh value={data.hws_consumption} /></td>
 					</tr>
 				);
@@ -63,8 +64,23 @@ export class Energy extends React.Component
 					<tr key={date + "_pv"}>
 						<td><DateOnly value={date} /></td>
 						<td><KWh value={data.pv_production} /></td>
-						<td><Percent v1={data.pv_production} v2={data.grid_consumption} /></td>
 						<td><KWh value={data.grid_excess} /></td>
+						<td><Percent v1={data.grid_excess} v2={data.pv_production} /></td>
+					</tr>
+				);
+			});
+		}
+
+		if(this.state.mode=='hws')
+		{
+			return Object.keys(this.state.energy).sort().reverse().map(date => {
+				const data = this.state.energy[date];
+				return (
+					<tr key={date + "_hws"}>
+						<td><DateOnly value={date} /></td>
+						<td><KWh value={data.hws_offload_consumption} /></td>
+						<td><KWh value={data.hws_forced_consumption} /></td>
+						<td><Percent v1={data.hws_offload_consumption} v2={data.hws_forced_consumption} /></td>
 					</tr>
 				);
 			});
@@ -80,7 +96,8 @@ export class Energy extends React.Component
 						<th>Date</th>
 						<th onClick={() => this.setState({mode: 'offpeak'})}>Grid <i className="fa-regular fa-leaf" /></th>
 						<th onClick={() => this.setState({mode: 'pv'})}>PV <i className="fa-regular fa-bolt" /></th>
-						<th>HWS</th>
+						<th>PV&#160;%</th>
+						<th onClick={() => this.setState({mode: 'hws'})}>HWS <i className="fa-regular fa-sun-bright" /></th>
 					</tr>
 				</thead>
 			);
@@ -115,8 +132,26 @@ export class Energy extends React.Component
 					<tr>
 						<th></th>
 						<th>Prod.</th>
-						<th>Ratio</th>
 						<th>Excess</th>
+						<th>Ratio</th>
+					</tr>
+				</thead>
+			);
+		}
+
+		if(this.state.mode=='hws')
+		{
+			return (
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th colSpan="3" onClick={() => this.setState({mode: 'global'})}>HWS <i className="fa-regular fa-sun-bright" /></th>
+					</tr>
+					<tr>
+						<th></th>
+						<th>Offload</th>
+						<th>Forced</th>
+						<th>Ratio</th>
 					</tr>
 				</thead>
 			);
