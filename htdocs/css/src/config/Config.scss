@@ -1,0 +1,26 @@
+div.sc-config {
+	div.entry {
+		margin-top: 15px;
+	}
+
+	div.name {
+		font-weight: bold;
+		font-style: italic;
+		margin-bottom: 5px;
+	}
+
+	div.value {
+		display: grid;
+		grid-template-columns: (1fr 3rem);
+
+		input {
+			width: 100%;
+			box-sizing: border-box;
+		}
+
+		i {
+			font-size: 1.5rem;
+			text-align: center;
+		}
+	}
+}

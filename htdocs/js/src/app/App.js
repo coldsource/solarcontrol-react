@@ -6,6 +6,7 @@ import {DevicesHT} from '../device/DevicesHT.js';
 import {DeviceHWS} from '../device/DeviceHWS.js';
 import {LogsState} from '../logs/LogsState.js';
 import {Energy} from '../logs/Energy.js';
+import {Configs} from '../config/Configs.js';
 
 export class App extends React.Component
 {
@@ -91,6 +92,8 @@ export class App extends React.Component
 			return (<LogsState />);
 		else if(path=='energy')
 			return (<Energy />);
+		else if(path=='config')
+			return (<Configs />);
 	}
 
 	render() {
@@ -103,6 +106,7 @@ export class App extends React.Component
 					<i className="fa fa-regular fa-droplet" onClick={() => this.changeURL('?loc=devicehws')} />
 					<i className="fa fa-bolt-lightning" onClick={() => this.changeURL('?loc=energy')} />
 					<i className="fa fa-regular fa-file-lines" onClick={() => this.changeURL('?loc=logs')} />
+					<i className="fa fa-regular fa-cogs" onClick={() => this.changeURL('?loc=config')} />
 				</div>
 				<div>
 					{this.renderScreen()}
