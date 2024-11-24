@@ -5,7 +5,7 @@ export class KW extends React.Component
 	}
 
 	formatPower(f) {
-		if(f===undefined || f==='')
+		if(f===undefined || f==='' || isNaN(f))
 			return '';
 
 		f = parseFloat(f);

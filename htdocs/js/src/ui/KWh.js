@@ -5,7 +5,7 @@ export class KWh extends React.Component
 	}
 
 	formatEnergy(f) {
-		if(f===undefined || f==='')
+		if(f===undefined || f==='' || isNaN(f))
 			return '';
 
 		f = parseFloat(f);

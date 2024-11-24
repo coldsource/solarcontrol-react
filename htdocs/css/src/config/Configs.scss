@@ -1,22 +1,2 @@
 div.sc-configs {
-	ul {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
-		padding: 0;
-
-		li {
-			list-style-type: none;
-			margin: 0;
-			font-weight: bold;
-			font-size: 1.5rem;
-			text-align: center;
-			border-radius: 5px;
-			padding: 0.5rem;
-			cursor: pointer;
-
-			&.selected {
-				background-color: $color-selected;
-			}
-		}
-	}
 }

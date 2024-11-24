@@ -27,3 +27,23 @@ div.sc-logsenergy {
 		}
 	}
 }
+
+div.sc-logsenergydetail {
+	.date {
+		font-weight: bold;
+		font-style: italic;
+		border-bottom: 1px solid grey;
+		margin-bottom: 0.5rem;
+	}
+
+	table {
+		width: 100%;
+		margin: 0 0 1rem 0;
+
+		td:nth-of-type(2), td:nth-of-type(3) {
+			text-align: center;
+			font-weight: bold;
+			width: 5rem;
+		}
+	}
+}

@@ -25,7 +25,7 @@ export class Configs extends React.Component
 	render() {
 		return (
 			<div className="sc-configs">
-				<ul>{this.renderModules()}</ul>
+				<ul className="sc-tabs">{this.renderModules()}</ul>
 				<Config key={this.state.module} module={this.state.module} />
 			</div>
 		);
