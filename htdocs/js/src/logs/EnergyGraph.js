@@ -50,7 +50,7 @@ export class EnergyGraph extends React.Component
 					for(const device_id in y_devices)
 					{
 						let v = 0;
-						if(device_id==0 && entries[0].hws!==undefined)
+						if(device_id==0 && entries[0]!==undefined && entries[0].hws!==undefined)
 							v = entries[0].hws;
 						if(device_id>0 && entries[device_id]!==undefined)
 							v = entries[device_id].device;
@@ -84,8 +84,13 @@ export class EnergyGraph extends React.Component
 					x_full.push(d);
 
 					let global = entries[0];
-					let grid = global.grid;
-					let pv = global.pv - global['grid-excess'];
+					let grid = 0;
+					let pv = 0;
+					if(global!==undefined)
+					{
+						grid = global.grid;
+						pv = global.pv - global['grid-excess'];
+					}
 
 					y_grid.push(grid);
 					y_pv.push(pv);
@@ -120,8 +125,17 @@ export class EnergyGraph extends React.Component
 				options : {
 					title : {
 						display : false,
+					},
+					plugins: {
+						tooltip: {
+							callbacks: {
+								label: (point) => {
+									return point.raw.toFixed(0) + unit;
+								},
+							}
+						}
 					}
-				}
+				},
 			};
 
 			new Chart(this.ref.current, data);
