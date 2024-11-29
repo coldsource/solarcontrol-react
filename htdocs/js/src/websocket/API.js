@@ -12,12 +12,9 @@ export class API
 
 	async connect()
 	{
-		const response = await fetch('/conf/global.json');
-		const config = await response.json();
-
 		var self = this;
 
-		self.ws = new WebSocket(config.websocket, "api");
+		self.ws = new WebSocket('//' + window.location.hostname + ':7000', "api");
 
 		// Event on connection
 		self.ws.onopen = function (event) {

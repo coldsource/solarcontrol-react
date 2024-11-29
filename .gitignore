@@ -3,4 +3,3 @@ htdocs/js/pack
 node_modules
 package-lock.json
 mep.sh
-htdocs/conf

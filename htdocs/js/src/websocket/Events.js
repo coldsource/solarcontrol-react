@@ -7,12 +7,9 @@ export class Events
 
 	async connect()
 	{
-		const response = await fetch('/conf/global.json');
-		const config = await response.json();
-
 		var self = this;
 
-		self.ws = new WebSocket(config.websocket, this.protocol);
+		self.ws = new WebSocket('//' + window.location.hostname + ':7000', this.protocol);
 
 		// Event on connection
 		self.ws.onopen = function (event) {
