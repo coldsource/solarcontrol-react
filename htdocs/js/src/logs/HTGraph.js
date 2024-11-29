@@ -1,6 +1,6 @@
 import {API} from '../websocket/API.js';
 
-export class HT extends React.Component
+export class HTGraph extends React.Component
 {
 	constructor(props) {
 		super(props);

@@ -1,7 +1,7 @@
 import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {API} from '../websocket/API.js';
 import {DeviceHT} from './DeviceHT.js';
-import {HT as LogsHT} from '../logs/HT.js';
+import {HTGraph} from '../logs/HTGraph.js';
 import {Modal} from '../ui/Modal.js';
 
 export class DevicesHT extends React.Component
@@ -46,7 +46,7 @@ export class DevicesHT extends React.Component
 
 		return (
 			<Modal title={this.renderModalTitle()} onClose={ () => this.setState({graph_type: false, graph_id: false}) }>
-				<LogsHT key={this.state.graph_id + this.state.graph_type} type={this.state.graph_type} id={this.state.graph_id} />
+				<HTGraph key={this.state.graph_id + this.state.graph_type} type={this.state.graph_type} id={this.state.graph_id} />
 			</Modal>
 		);
 	}
