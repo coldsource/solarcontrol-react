@@ -1,6 +1,8 @@
 import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {API} from '../websocket/API.js';
 import {DeviceHT} from './DeviceHT.js';
+import {HT as LogsHT} from '../logs/HT.js';
+import {Modal} from '../ui/Modal.js';
 
 export class DevicesHT extends React.Component
 {
@@ -10,6 +12,8 @@ export class DevicesHT extends React.Component
 		this.state = {
 			devices: [],
 			editing: false,
+			graph_type: false,
+			graph_id: false,
 		};
 
 		this.close = this.close.bind(this);
@@ -36,6 +40,28 @@ export class DevicesHT extends React.Component
 		this.setState({editing: id});
 	}
 
+	renderGraph() {
+		if(this.state.graph_type===false || this.state.graph_id===false)
+			return;
+
+		return (
+			<Modal title={this.renderModalTitle()} onClose={ () => this.setState({graph_type: false, graph_id: false}) }>
+				<LogsHT key={this.state.graph_id + this.state.graph_type} type={this.state.graph_type} id={this.state.graph_id} />
+			</Modal>
+		);
+	}
+
+	renderModalTitle() {
+		return (
+			<React.Fragment>
+				<i className="fa fa-temperature-half" onClick={ () => this.setState({graph_type: 't'}) }/>
+				&#160;
+				&#160;
+				<i className="fa fa-regular fa-droplet-percent" onClick={ () => this.setState({graph_type: 'h'}) } />
+			</React.Fragment>
+		);
+	}
+
 	renderDevices() {
 		return this.state.devices.map(device => {
 			return (
@@ -54,6 +80,7 @@ export class DevicesHT extends React.Component
 						</div>
 					</div>
 					<div>
+						<i className="fa fa-chart-line" onClick={ () => this.setState({graph_type: 't', graph_id: device.device_id}) } />
 					</div>
 				</div>
 			);
@@ -66,6 +93,7 @@ export class DevicesHT extends React.Component
 
 		return (
 			<div className="sc-devices">
+				{this.renderGraph()}
 				<div className="actions">
 					<i className="fa fa-plus" onClick={ () => this.edit(0) } />
 				</div>

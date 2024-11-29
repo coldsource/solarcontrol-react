@@ -1,0 +1,21 @@
+div.sc-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: white;
+	z-index: 100;
+
+	.title {
+		position: relative;
+		text-align: center;
+		padding: 0.3rem;
+		font-size: 1.5rem;
+
+		.close {
+			position: absolute;
+			right: 0.3rem;
+		}
+	}
+}
