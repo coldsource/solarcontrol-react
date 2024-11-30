@@ -43,9 +43,12 @@ export class EnergyDetail extends React.Component
 					if(summary[device_id]===undefined)
 						summary[device_id] = {grid: 0, hws: 0, pv: 0};
 
-					summary[device_id].grid += data.grid;
-					summary[device_id].hws += data.hws;
-					summary[device_id].pv += data.pv;
+					if(data.grid!==undefined)
+						summary[device_id].grid += data.grid;
+					if(data.hws!==undefined)
+						summary[device_id].hws += data.hws;
+					if(data.pv!==undefined)
+						summary[device_id].pv += data.pv;
 				}
 				else
 				{
