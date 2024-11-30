@@ -1,11 +1,13 @@
+import {SelectInteger} from './SelectInteger.js';
+
 export class ConfigDeviceControl extends React.Component
 {
 	constructor(props) {
 		super(props);
 
 		this.types = {
-			'plug': 'fa-plug',
-			'pro': 'fa-meter'
+			'plug': {icon: 'fa-plug', name: 'Plug S'},
+			'pro': {icon: 'fa-meter', name: 'Pro'}
 		};
 
 		this.change = this.change.bind(this);
@@ -39,13 +41,14 @@ export class ConfigDeviceControl extends React.Component
 
 	renderTiles() {
 		return Object.keys(this.types).map(type => {
-			let icon = this.types[type];
+			let icon = this.types[type].icon;
+			let name = this.types[type].name;
 			return (
 				<i
 					key={type}
 					className={"fa " + icon + ((this.props.value.type==type)?' selected':'')}
 					onClick={() => this.change({target: {name: "type", value: type}})}
-				></i>
+				><span>{name}</span></i>
 			);
 		});
 	}
@@ -58,7 +61,7 @@ export class ConfigDeviceControl extends React.Component
 		return (
 			<React.Fragment>
 				<dt>Outlet number</dt>
-				<dd><input type="number" name="outlet" value={value.outlet} onChange={this.change} /></dd>
+				<dd><SelectInteger min={1} max={3} sum={-1} name="outlet" value={value.outlet} onChange={this.change} /></dd>
 			</React.Fragment>
 		);
 	}

@@ -1,0 +1,10 @@
+@mixin tile {
+	text-align: center;
+	list-style-type: none;
+	border-radius: 10px;
+	padding: 0.5rem;
+
+	&.selected {
+		background-color: $color-selected;
+	}
+}

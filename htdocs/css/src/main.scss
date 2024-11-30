@@ -1,6 +1,11 @@
 @import 'global/variables';
 @import 'global/common';
 
+@import 'layout/form';
+@import 'layout/evenodd';
+@import 'layout/tabs';
+@import 'layout/tile';
+
 @import 'app/App';
 
 @import 'device/Devices';
@@ -20,12 +25,9 @@
 @import 'ui/TimeRange';
 @import 'ui/SelectDeviceType';
 @import 'ui/SelectHTDevice';
+@import 'ui/SelectInteger';
 @import 'ui/SliderDuration';
 @import 'ui/ConfigControlType';
 @import 'ui/Modal';
-
-@import 'layout/form';
-@import 'layout/evenodd';
-@import 'layout/tabs';
 
 @import '../vendor/font-awesome-all';

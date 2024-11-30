@@ -1,0 +1,12 @@
+ul.sc-select-integer {
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax(2rem, 1fr) );
+	padding: 0px;
+	margin: 0px;
+
+	li {
+		@include tile;
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+}
