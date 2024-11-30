@@ -2,5 +2,15 @@
 	.header {
 		width: 100%;
 		font-size: 1.5rem;
+
+		i {
+			font-size: 2.2rem;
+		}
+	}
+
+	.sc-device {
+		.title-bar {
+			display: none;
+		}
 	}
 }

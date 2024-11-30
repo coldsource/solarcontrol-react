@@ -36,9 +36,9 @@ export class DeviceHWS extends React.Component
 		const device = this.state.devicehws;
 
 		if(device.manual)
-			return (<span onClick={() => this.setManualState("auto")}>Manual</span>);
+			return (<i className="fa fa-hand" onClick={() => this.setManualState("auto")}></i>);
 
-		return (<span>Auto</span>);
+		return (<i className="fa fa-regular fa-sun-bright"></i>);
 	}
 
 	renderState() {
@@ -68,7 +68,6 @@ export class DeviceHWS extends React.Component
 						</tr>
 					</tbody>
 				</table>
-				<br />
 				<DeviceOnOff id={this.state.devicehws.device_id} />
 			</div>
 		);
