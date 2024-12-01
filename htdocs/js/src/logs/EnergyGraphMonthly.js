@@ -20,28 +20,47 @@ export class EnergyGraphMonthly extends React.Component
 		API.instance.command('logs', 'energy').then(energy => {
 			this.setState({energy: energy});
 
-			let unit = 'kWh';
+			let units = {0: '%', 1: 'kWh', 2: 'kWh'};
 
 			let datasets = [];
 			let x = [];
 			let y_grid = [];
 			let y_pv = [];
+			let y_percent = [];
 			for(const [date, entry] of Object.entries(energy))
 			{
 				x.push(date);
+				let grid = (entry.grid_consumption)/1000;
+				let pv = (entry.pv_production - entry.grid_excess)/1000;
 
-				y_grid.push((entry.grid_consumption)/1000);
-				y_pv.push((entry.pv_production - entry.grid_excess)/1000);
+				if(isNaN(grid))
+					grid = 0;
+				if(isNaN(pv))
+					pv = 0;
+
+				let percent = pv / (grid + pv) * 100;
+
+				y_grid.push(grid);
+				y_pv.push(pv);
+				y_percent.push(percent);
 			}
 
 			datasets = [
+				{
+					type : 'line',
+					data : y_percent,
+					label : "Ratio",
+					backgroundColor: '#505050',
+					yAxisID: 'percent',
+					showLine: false,
+				},
 				{
 					type : 'bar',
 					data : y_grid,
 					label : "Grid",
 					backgroundColor: '#eb4034',
 					stack: 'global',
-					events: [],
+					yAxisID: 'kwh',
 				},
 				{
 					type : 'bar',
@@ -49,6 +68,7 @@ export class EnergyGraphMonthly extends React.Component
 					label : "PV",
 					backgroundColor: '#81de78',
 					stack: 'global',
+					yAxisID: 'kwh',
 				},
 			];
 
@@ -61,11 +81,29 @@ export class EnergyGraphMonthly extends React.Component
 					title : {
 						display : false,
 					},
+					interaction: {
+						mode: 'index'
+					},
+					scales: {
+						kwh: {
+							type: 'linear',
+							position: 'left'
+						},
+						percent: {
+							type: 'linear',
+							position: 'right',
+							min: 0,
+							max: 100,
+							 grid: {
+								display:false
+							}
+						}
+					},
 					plugins: {
 						tooltip: {
 							callbacks: {
 								label: (point) => {
-									return point.raw.toFixed(0) + unit;
+									return point.raw.toFixed(0) + units[point.datasetIndex];
 								},
 							}
 						}
