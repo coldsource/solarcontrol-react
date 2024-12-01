@@ -13,6 +13,7 @@ export class Energy extends React.Component
 		this.state = {
 			day: false,
 			graph_type: false,
+			mbefore: -1,
 		};
 	}
 
@@ -24,7 +25,7 @@ export class Energy extends React.Component
 		{
 			return (
 				<Modal onClose={ () => this.setState({graph_type: false}) } title="Monthly summary">
-					<EnergyGraphMonthly key={this.state.graph_type} />
+					<EnergyGraphMonthly key={this.state.graph_type + "-" + this.state.mbefore} mbefore={this.state.mbefore} />
 				</Modal>
 			);
 		}
@@ -38,7 +39,7 @@ export class Energy extends React.Component
 
 	renderTab() {
 		if(this.state.day===false)
-			return (<EnergyGlobal onClickDay={day => this.setState({day: day})}/>);
+			return (<EnergyGlobal key={this.state.mbefore} mbefore={this.state.mbefore} onClickDay={day => this.setState({day: day})}/>);
 		else
 			return (<EnergyDetail day={this.state.day} />);
 	}
@@ -60,6 +61,14 @@ export class Energy extends React.Component
 			return (
 				<div>
 					<span>
+						<i className="fa fa-arrow-left" onClick={ () => this.setState({mbefore: this.state.mbefore + 1}) } />
+					</span>
+					{this.state.mbefore>=0?(
+						<span>
+							<i className="fa fa-arrow-right" onClick={ () => this.setState({mbefore: this.state.mbefore - 1}) } />
+						</span>
+					): null}
+					<span>
 						<i className="fa fa-chart-line" onClick={ () => this.setState({graph_type: 'monthly'}) } />
 					</span>
 				</div>
@@ -71,7 +80,6 @@ export class Energy extends React.Component
 				<span>
 					<i className="fa fa-magnifying-glass" onClick={ () => this.setState({graph_type: 'detail'}) } />
 				</span>
-				&#160;&#160;
 				<span>
 					<i className="fa fa-chart-line" onClick={ () => this.setState({graph_type: 'global'}) } />
 				</span>

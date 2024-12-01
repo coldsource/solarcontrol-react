@@ -19,7 +19,7 @@ export class EnergyGlobal extends React.Component
 	}
 
 	reload() {
-		API.instance.command('logs', 'energy').then(energy => {
+		API.instance.command('logs', 'energy', {mbefore: this.props.mbefore}).then(energy => {
 			this.setState({energy: energy});
 		});
 	}

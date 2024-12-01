@@ -17,7 +17,7 @@ export class EnergyGraphMonthly extends React.Component
 	}
 
 	reload() {
-		API.instance.command('logs', 'energy').then(energy => {
+		API.instance.command('logs', 'energy', {mbefore: this.props.mbefore}).then(energy => {
 			this.setState({energy: energy});
 
 			let units = {0: '%', 1: 'kWh', 2: 'kWh'};
