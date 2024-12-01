@@ -1,6 +1,6 @@
 import {API} from '../websocket/API.js';
 
-export class EnergyGraph extends React.Component
+export class EnergyGraphDaily extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -17,7 +17,7 @@ export class EnergyGraph extends React.Component
 	}
 
 	reload() {
-		API.instance.command('logs', 'energydetail').then(energy => {
+		API.instance.command('logs', 'energydetail', {day: this.props.day}).then(energy => {
 			this.setState({energy: energy});
 
 			let type = this.props.type;
@@ -25,7 +25,6 @@ export class EnergyGraph extends React.Component
 
 			let datasets = [];
 			let x = [];
-			let x_full = [];
 
 			if(type=='detail')
 			{
@@ -40,12 +39,10 @@ export class EnergyGraph extends React.Component
 				for(const device_id in devices)
 					y_devices[device_id] = [];
 
-				let n = 0;
 				for(const [date, entries] of Object.entries(energy))
 				{
 					let d = date.substr(11, 5);
-					x.push((n%4==0)?d:'');
-					x_full.push(d);
+					x.push(d);
 
 					for(const device_id in y_devices)
 					{
@@ -57,8 +54,6 @@ export class EnergyGraph extends React.Component
 
 						y_devices[device_id].push(v);
 					}
-
-					n++;
 				}
 
 				for(const [device_id, device_name] of Object.entries(devices))
@@ -76,12 +71,10 @@ export class EnergyGraph extends React.Component
 			{
 				let y_grid = [];
 				let y_pv = [];
-				let n = 0;
 				for(const [date, entries] of Object.entries(energy))
 				{
 					let d = date.substr(11, 5);
-					x.push((n%4==0)?d:'');
-					x_full.push(d);
+					x.push(d);
 
 					let global = entries[0];
 					let grid = 0;
@@ -94,8 +87,6 @@ export class EnergyGraph extends React.Component
 
 					y_grid.push(grid);
 					y_pv.push(pv);
-
-					n++;
 				}
 
 				datasets = [

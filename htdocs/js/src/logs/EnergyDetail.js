@@ -19,7 +19,7 @@ export class EnergyDetail extends React.Component
 	}
 
 	reload() {
-		API.instance.command('logs', 'energydetail').then(energy => {
+		API.instance.command('logs', 'energydetail', {day: this.props.day}).then(energy => {
 			this.setState({energy: energy});
 		});
 	}
@@ -33,8 +33,6 @@ export class EnergyDetail extends React.Component
 		for(const [date, devices] of Object.entries(this.state.energy))
 		{
 			let d = new Date(date);
-			if(d.getTime()<today.getTime())
-				continue;
 
 			for(const [device_id, data] of Object.entries(devices))
 			{
@@ -62,7 +60,7 @@ export class EnergyDetail extends React.Component
 
 		return (
 			<div>
-				<div className="date">Today</div>
+				<div className="date"><DateOnly value={this.props.day} /> summary</div>
 				<table>
 					<tbody>
 						{this.renderDevices(summary, true)}

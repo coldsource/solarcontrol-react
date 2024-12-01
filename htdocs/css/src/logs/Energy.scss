@@ -1,13 +1,19 @@
 div.sc-energy {
 	div.header {
 		display: grid;
-		grid-template-columns: 1fr 2rem;
+		grid-template-columns: 1fr 1fr;
 		gap: 0.5rem;
 		align-items: center;
+		margin-bottom: 0.5rem;
+
+		div:first-of-type {
+			font-size: 2rem;
+			text-align: left;
+		}
 
 		div:last-of-type {
 			font-size: 2rem;
-			text-align: center;
+			text-align: right;
 		}
 	}
 }

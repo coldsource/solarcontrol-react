@@ -1,7 +1,9 @@
 import {EnergyGlobal} from './EnergyGlobal.js';
 import {EnergyDetail} from './EnergyDetail.js';
-import {EnergyGraph} from './EnergyGraph.js';
+import {EnergyGraphDaily} from './EnergyGraphDaily.js';
+import {EnergyGraphMonthly} from './EnergyGraphMonthly.js';
 import {Modal} from '../ui/Modal.js';
+import {DateOnly} from '../ui/DateOnly.js';
 
 export class Energy extends React.Component
 {
@@ -9,39 +11,72 @@ export class Energy extends React.Component
 		super(props);
 
 		this.state = {
-			tab: 'global',
+			day: false,
 			graph_type: false,
 		};
-
-		this.tabs = [
-			{name: 'Global', value: 'global'},
-			{name: 'Daily', value: 'detail'},
-		];
 	}
 
 	renderGraph() {
 		if(this.state.graph_type===false)
 			return;
 
+		if(this.state.graph_type=='monthly')
+		{
+			return (
+				<Modal onClose={ () => this.setState({graph_type: false}) } title="Monthly summary">
+					<EnergyGraphMonthly key={this.state.graph_type} />
+				</Modal>
+			);
+		}
+
 		return (
-			<Modal onClose={ () => this.setState({graph_type: false}) }>
-				<EnergyGraph key={this.state.graph_type} type={this.state.graph_type} />
+			<Modal onClose={ () => this.setState({graph_type: false}) } title={(<DateOnly value={this.state.day} />)}>
+				<EnergyGraphDaily key={this.state.graph_type} day={this.state.day} type={this.state.graph_type} />
 			</Modal>
 		);
 	}
 
 	renderTab() {
-		if(this.state.tab=='global')
-			return (<EnergyGlobal />);
-		else if(this.state.tab=='detail')
-			return (<EnergyDetail />);
+		if(this.state.day===false)
+			return (<EnergyGlobal onClickDay={day => this.setState({day: day})}/>);
+		else
+			return (<EnergyDetail day={this.state.day} />);
 	}
 
-	renderTabs() {
-		return this.tabs.map(tab => {
-			let cl = this.state.tab==tab.value?"selected":"";
-			return (<li className={cl} key={tab.value} onClick={() => this.setState({tab: tab.value})}>{tab.name}</li>);
-		});
+	renderBackBtn() {
+		if(this.state.day===false)
+			return (<div></div>);
+
+		return (
+			<div>
+				<i className="fa fa-arrow-left" onClick={ () => this.setState({day: false}) } />
+			</div>
+		);
+	}
+
+	renderGraphBtn() {
+		if(this.state.day===false)
+		{
+			return (
+				<div>
+					<span>
+						<i className="fa fa-chart-line" onClick={ () => this.setState({graph_type: 'monthly'}) } />
+					</span>
+				</div>
+			);
+		}
+
+		return (
+			<div>
+				<span>
+					<i className="fa fa-magnifying-glass" onClick={ () => this.setState({graph_type: 'detail'}) } />
+				</span>
+				&#160;&#160;
+				<span>
+					<i className="fa fa-chart-line" onClick={ () => this.setState({graph_type: 'global'}) } />
+				</span>
+			</div>
+		);
 	}
 
 	render() {
@@ -49,10 +84,8 @@ export class Energy extends React.Component
 			<div className="sc-energy">
 				{this.renderGraph()}
 				<div className="header">
-					<ul className="sc-tabs">{this.renderTabs()}</ul>
-					<div>
-						<i className="fa fa-chart-line" onClick={ () => this.setState({graph_type: this.state.tab}) } />
-					</div>
+					{this.renderBackBtn()}
+					{this.renderGraphBtn()}
 				</div>
 				{this.renderTab()}
 			</div>

@@ -31,9 +31,9 @@ export class EnergyGlobal extends React.Component
 				const data = this.state.energy[date];
 				return (
 					<tr key={date}>
-						<td><DateOnly value={date} /></td>
+						<td onClick={() => this.props.onClickDay(date)}><DateOnly value={date} /></td>
 						<td><KWh value={data.grid_consumption} /></td>
-						<td><KWh value={data.pv_production} /></td>
+						<td><KWh value={data.pv_production - data.grid_excess} /></td>
 						<td><Percent v1={data.pv_production - data.grid_excess} v2={data.grid_consumption} /></td>
 						<td><KWh value={data.hws_consumption} /></td>
 					</tr>
