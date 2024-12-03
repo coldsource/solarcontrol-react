@@ -47,14 +47,6 @@ export class EnergyGraphMonthly extends React.Component
 
 			datasets = [
 				{
-					type : 'line',
-					data : y_percent,
-					label : "Ratio",
-					backgroundColor: '#505050',
-					yAxisID: 'percent',
-					showLine: false,
-				},
-				{
 					type : 'bar',
 					data : y_grid,
 					label : "Grid",
@@ -69,6 +61,14 @@ export class EnergyGraphMonthly extends React.Component
 					backgroundColor: '#81de78',
 					stack: 'global',
 					yAxisID: 'kwh',
+				},
+				{
+					type : 'line',
+					data : y_percent,
+					label : "Ratio",
+					backgroundColor: '#505050',
+					yAxisID: 'percent',
+					showLine: false,
 				},
 			];
 
@@ -87,15 +87,25 @@ export class EnergyGraphMonthly extends React.Component
 					scales: {
 						kwh: {
 							type: 'linear',
-							position: 'left'
+							position: 'left',
+							ticks: {
+								callback: function(value, index, ticks) {
+									return value + 'kWh';
+								}
+							}
 						},
 						percent: {
 							type: 'linear',
 							position: 'right',
 							min: 0,
 							max: 100,
-							 grid: {
+							grid: {
 								display:false
+							},
+							 ticks: {
+								callback: function(value, index, ticks) {
+									return value + '%';
+								}
 							}
 						}
 					},

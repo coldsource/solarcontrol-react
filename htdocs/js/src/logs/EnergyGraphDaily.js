@@ -97,6 +97,7 @@ export class EnergyGraphDaily extends React.Component
 						backgroundColor: '#eb4034',
 						stack: 'global',
 						events: [],
+						yAxisID: 'wh',
 					},
 					{
 						type : 'bar',
@@ -104,6 +105,7 @@ export class EnergyGraphDaily extends React.Component
 						label : "PV",
 						backgroundColor: '#81de78',
 						stack: 'global',
+						yAxisID: 'wh',
 					},
 				];
 			}
@@ -116,6 +118,17 @@ export class EnergyGraphDaily extends React.Component
 				options : {
 					title : {
 						display : false,
+					},
+					scales: {
+						wh: {
+							type: 'linear',
+							position: 'left',
+							ticks: {
+								callback: function(value, index, ticks) {
+									return value + 'Wh';
+								}
+							}
+						}
 					},
 					plugins: {
 						tooltip: {
