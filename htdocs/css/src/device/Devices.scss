@@ -43,4 +43,18 @@ div.sc-devices {
 			}
 		}
 	}
+
+	.httitle {
+		display: inline-block;
+
+		i {
+			padding-left: 0.8rem;
+			padding-right: 0.8rem;
+			vertical-align: middle;
+		}
+
+		input {
+			vertical-align: middle;
+		}
+	}
 }

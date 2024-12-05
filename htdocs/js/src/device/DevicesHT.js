@@ -14,6 +14,7 @@ export class DevicesHT extends React.Component
 			editing: false,
 			graph_type: false,
 			graph_id: false,
+			date: "",
 		};
 
 		this.close = this.close.bind(this);
@@ -46,19 +47,18 @@ export class DevicesHT extends React.Component
 
 		return (
 			<Modal title={this.renderModalTitle()} onClose={ () => this.setState({graph_type: false, graph_id: false}) }>
-				<HTGraph key={this.state.graph_id + this.state.graph_type} type={this.state.graph_type} id={this.state.graph_id} />
+				<HTGraph key={this.state.graph_id + this.state.graph_type + this.state.date} type={this.state.graph_type} id={this.state.graph_id} day={this.state.date} />
 			</Modal>
 		);
 	}
 
 	renderModalTitle() {
 		return (
-			<React.Fragment>
+			<div className="httitle">
 				<i className="fa fa-temperature-half" onClick={ () => this.setState({graph_type: 't'}) }/>
-				&#160;
-				&#160;
 				<i className="fa fa-regular fa-droplet-percent" onClick={ () => this.setState({graph_type: 'h'}) } />
-			</React.Fragment>
+				<input type="date" value={this.state.date} onChange={ ev => this.setState({date: ev.target.value}) } />
+			</div>
 		);
 	}
 

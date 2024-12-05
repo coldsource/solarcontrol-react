@@ -17,7 +17,7 @@ export class HTGraph extends React.Component
 	}
 
 	reload() {
-		API.instance.command('logs', 'ht', {device_id: parseInt(this.props.id)}).then(ht => {
+		API.instance.command('logs', 'ht', {device_id: parseInt(this.props.id), day: this.props.day}).then(ht => {
 			this.setState({ht: ht});
 
 			let type = this.props.type;
