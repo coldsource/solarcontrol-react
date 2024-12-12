@@ -29,12 +29,16 @@ export class EnergyGlobal extends React.Component
 		{
 			return Object.keys(this.state.energy).sort().reverse().map(date => {
 				const data = this.state.energy[date];
+
+				let pv_production = data.pv_production?data.pv_production:0;
+				let grid_excess = data.grid_excess?data.grid_excess:0;
+
 				return (
 					<tr key={date}>
 						<td onClick={() => this.props.onClickDay(date)}><DateOnly value={date} /></td>
 						<td><KWh value={data.grid_consumption} /></td>
-						<td><KWh value={data.pv_production - data.grid_excess} /></td>
-						<td><Percent v1={data.pv_production - data.grid_excess} v2={data.grid_consumption} /></td>
+						<td><KWh value={pv_production - grid_excess} /></td>
+						<td><Percent v1={pv_production - grid_excess} v2={data.grid_consumption} /></td>
 						<td><KWh value={data.hws_consumption} /></td>
 					</tr>
 				);
