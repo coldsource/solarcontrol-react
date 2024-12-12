@@ -91,6 +91,92 @@ export class EnergyGlobal extends React.Component
 		}
 	}
 
+	renderTotal() {
+		if(this.state.mode=='global')
+		{
+			let total = Object.values(this.state.energy).reduce((acc, data) => {
+				let grid_consumption = data.grid_consumption?data.grid_consumption:0;
+				let pv_production = data.pv_production?data.pv_production:0;
+				let grid_excess = data.grid_excess?data.grid_excess:0;
+				let hws_consumption = data.hws_consumption?data.hws_consumption:0;
+				acc.grid += grid_consumption;
+				acc.pv += pv_production - grid_excess;
+				acc.hws += hws_consumption;
+				return acc;
+			}, {grid: 0, pv: 0, hws: 0});
+
+			return (
+				<tr key="total">
+					<td><b>Total</b></td>
+					<td><KWh value={total.grid} /></td>
+					<td><KWh value={total.pv} /></td>
+					<td><Percent v1={total.pv} v2={total.grid} /></td>
+					<td><KWh value={total.hws} /></td>
+				</tr>
+			);
+		}
+
+		if(this.state.mode=='offpeak')
+		{
+			let total = Object.values(this.state.energy).reduce((acc, data) => {
+				let offpeak_consumption = data.offpeak_consumption?data.offpeak_consumption:0;
+				let peak_consumption = data.peak_consumption?data.peak_consumption:0;
+				acc.offpeak += offpeak_consumption;
+				acc.peak += peak_consumption;
+				return acc;
+			}, {offpeak: 0, peak: 0});
+
+			return (
+				<tr key={"total_offpeak"}>
+					<td><b>Total</b></td>
+					<td><KWh value={total.offpeak} /></td>
+					<td><KWh value={total.peak} /></td>
+					<td><Percent v1={total.offpeak} v2={total.peak} /></td>
+				</tr>
+			);
+		}
+
+		if(this.state.mode=='pv')
+		{
+			let total = Object.values(this.state.energy).reduce((acc, data) => {
+				let pv_production = data.pv_production?data.pv_production:0;
+				let grid_excess = data.grid_excess?data.grid_excess:0;
+				acc.pv_production += pv_production;
+				acc.grid_excess += grid_excess;
+				return acc;
+			}, {pv_production: 0, grid_excess: 0});
+
+			return (
+				<tr key={"total_pv"}>
+					<td><b>Total</b></td>
+					<td><KWh value={total.pv_production} /></td>
+					<td><KWh value={total.grid_excess} /></td>
+					<td><Percent v1={total.pv_production} v2={total.grid_excess} /></td>
+				</tr>
+			);
+		}
+
+		if(this.state.mode=='hws')
+		{
+			let total = Object.values(this.state.energy).reduce((acc, data) => {
+				let hws_offload_consumption = data.hws_offload_consumption?data.hws_offload_consumption:0;
+				let hws_forced_consumption = data.hws_forced_consumption?data.hws_forced_consumption:0;
+				acc.hws_offload_consumption += hws_offload_consumption;
+				acc.hws_forced_consumption += hws_forced_consumption;
+				return acc;
+			}, {hws_offload_consumption: 0, hws_forced_consumption: 0});
+
+			return (
+				<tr key={"total_hws"}>
+					<td><b>Total</b></td>
+					<td><KWh value={total.hws_offload_consumption} /></td>
+					<td><KWh value={total.hws_forced_consumption} /></td>
+					<td><Percent v1={total.hws_offload_consumption} v2={total.hws_forced_consumption} /></td>
+				</tr>
+			);
+		}
+	}
+
 	renderHeader() {
 		if(this.state.mode=='global')
 		{
@@ -169,6 +255,7 @@ export class EnergyGlobal extends React.Component
 					{this.renderHeader()}
 					<tbody>
 						{this.renderHistory()}
+						{this.renderTotal()}
 					</tbody>
 				</table>
 			</div>
