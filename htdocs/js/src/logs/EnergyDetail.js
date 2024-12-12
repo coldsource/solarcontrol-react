@@ -11,6 +11,7 @@ export class EnergyDetail extends React.Component
 
 		this.state = {
 			energy: {},
+			filter: false,
 		};
 	}
 
@@ -64,22 +65,31 @@ export class EnergyDetail extends React.Component
 			let d = new Date(date);
 			let ratio_pv = 0;
 
-			if(devices[0]!==undefined)
-			{
-				let data = devices[0];
-				let grid = data.grid!==undefined?data.grid:0;
-				let pv = data.pv!==undefined?data.pv:0;
-				let grid_excess = data['grid-excess']!==undefined?data['grid-excess']:0;
-				let hws = data.hws!==undefined?data.hws:0;
-				let hws_offload = data['hws-offload']!==undefined?data['hws-offload']:0;
-				let hws_forced = data['hws-forced']!==undefined?data['hws-forced']:0;
+			if(devices[0]===undefined)
+				continue;
 
-				summary[0].grid += grid;
-				summary[0].pv += pv - grid_excess;
-				summary[0].hws += hws;
-				summary[0]['hws-forced'] += hws_forced;
-				summary[0]['hws-offload'] += hws_offload;
+			if(this.state.filter!==false)
+			{
+				if(this.state.filter=='day' && !devices[0].pv)
+					continue;
+
+				if(this.state.filter=='night' && devices[0].pv>0)
+					continue;
 			}
+
+			let data = devices[0];
+			let grid = data.grid!==undefined?data.grid:0;
+			let pv = data.pv!==undefined?data.pv:0;
+			let grid_excess = data['grid-excess']!==undefined?data['grid-excess']:0;
+			let hws = data.hws!==undefined?data.hws:0;
+			let hws_offload = data['hws-offload']!==undefined?data['hws-offload']:0;
+			let hws_forced = data['hws-forced']!==undefined?data['hws-forced']:0;
+
+			summary[0].grid += grid;
+			summary[0].pv += pv - grid_excess;
+			summary[0].hws += hws;
+			summary[0]['hws-forced'] += hws_forced;
+			summary[0]['hws-offload'] += hws_offload;
 
 			for(const [device_id, data] of Object.entries(devices))
 			{
@@ -97,7 +107,14 @@ export class EnergyDetail extends React.Component
 
 		return (
 			<div>
-				<div className="date"><DateOnly value={this.props.day} /> summary</div>
+				<div className="date"><DateOnly value={this.props.day} /> summary
+					&#160;
+					<i className={"fa fa-regular fa-globe" + (this.state.filter===false?' on':'')} onClick={ () => this.setState({filter: false}) } />
+					&#160;&#160;
+					<i className={"fa fa-regular fa-sun-bright" + (this.state.filter==='day'?' on':'')} onClick={ () => this.setState({filter: 'day'}) } />
+					&#160;&#160;&#160;
+					<i className={"fa fa-regular fa-moon" + (this.state.filter==='night'?' on':'')} onClick={ () => this.setState({filter: 'night'}) } />
+				</div>
 				<table>
 					<tbody>
 						{this.renderDevices(summary, true)}
@@ -111,6 +128,19 @@ export class EnergyDetail extends React.Component
 	renderDays() {
 		return Object.keys(this.state.energy).sort().reverse().map(date => {
 			const devices = this.state.energy[date];
+
+			if(devices[0]===undefined)
+				return;
+
+			if(this.state.filter!==false)
+			{
+				if(this.state.filter=='day' && !devices[0].pv)
+					return;
+
+				if(this.state.filter=='night' && devices[0].pv>0)
+					return;
+			}
+
 			return (
 				<div key={date}>
 					<div className="date">{date.substr(0, 16)}</div>
@@ -139,7 +169,7 @@ export class EnergyDetail extends React.Component
 
 		let global_prct = 0;
 		global_prct = (energy_grid + energy_pv) / (grid + pv);
-		let global_prct_pv = energy_pv / (energy_pv + energy_grid) * 100;
+		let global_prct_pv = (energy_pv + energy_grid > 0)?energy_pv / (energy_pv + energy_grid) * 100:0;
 		let global_prct_grid = 100 - global_prct_pv;
 		let mark1 = global_prct_pv * global_prct;
 		let mark2 = mark1 + (global_prct_grid * global_prct);
