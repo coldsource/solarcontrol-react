@@ -63,6 +63,7 @@ div.sc-logsenergydetail {
 	table {
 		width: 100%;
 		margin: 0 0 1rem 0;
+		border-collapse: collapse;
 
 		td:nth-of-type(2), td:nth-of-type(3) {
 			text-align: center;
