@@ -1,8 +1,10 @@
 import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {API} from '../websocket/API.js';
+import {SelectDeviceTypeHT} from '../ui/SelectDeviceTypeHT.js';
 import {DeviceHT} from './DeviceHT.js';
 import {HTGraph} from '../logs/HTGraph.js';
 import {Modal} from '../ui/Modal.js';
+import {Subscreen} from '../ui/Subscreen.js';
 
 export class DevicesHT extends React.Component
 {
@@ -12,6 +14,8 @@ export class DevicesHT extends React.Component
 		this.state = {
 			devices: [],
 			editing: false,
+			creating: false,
+			device_type: "",
 			graph_type: false,
 			graph_id: false,
 			date: "",
@@ -34,7 +38,7 @@ export class DevicesHT extends React.Component
 	}
 
 	close() {
-		this.setState({editing: false});
+		this.setState({editing: false, creating: false});
 	}
 
 	edit(id) {
@@ -87,15 +91,26 @@ export class DevicesHT extends React.Component
 		});
 	}
 
+	renderDeviceType() {
+		return (
+			<Subscreen title="New device type" onClose={() => this.setState({creating: false})}>
+				<SelectDeviceTypeHT name="editing_type" value="" onChange={ ev => this.setState({creating: false, editing: 0, device_type: ev.target.value}) } />
+			</Subscreen>
+		);
+	}
+
 	render() {
 		if(this.state.editing!==false)
-			return (<DeviceHT id={this.state.editing} onClose={this.close} />);
+			return (<DeviceHT id={this.state.editing} device_type={this.state.device_type} onClose={this.close} />);
+
+		if(this.state.creating)
+			return this.renderDeviceType();
 
 		return (
 			<div className="sc-devices">
 				{this.renderGraph()}
 				<div className="actions">
-					<i className="fa fa-plus" onClick={ () => this.edit(0) } />
+					<i className="fa fa-plus" onClick={ () => this.setState({creating: true}) }></i>
 				</div>
 				<div className="list">
 					{this.renderDevices()}

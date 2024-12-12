@@ -6,7 +6,8 @@ export class SelectDeviceType extends React.Component
 		this.types = {
 			'timerange': 'fa-plug',
 			'heater': 'fa-temperature-arrow-up',
-			'cmv': 'fa-fan fa-regular'
+			'cmv': 'fa-fan fa-regular',
+			'passive': 'fa-regular fa-gauge-simple-min'
 		};
 	}
 

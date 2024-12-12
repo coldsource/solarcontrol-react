@@ -3,8 +3,9 @@ import {API} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {Loader} from '../ui/Loader.js';
+import {SelectLetter} from '../ui/SelectLetter.js';
 
-export class DeviceHT extends React.Component
+export class DevicePassive extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -26,14 +27,17 @@ export class DeviceHT extends React.Component
 				device_type: this.props.device_type,
 				device_name: 'New device',
 				device_config: {
-					mqtt_id: "",
-					ble_addr: ""
+					control: {
+						type: '3em',
+						mqtt_id: "",
+						phase: "a"
+					}
 				}
 			}});
 		}
 		else
 		{
-			let device = ProtocolDevice.instance.GetHT(this.props.id);
+			let device = ProtocolDevice.instance.GetPassive(this.props.id);
 			this.setState({device: device});
 		}
 	}
@@ -44,14 +48,11 @@ export class DeviceHT extends React.Component
 
 		let params = {
 			device_name: device.device_name,
-			device_config: {}
+			device_config: {control: {type: '3em'}}
 		};
 
-		if(device.device_type=='ht')
-			params.device_config.mqtt_id = config.mqtt_id;
-
-		if(device.device_type=='htmini')
-			params.device_config.ble_addr = config.ble_addr;
+		params.device_config.control.mqtt_id = config.control.mqtt_id;
+		params.device_config.control.phase = config.control.phase;
 
 		let cmd;
 		if(this.props.id!=0)
@@ -65,14 +66,14 @@ export class DeviceHT extends React.Component
 			cmd = 'create';
 		}
 
-		API.instance.command('deviceht', cmd, params).then(res => {
+		API.instance.command('devicepassive', cmd, params).then(res => {
 			App.message("Device saved");
 			this.props.onClose();
 		});
 	}
 
 	deletedevice() {
-		API.instance.command('deviceht', 'delete', {device_id:parseInt(this.state.device.device_id)}).then(res => {
+		API.instance.command('devicepassive', 'delete', {device_id:parseInt(this.state.device.device_id)}).then(res => {
 			App.message("Device removed");
 			this.props.onClose();
 		});
@@ -86,17 +87,17 @@ export class DeviceHT extends React.Component
 
 	changeConfig(ev) {
 		let config = Object.assign({}, this.state.device.device_config);
-		config[ev.target.name] = ev.target.value;
+		config.control[ev.target.name] = ev.target.value;
 
 		let device = Object.assign({}, this.state.device);
 		device.device_config = config;
 		this.setState({device: device});
 	}
 
-	renderHTFields() {
+	render3EMFields() {
 		const device = this.state.device;
 
-		if(device.device_type!='ht')
+		if(device.device_type!='passive')
 			return;
 
 		const config = device.device_config;
@@ -104,23 +105,9 @@ export class DeviceHT extends React.Component
 		return (
 			<React.Fragment>
 				<dt>MQTT ID</dt>
-				<dd><input type="text" name="mqtt_id" value={config.mqtt_id} onChange={this.changeConfig} /></dd>
-			</React.Fragment>
-		);
-	}
-
-	renderHTMiniFields() {
-		const device = this.state.device;
-
-		if(device.device_type!='htmini')
-			return;
-
-		const config = device.device_config;
-
-		return (
-			<React.Fragment>
-				<dt>Bluetooth address</dt>
-				<dd><input type="text" name="ble_addr" value={config.ble_addr} onChange={this.changeConfig} /></dd>
+				<dd><input type="text" name="mqtt_id" value={config.control.mqtt_id} onChange={this.changeConfig} /></dd>
+				<dt>Phase</dt>
+				<dd><SelectLetter from="a" to="c" name="phase" value={config.control.phase} onChange={this.changeConfig} /></dd>
 			</React.Fragment>
 		);
 	}
@@ -155,8 +142,7 @@ export class DeviceHT extends React.Component
 						<dl>
 							<dt>Name</dt>
 							<dd><input type="text" name="device_name" value={device.device_name} onChange={this.changeDevice} /></dd>
-							{this.renderHTFields()}
-							{this.renderHTMiniFields()}
+							{this.render3EMFields()}
 						</dl>
 						<div className="submit" onClick={this.save}>Save</div>
 						{this.renderDelete()}

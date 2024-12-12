@@ -4,7 +4,6 @@ import {API} from '../websocket/API.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {Loader} from '../ui/Loader.js';
 import {TimeRange} from '../ui/TimeRange.js';
-import {SelectDeviceType} from '../ui/SelectDeviceType.js';
 import {SelectHTDevice} from '../ui/SelectHTDevice.js';
 import {SliderDuration} from '../ui/SliderDuration.js';
 import {ConfigDeviceControl} from '../ui/ConfigDeviceControl.js';
@@ -29,7 +28,7 @@ export class DeviceOnOff extends React.Component
 		if(this.props.id==0)
 		{
 			this.setState({device: {
-				device_type: 'timerange',
+				device_type: this.props.device_type,
 				device_name: 'New device',
 				device_config: {
 					control: {type: 'plug', ip: ''},
@@ -206,17 +205,6 @@ export class DeviceOnOff extends React.Component
 				{this.renderTimeRanges(name, time_ranges)}
 				<div className="add-timerange" onClick={ev => this.addTimeRange(name)}>Add time range</div>
 			</div>
-		);
-	}
-
-	renderDeviceType() {
-		if(this.props.id!=0)
-			return;
-
-		const device = this.state.device;
-
-		return (
-			<SelectDeviceType name="device_type" value={device.device_type} onChange={this.changeDevice} />
 		);
 	}
 
@@ -413,7 +401,6 @@ export class DeviceOnOff extends React.Component
 				<Subscreen title={device.device_name} onClose={this.props.onClose}>
 					<div className="layout-form">
 						<dl>
-							{this.renderDeviceType()}
 							{this.renderNamePrio()}
 							<ConfigDeviceControl name="control" value={config.control} onChange={this.changeConfig} />
 							{this.renderHeaterFields()}

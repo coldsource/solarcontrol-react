@@ -7,6 +7,7 @@ export class Device extends Events
 		super("device");
 
 		this.devices_onoff = [];
+		this.devices_passive = [];
 		this.devices_ht = [];
 		this.hws = null;
 
@@ -23,6 +24,7 @@ export class Device extends Events
 	handle_message(devices)
 	{
 		this.devices_onoff = [];
+		this.devices_passive = [];
 		this.devices_ht = [];
 
 		for(const device of devices)
@@ -31,6 +33,8 @@ export class Device extends Events
 				this.devices_onoff.push(device);
 			else if(device.device_type=='hws')
 				this.hws = device;
+			if(['passive'].indexOf(device.device_type)>=0)
+				this.devices_passive.push(device);
 			else if(['ht', 'htmini'].indexOf(device.device_type)>=0)
 				this.devices_ht.push(device);
 		}
@@ -45,6 +49,8 @@ export class Device extends Events
 			let devices;
 			if(sub.type=='onoff')
 				devices = this.devices_onoff;
+			else if(sub.type=='passive')
+				devices = this.devices_passive;
 			else if(sub.type=='ht')
 				devices = this.devices_ht;
 
@@ -75,6 +81,20 @@ export class Device extends Events
 			return this.hws; // Special HWS device is also OnOff device
 
 		for(const device of this.devices_onoff)
+		{
+			if(device.device_id==id)
+				return device;
+		}
+
+		return null;
+	}
+
+	GetPassive(id)
+	{
+		if(id==0)
+			return this.devices_passive;
+
+		for(const device of this.devices_passive)
 		{
 			if(device.device_id==id)
 				return device;
