@@ -63,6 +63,7 @@ export class EnergyGraphDaily extends React.Component
 						data : y_devices[device_id],
 						label : device_name,
 						stack: 'device',
+						yAxisID: 'wh',
 					});
 				}
 			}
