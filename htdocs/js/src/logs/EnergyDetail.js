@@ -211,6 +211,11 @@ export class EnergyDetail extends React.Component
 
 		return (
 			<React.Fragment>
+				<tr style={{background: prct_hws.grad}}>
+					<td>HWS</td>
+					<td>{nopower?(prct_hws.prct + '%'):(<KW value={data.hws * 4} />)}</td>
+					<td><KWh value={data.hws} /></td>
+				</tr>
 				<tr style={{background: prct_grid.grad}}>
 					<td>Grid</td>
 					<td>{nopower?(prct_grid.prct + '%'):(<KW value={data.grid * 4} />)}</td>
@@ -220,11 +225,6 @@ export class EnergyDetail extends React.Component
 					<td>PV</td>
 					<td>{nopower?(prct_pv.prct + '%'):(<KW value={data.pv * 4} />)}</td>
 					<td><KWh value={data.pv} /></td>
-				</tr>
-				<tr style={{background: prct_hws.grad}}>
-					<td>HWS</td>
-					<td>{nopower?(prct_hws.prct + '%'):(<KW value={data.hws * 4} />)}</td>
-					<td><KWh value={data.hws} /></td>
 				</tr>
 			</React.Fragment>
 		);
