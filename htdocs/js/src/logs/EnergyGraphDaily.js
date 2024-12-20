@@ -120,6 +120,8 @@ export class EnergyGraphDaily extends React.Component
 					title : {
 						display : false,
 					},
+					responsive: true,
+					maintainAspectRatio: false,
 					scales: {
 						wh: {
 							type: 'linear',

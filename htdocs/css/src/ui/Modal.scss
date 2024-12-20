@@ -12,10 +12,15 @@ div.sc-modal {
 		text-align: center;
 		padding: 0.3rem;
 		font-size: 1.5rem;
+		height: 1.5rem;
 
 		.close {
 			position: absolute;
 			right: 0.3rem;
 		}
+	}
+
+	.content {
+		height: calc(100% - 1.5rem - 0.6rem);
 	}
 }

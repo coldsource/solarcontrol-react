@@ -11,7 +11,9 @@ export class Modal extends React.Component
 					{this.props.title}
 					<span className="close"><i className="fa fa-close" onClick={this.props.onClose} /></span>
 				</div>
-				{this.props.children}
+				<div className="content">
+					{this.props.children}
+				</div>
 			</div>
 		);
 	}

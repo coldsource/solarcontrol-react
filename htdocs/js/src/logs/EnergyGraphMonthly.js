@@ -81,6 +81,8 @@ export class EnergyGraphMonthly extends React.Component
 					title : {
 						display : false,
 					},
+					responsive: true,
+					maintainAspectRatio: false,
 					interaction: {
 						mode: 'index'
 					},

@@ -87,6 +87,8 @@ export class HTGraph extends React.Component
 					title : {
 						display : false,
 					},
+					responsive: true,
+					maintainAspectRatio: false,
 					scales: {
 						y: {
 							min: Math.floor(axis_min - 1),
