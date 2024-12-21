@@ -4,8 +4,8 @@ export class SelectDeviceTypeHT extends React.Component
 		super(props);
 
 		this.types = {
-			'ht': 'fa-wifi',
-			'htmini': 'fa-bluetooth'
+			'ht': 'scf-wifi',
+			'htmini': 'scf-bluetooth'
 		};
 	}
 
@@ -15,7 +15,7 @@ export class SelectDeviceTypeHT extends React.Component
 			return (
 				<i
 					key={type}
-					className={"fa " + icon + ((this.props.value==type)?' selected':'')}
+					className={"scf " + icon + ((this.props.value==type)?' selected':'')}
 					onClick={() => this.props.onChange({target: {name: this.props.name, value: type}})}
 				></i>
 			);

@@ -100,13 +100,13 @@ export class App extends React.Component
 		return (
 			<div className="sc-app">
 				<div className="menu">
-					<i className="fa fa-regular fa-gauge-simple-min" onClick={() => this.changeURL('?loc=meter')} />
-					<i className="fa fa-plug" onClick={() => this.changeURL('?loc=devicesonoff')} />
-					<i className="fa fa-temperature-half" onClick={() => this.changeURL('?loc=devicesht')} />
-					<i className="fa fa-regular fa-droplet" onClick={() => this.changeURL('?loc=devicehws')} />
-					<i className="fa fa-bolt-lightning" onClick={() => this.changeURL('?loc=energy')} />
-					<i className="fa fa-regular fa-file-lines" onClick={() => this.changeURL('?loc=logs')} />
-					<i className="fa fa-regular fa-cogs" onClick={() => this.changeURL('?loc=config')} />
+					<i className="scf scf-meter" onClick={() => this.changeURL('?loc=meter')} />
+					<i className="scf scf-plug" onClick={() => this.changeURL('?loc=devicesonoff')} />
+					<i className="scf scf-thermometer" onClick={() => this.changeURL('?loc=devicesht')} />
+					<i className="scf scf-droplet" onClick={() => this.changeURL('?loc=devicehws')}></i>
+					<i className="scf scf-electricity" onClick={() => this.changeURL('?loc=energy')} />
+					<i className="scf scf-logs" onClick={() => this.changeURL('?loc=logs')} />
+					<i className="scf scf-cogs" onClick={() => this.changeURL('?loc=config')} />
 				</div>
 				<div>
 					{this.renderScreen()}

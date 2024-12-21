@@ -1,5 +1,6 @@
 @import 'global/variables';
 @import 'global/common';
+@import 'font/scf';
 
 @import 'layout/form';
 @import 'layout/evenodd';
@@ -29,5 +30,3 @@
 @import 'ui/SliderDuration';
 @import 'ui/ConfigControlType';
 @import 'ui/Modal';
-
-@import '../vendor/font-awesome-all';

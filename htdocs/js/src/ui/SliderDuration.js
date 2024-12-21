@@ -197,7 +197,7 @@ export class SliderDuration extends React.Component
 			<div ref={this.ref_container} className="sc-slider-duration">
 				<div className="slider">
 					<div className="track"></div>
-					<i ref={this.ref_cursor} className="fa fa-circle-dot" style={{marginLeft: margin}} />
+					<i ref={this.ref_cursor} className="scf scf-button" style={{marginLeft: margin}} />
 				</div>
 				<div className="label">{this.renderDuration(this.props.value)}</div>
 			</div>

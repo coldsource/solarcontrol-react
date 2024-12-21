@@ -4,10 +4,10 @@ export class SelectDeviceType extends React.Component
 		super(props);
 
 		this.types = {
-			'timerange': 'fa-plug',
-			'heater': 'fa-temperature-arrow-up',
-			'cmv': 'fa-fan fa-regular',
-			'passive': 'fa-regular fa-gauge-simple-min'
+			'timerange': 'scf-plug2',
+			'heater': 'scf-heater',
+			'cmv': 'scf-fan',
+			'passive': 'scf-meter'
 		};
 	}
 
@@ -17,7 +17,7 @@ export class SelectDeviceType extends React.Component
 			return (
 				<i
 					key={type}
-					className={"fa " + icon + ((this.props.value==type)?' selected':'')}
+					className={"scf " + icon + ((this.props.value==type)?' selected':'')}
 					onClick={() => this.props.onChange({target: {name: this.props.name, value: type}})}
 				></i>
 			);

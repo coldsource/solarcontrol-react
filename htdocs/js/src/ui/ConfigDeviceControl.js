@@ -6,8 +6,8 @@ export class ConfigDeviceControl extends React.Component
 		super(props);
 
 		this.types = {
-			'plug': {icon: 'fa-plug', name: 'Plug S'},
-			'pro': {icon: 'fa-meter', name: 'Pro'}
+			'plug': {icon: 'scf-plug', name: 'Plug S'},
+			'pro': {icon: 'scf-plugs', name: 'Pro'}
 		};
 
 		this.change = this.change.bind(this);
@@ -46,7 +46,7 @@ export class ConfigDeviceControl extends React.Component
 			return (
 				<i
 					key={type}
-					className={"fa " + icon + ((this.props.value.type==type)?' selected':'')}
+					className={"scf " + icon + ((this.props.value.type==type)?' selected':'')}
 					onClick={() => this.change({target: {name: "type", value: type}})}
 				><span>{name}</span></i>
 			);

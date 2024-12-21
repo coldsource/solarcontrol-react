@@ -7,7 +7,7 @@ export class Loader extends React.Component
 	render() {
 		return (
 			<div className="sc-loader">
-				<i className="fa fa-loader" />
+				<i className="scf scf-spinner" />
 			</div>
 		);
 	}

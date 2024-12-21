@@ -29,7 +29,7 @@ export class Global extends React.Component
 		if(!this.state.offpeak)
 			return;
 
-		return (<i className="fa-regular fa-leaf" />);
+		return (<i className="scf scf-leaf" />);
 	}
 
 	render() {

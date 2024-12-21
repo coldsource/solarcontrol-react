@@ -59,8 +59,8 @@ export class DevicesHT extends React.Component
 	renderModalTitle() {
 		return (
 			<div className="httitle">
-				<i className="fa fa-temperature-half" onClick={ () => this.setState({graph_type: 't'}) }/>
-				<i className="fa fa-regular fa-droplet-percent" onClick={ () => this.setState({graph_type: 'h'}) } />
+				<i className="scf scf-thermometer" onClick={ () => this.setState({graph_type: 't'}) }/>
+				<i className="scf scf-droplet" onClick={ () => this.setState({graph_type: 'h'}) } />
 				<input type="date" value={this.state.date} onChange={ ev => this.setState({date: ev.target.value}) } />
 			</div>
 		);
@@ -71,20 +71,20 @@ export class DevicesHT extends React.Component
 			return (
 				<div key={device.device_id}>
 					<div>
-						<i className="fa fa-regular fa-droplet-degree" />
+						<i className="scf scf-thermometer-droplet" />
 					</div>
 					<div>
 						<span className="name" onClick={ () => this.edit(device.device_id) }>
 							{device.device_name}
 						</span>
 						<div className="ht">
-							<i className="fa fa-temperature-half" /> {device.temperature} °C
+							<i className="scf scf-thermometer" /> {device.temperature} °C
 							&#160;&#160;
-							<i className="fa fa-regular fa-droplet" /> {device.humidity} %
+							<i className="scf scf-droplet" /> {device.humidity} %
 						</div>
 					</div>
 					<div>
-						<i className="fa fa-chart-line" onClick={ () => this.setState({graph_type: 't', graph_id: device.device_id}) } />
+						<i className="scf scf-graph" onClick={ () => this.setState({graph_type: 't', graph_id: device.device_id}) } />
 					</div>
 				</div>
 			);
@@ -110,7 +110,7 @@ export class DevicesHT extends React.Component
 			<div className="sc-devices">
 				{this.renderGraph()}
 				<div className="actions">
-					<i className="fa fa-plus" onClick={ () => this.setState({creating: true}) }></i>
+					<i className="scf scf-plus" onClick={ () => this.setState({creating: true}) }></i>
 				</div>
 				<div className="list">
 					{this.renderDevices()}

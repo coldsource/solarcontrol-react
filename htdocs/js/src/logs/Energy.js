@@ -50,7 +50,7 @@ export class Energy extends React.Component
 
 		return (
 			<div>
-				<i className="fa fa-arrow-left" onClick={ () => this.setState({day: false}) } />
+				<i className="scf scf-arrow-left" onClick={ () => this.setState({day: false}) } />
 			</div>
 		);
 	}
@@ -61,15 +61,15 @@ export class Energy extends React.Component
 			return (
 				<div>
 					<span>
-						<i className="fa fa-arrow-left" onClick={ () => this.setState({mbefore: this.state.mbefore + 1}) } />
+						<i className="scf scf-arrow-left" onClick={ () => this.setState({mbefore: this.state.mbefore + 1}) } />
 					</span>
 					{this.state.mbefore>=0?(
 						<span>
-							<i className="fa fa-arrow-right" onClick={ () => this.setState({mbefore: this.state.mbefore - 1}) } />
+							<i className="scf scf-arrow-right" onClick={ () => this.setState({mbefore: this.state.mbefore - 1}) } />
 						</span>
 					): null}
 					<span>
-						<i className="fa fa-chart-line" onClick={ () => this.setState({graph_type: 'monthly'}) } />
+						<i className="scf scf-graph" onClick={ () => this.setState({graph_type: 'monthly'}) } />
 					</span>
 				</div>
 			);
@@ -78,10 +78,10 @@ export class Energy extends React.Component
 		return (
 			<div>
 				<span>
-					<i className="fa fa-magnifying-glass" onClick={ () => this.setState({graph_type: 'detail'}) } />
+					<i className="scf scf-graph-mag" onClick={ () => this.setState({graph_type: 'detail'}) } />
 				</span>
 				<span>
-					<i className="fa fa-chart-line" onClick={ () => this.setState({graph_type: 'global'}) } />
+					<i className="scf scf-graph" onClick={ () => this.setState({graph_type: 'global'}) } />
 				</span>
 			</div>
 		);

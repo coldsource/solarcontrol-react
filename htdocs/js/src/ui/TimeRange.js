@@ -67,7 +67,7 @@ export class TimeRange extends React.Component
 		return (
 			<div>
 				{this.renderWeekDaysDetail()}
-				<i className="fa fa-regular fa-clock" onClick={() => this.setState({display_days: false})} />
+				<i className="scf scf-clock" onClick={() => this.setState({display_days: false})} />
 			</div>
 		);
 	}
@@ -80,8 +80,8 @@ export class TimeRange extends React.Component
 			<div>
 				<input type="time" step="60" value={this.normalize_time(this.props.value.from)} onChange={ ev => this.change('from', ev) } />
 				<input type="time" step="60" value={this.normalize_time(this.props.value.to)} onChange={ ev => this.change('to', ev) } />
-				<i className="fa fa-calendar-days" onClick={() => this.setState({display_days: true})} />
-				<i className={"fa-regular fa-leaf" + (this.props.value.offpeak?" on":"")} onClick={() => this.toggleOffpeak()} />
+				<i className="scf scf-calendar" onClick={() => this.setState({display_days: true})} />
+				<i className={"scf scf-leaf" + (this.props.value.offpeak?" on":"")} onClick={() => this.toggleOffpeak()} />
 			</div>
 		);
 	}

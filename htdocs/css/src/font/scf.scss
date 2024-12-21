@@ -1,0 +1,154 @@
+@font-face {
+	font-family: 'Solar ControlTTF';
+	src: url('/font/solarcontrol/SolarControl.ttf') format('truetype'),
+	url('/font/solarcontrol/SolarControl.woff2') format('woff2');
+}
+
+.scf {
+	font-family: 'Solar ControlTTF';
+	font-style: normal;
+}
+
+.scf-droplet:before {
+	content: "\e000";
+}
+
+.scf-meter:before {
+	content: "\e001";
+}
+
+.scf-cogs:before {
+	content: "\e002";
+}
+
+.scf-electricity:before {
+	content: "\e003";
+}
+
+.scf-logs:before {
+	content: "\e004";
+}
+
+.scf-plug:before {
+	content: "\e005";
+}
+
+.scf-thermometer:before {
+	content: "\e006";
+}
+
+.scf-thermometer:before {
+	content: "\e006";
+}
+
+.scf-arrow-left:before {
+	content: "\e007";
+}
+
+.scf-arrow-right:before {
+	content: "\e008";
+}
+
+.scf-graph:before {
+	content: "\e009";
+}
+
+.scf-graph-mag:before {
+	content: "\e00a";
+}
+
+.scf-sun:before {
+	content: "\e00b";
+}
+
+.scf-moon:before {
+	content: "\e00c";
+}
+
+.scf-sun-moon:before {
+	content: "\e00d";
+}
+
+.scf-back:before {
+	content: "\e00e";
+}
+
+.scf-bluetooth:before {
+	content: "\e00f";
+}
+
+.scf-bolt:before {
+	content: "\e010";
+}
+
+.scf-check:before {
+	content: "\e011";
+}
+
+.scf-cross:before {
+	content: "\e012";
+}
+
+.scf-fan:before {
+	content: "\e013";
+}
+
+.scf-hand:before {
+	content: "\e014";
+}
+
+.scf-heater:before {
+	content: "\e015";
+}
+
+.scf-leaf:before {
+	content: "\e016";
+}
+
+.scf-mag:before {
+	content: "\e017";
+}
+
+.scf-percent:before {
+	content: "\e018";
+}
+
+.scf-plug2:before {
+	content: "\e019";
+}
+
+.scf-plugs:before {
+	content: "\e01a";
+}
+
+.scf-plus:before {
+	content: "\e01b";
+}
+
+.scf-wifi:before {
+	content: "\e01c";
+}
+
+.scf-onoff:before {
+	content: "\e01d";
+}
+
+.scf-thermometer-droplet:before {
+	content: "\e01e";
+}
+
+.scf-button:before {
+	content: "\e01f";
+}
+
+.scf-spinner:before {
+	content: "\e020";
+}
+
+.scf-clock:before {
+	content: "\e021";
+}
+
+.scf-calendar:before {
+	content: "\e022";
+}

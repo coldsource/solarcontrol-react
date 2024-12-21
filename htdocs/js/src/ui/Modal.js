@@ -9,7 +9,7 @@ export class Modal extends React.Component
 			<div className="sc-modal">
 				<div className="title">
 					{this.props.title}
-					<span className="close"><i className="fa fa-close" onClick={this.props.onClose} /></span>
+					<span className="close"><i className="scf scf-cross" onClick={this.props.onClose} /></span>
 				</div>
 				<div className="content">
 					{this.props.children}

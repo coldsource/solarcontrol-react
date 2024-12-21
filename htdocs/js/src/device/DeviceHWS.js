@@ -36,9 +36,9 @@ export class DeviceHWS extends React.Component
 		const device = this.state.devicehws;
 
 		if(device.manual)
-			return (<i className="fa fa-hand" onClick={() => this.setManualState("auto")}></i>);
+			return (<i className="scf scf-hand" onClick={() => this.setManualState("auto")}></i>);
 
-		return (<i className="fa fa-regular fa-sun-bright"></i>);
+		return (<i className="scf scf-sun"></i>);
 	}
 
 	renderState() {

@@ -109,11 +109,11 @@ export class EnergyDetail extends React.Component
 			<div>
 				<div className="date"><DateOnly value={this.props.day} /> summary
 					&#160;
-					<i className={"fa fa-regular fa-globe" + (this.state.filter===false?' on':'')} onClick={ () => this.setState({filter: false}) } />
+					<i className={"scf scf-sun-moon" + (this.state.filter===false?' on':'')} onClick={ () => this.setState({filter: false}) } />
 					&#160;&#160;
-					<i className={"fa fa-regular fa-sun-bright" + (this.state.filter==='day'?' on':'')} onClick={ () => this.setState({filter: 'day'}) } />
+					<i className={"scf scf-sun" + (this.state.filter==='day'?' on':'')} onClick={ () => this.setState({filter: 'day'}) } />
 					&#160;&#160;&#160;
-					<i className={"fa fa-regular fa-moon" + (this.state.filter==='night'?' on':'')} onClick={ () => this.setState({filter: 'night'}) } />
+					<i className={"scf scf-moon" + (this.state.filter==='night'?' on':'')} onClick={ () => this.setState({filter: 'night'}) } />
 				</div>
 				<table>
 					<tbody>

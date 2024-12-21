@@ -74,7 +74,7 @@ export class DevicesOnOff extends React.Component
 			return;
 
 		return (
-			<React.Fragment><i className="fa fa-bolt" /> <KW value={power} /></React.Fragment>
+			<React.Fragment><i className="scf scf-bolt" /> <KW value={power} /></React.Fragment>
 		);
 	}
 
@@ -83,7 +83,7 @@ export class DevicesOnOff extends React.Component
 			return (
 				<div key={device.device_id}>
 					<div>
-						<i className={"fa " + ((device.manual)?'fa-hand':'fa-regular fa-sun-bright')} onClick={() => { if(device.manual) this.setManualState(device.device_id, "auto") }} />
+						<i className={"scf " + ((device.manual)?'scf-hand':'scf-sun')} onClick={() => { if(device.manual) this.setManualState(device.device_id, "auto") }} />
 					</div>
 					<div>
 						<span className="name" onClick={ () => this.edit(device.device_id, "onoff") }>{device.device_name}</span>
@@ -104,7 +104,7 @@ export class DevicesOnOff extends React.Component
 			return (
 				<div key={device.device_id}>
 					<div>
-						<i className={"fa " + ((device.manual)?'fa-hand':'fa-regular fa-gauge-simple-min')} />
+						<i className={"scf " + ((device.manual)?'scf-hand':'scf-meter')} />
 					</div>
 					<div>
 						<span className="name" onClick={ () => this.edit(device.device_id, "passive") }>{device.device_name}</span>
@@ -141,7 +141,7 @@ export class DevicesOnOff extends React.Component
 		return (
 			<div className="sc-devices">
 				<div className="actions">
-					<i className="fa fa-plus" onClick={ () => this.setState({creating: true}) }></i>
+					<i className="scf scf-plus" onClick={ () => this.setState({creating: true}) }></i>
 				</div>
 				<div className="list">
 					{this.renderDevicesOnOff()}

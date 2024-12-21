@@ -16,7 +16,7 @@ export class ControlOnOff extends React.Component
 	render() {
 		let cl = this.props.state?' on':' off';
 		return (
-			<i className={'fa fa-power-off' + cl} onClick={this.toggleState} />
+			<i className={'scf scf-onoff' + cl} onClick={this.toggleState} />
 		);
 	}
 }

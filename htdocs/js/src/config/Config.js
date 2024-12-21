@@ -68,9 +68,9 @@ export class Config extends React.Component
 
 	renderConfigAction(name) {
 		if(this.state.config[name]!=this.state.config_local[name])
-			return (<i className="fa fa-check" onClick={ () => this.update(name) } />);
+			return (<i className="scf scf-check" onClick={ () => this.update(name) } />);
 		else if(this.state.config_master[name]!=this.state.config[name])
-			return (<i className="fa fa-rotate-left" onClick={ () => this.reset(name) } />);
+			return (<i className="scf scf-back" onClick={ () => this.reset(name) } />);
 		return;
 	}
 

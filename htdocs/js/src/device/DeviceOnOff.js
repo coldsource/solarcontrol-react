@@ -184,7 +184,7 @@ export class DeviceOnOff extends React.Component
 		return (
 			<div className="timerange">
 				<TimeRange value={time_range} onChange={ev => this.changeTimeRange(name, idx, ev.target.value)} />
-				<i className="fa fa-remove" onClick={ev => this.removeTimeRange(name, idx)} />
+				<i className="scf scf-cross" onClick={ev => this.removeTimeRange(name, idx)} />
 			</div>
 		);
 	}
