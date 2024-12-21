@@ -20,7 +20,7 @@ export class EnergyGraphMonthly extends React.Component
 		API.instance.command('logs', 'energy', {mbefore: this.props.mbefore}).then(energy => {
 			this.setState({energy: energy});
 
-			let units = {0: '%', 1: 'kWh', 2: 'kWh'};
+			let units = {0: 'kWh', 1: 'kWh', 2: '%'};
 
 			let datasets = [];
 			let x = [];
@@ -53,6 +53,7 @@ export class EnergyGraphMonthly extends React.Component
 					backgroundColor: '#eb4034',
 					stack: 'global',
 					yAxisID: 'kwh',
+					order: 1,
 				},
 				{
 					type : 'bar',
@@ -61,6 +62,7 @@ export class EnergyGraphMonthly extends React.Component
 					backgroundColor: '#81de78',
 					stack: 'global',
 					yAxisID: 'kwh',
+					order: 2,
 				},
 				{
 					type : 'line',
@@ -69,6 +71,7 @@ export class EnergyGraphMonthly extends React.Component
 					backgroundColor: '#505050',
 					yAxisID: 'percent',
 					showLine: false,
+					order: 0
 				},
 			];
 
@@ -90,6 +93,7 @@ export class EnergyGraphMonthly extends React.Component
 						kwh: {
 							type: 'linear',
 							position: 'left',
+							min: 0,
 							ticks: {
 								callback: function(value, index, ticks) {
 									return value + 'kWh';
