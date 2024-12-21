@@ -199,7 +199,7 @@ export class EnergyGlobal extends React.Component
 				<thead>
 					<tr>
 						<th>Date</th>
-						<th colSpan="3" onClick={() => this.setState({mode: 'global'})}>Grid <i className="fa-regular fa-leaf" /></th>
+						<th colSpan="2" onClick={() => this.setState({mode: 'global'})}>Grid <i className="fa-regular fa-leaf" /></th>
 					</tr>
 					<tr>
 						<th></th>
@@ -217,7 +217,7 @@ export class EnergyGlobal extends React.Component
 				<thead>
 					<tr>
 						<th>Date</th>
-						<th colSpan="3" onClick={() => this.setState({mode: 'global'})}>PV <i className="fa-regular fa-bolt" /></th>
+						<th colSpan="2" onClick={() => this.setState({mode: 'global'})}>PV <i className="fa-regular fa-bolt" /></th>
 					</tr>
 					<tr>
 						<th></th>
@@ -235,7 +235,7 @@ export class EnergyGlobal extends React.Component
 				<thead>
 					<tr>
 						<th>Date</th>
-						<th colSpan="3" onClick={() => this.setState({mode: 'global'})}>HWS <i className="fa-regular fa-sun-bright" /></th>
+						<th colSpan="2" onClick={() => this.setState({mode: 'global'})}>HWS <i className="fa-regular fa-sun-bright" /></th>
 					</tr>
 					<tr>
 						<th></th>
