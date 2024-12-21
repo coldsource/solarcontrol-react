@@ -11,7 +11,7 @@ export class KW extends React.Component
 		f = parseFloat(f);
 
 		let unit = 'W';
-		if(f>=1000)
+		if(Math.abs(f)>=1000)
 		{
 			f = f / 1000;
 			unit = 'kW';
