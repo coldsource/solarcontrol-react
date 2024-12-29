@@ -1,18 +1,161 @@
+$item-radius: 5rem;
+$meter-width: 5rem;
+$border-size: 3px;
+
 .sc-meter-global {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
+	margin-top: 2rem;
 
-	div.item {
+	.meter {
+		position: absolute;
+		width: $meter-width;
 		text-align: center;
-		margin-bottom: 2rem;
+		background-color: white;
+		border: 1px solid black;
+		border-radius: 5px;
+		box-sizing: border-box;
+	}
 
-		div.value {
-			font-size: 2rem;
+	div.round {
+		position: relative;
+		display: grid;
+		border-radius: 50%;
+		border: $border-size solid black;
+		width: $item-radius;
+		height: $item-radius;
+		text-align: center;
+		box-sizing: border-box;
+
+		div {
+			align-self: center;
+			font-size: 3rem;
+		}
+
+		.meter {
+			border-radius: 0px;
 			font-weight: bold;
 		}
 
-		div.label {
+		.meter.right {
+			top: 1.5rem;
+			right: calc(-#{$meter-width} - 1rem);
+		}
+
+		.meter.left {
+			top: 1.5rem;
+			left: calc(-#{$meter-width} - 1rem);
+		}
+
+		.meter.bottom {
+			bottom: -2rem;
+			left: -$border-size;
+		}
+	}
+
+	.production {
+		display: grid;
+		grid-template-columns: $item-radius 1fr $item-radius;
+	}
+
+	.network {
+		display: grid;
+		grid-template-columns: 1fr $item-radius 1fr;
+		height: 7rem;
+
+		.meter {
+			bottom: -10px;
+			left: calc((100% - #{$meter-width}) / 2);
 			font-style: italic;
 		}
+
+		div.connector-grid {
+			position: relative;
+			border-left: $border-size solid black;
+			border-bottom: $border-size solid black;
+			margin-left: calc(#{$item-radius} / 2);
+			margin-bottom: calc(#{$item-radius} / 2);
+			border-radius: 0 0 0 10px;
+
+			.arrow-grid {
+				width: 18px;
+				position: absolute;
+				left: -10px;
+				top: 0px;
+			}
+
+			.arrow-bolt {
+				width: 10px;
+				position: absolute;
+				bottom: -10px;
+				right: 0px;
+			}
+		}
+
+		div.bolt {
+			align-self: end;
+		}
+
+		div.connector-pv {
+			position: relative;
+			border-right: $border-size solid black;
+			border-bottom: $border-size solid black;
+			margin-right: calc(#{$item-radius} / 2);
+			margin-bottom: calc(#{$item-radius} / 2);
+			border-radius: 0 0 10px 0;
+
+			.arrow-bolt {
+				width: 10px;
+				position: absolute;
+				bottom: -10px;
+				left: 0px;
+			}
+		}
+	}
+
+	.network-vert {
+		position: relative;
+		margin: auto;
+		width:0px;
+		height: 4rem;
+		border-left: $border-size solid black;
+
+		.arrow-down {
+			width: 18px;
+			position: absolute;
+			bottom: 0px;
+			left: -10px;
+		}
+
+		.meter {
+			left: -2.5rem;
+			top: 1rem;
+			font-style: italic;
+		}
+	}
+
+	.home {
+		display: grid;
+		grid-template-columns: 1fr 3rem 1fr;
+		border: $border-size solid black;
+		align-items: center;
+		border-radius: 10px;
+		margin-left: 2rem;
+		margin-right: 2rem;
+		padding: 0.2rem;
+		text-align: center;
+
+		i {
+			font-size: 3rem;
+		}
+
+		span {
+			font-size: 1.3rem;
+			font-weight: bold;
+		}
+	}
+
+	.home-devices {
+		display: grid;
+		grid-template-columns: 1fr $item-radius $item-radius 1fr;
+		gap: 5rem;
 	}
 }
