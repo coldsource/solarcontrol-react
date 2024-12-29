@@ -1,4 +1,6 @@
-import {Config} from './Config.js';
+import {SolarControl} from './SolarControl.js';
+import {LogsState} from '../logs/LogsState.js';
+import {Subscreen} from '../ui/Subscreen.js';
 
 export class Configs extends React.Component
 {
@@ -6,27 +8,47 @@ export class Configs extends React.Component
 		super(props);
 
 		this.state = {
-			module: 'energy'
+			screen: false,
+			screen_name: ''
 		};
 
 		this.modules = [
-			{name: 'Energy', value: 'energy'},
-			{name: 'Control', value: 'control'}
+			{name: 'Settings', icon: 'scf-cogs', value: 'settings'},
+			{name: 'State logs', icon: 'scf-logs', value: 'logs'}
 		];
 	}
 
-	renderModules() {
+	renderTiles() {
 		return this.modules.map(module => {
-			let cl = this.state.module==module.value?"selected":"";
-			return (<li className={cl} key={module.value} onClick={() => this.setState({module: module.value})}>{module.name}</li>);
+			return (
+				<div key={module.value} onClick={ () => this.setState({screen: module.value, screen_name: module.name}) }>
+					<i className={"scf " + module.icon} />
+					<span>{module.name}</span>
+				</div>
+			);
 		});
 	}
 
+	renderSubscreen() {
+		if(this.state.screen=='logs')
+			return (<LogsState />);
+		else if(this.state.screen=='settings')
+			return (<SolarControl />);
+	}
+
 	render() {
+		if(this.state.screen!=false)
+		{
+			return (
+				<Subscreen title={this.state.screen_name} onClose={ () => this.setState({screen: false}) }>
+					{this.renderSubscreen()}
+				</Subscreen>
+			);
+		}
+
 		return (
 			<div className="sc-configs">
-				<ul className="sc-tabs">{this.renderModules()}</ul>
-				<Config key={this.state.module} module={this.state.module} />
+				{this.renderTiles()}
 			</div>
 		);
 	}

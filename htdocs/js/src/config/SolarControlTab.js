@@ -1,7 +1,7 @@
 import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
 
-export class Config extends React.Component
+export class SolarControlTab extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -91,7 +91,7 @@ export class Config extends React.Component
 
 	render() {
 		return (
-			<div className="sc-config">
+			<div className="sc-solarcontrol-tab">
 				{this.renderItems()}
 			</div>
 		);

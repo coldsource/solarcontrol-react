@@ -5,6 +5,10 @@ div.sc-app {
 		grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
 		margin: 0px auto 1rem auto;
 		max-width: 500px;
+
+		i {
+			text-align: center;
+		}
 	}
 
 	.error, .message {

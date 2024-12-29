@@ -4,7 +4,6 @@ import {Global} from '../meter/Global.js';
 import {DevicesOnOff} from '../device/DevicesOnOff.js';
 import {DevicesHT} from '../device/DevicesHT.js';
 import {DeviceHWS} from '../device/DeviceHWS.js';
-import {LogsState} from '../logs/LogsState.js';
 import {Energy} from '../logs/Energy.js';
 import {Configs} from '../config/Configs.js';
 
@@ -88,8 +87,6 @@ export class App extends React.Component
 			return (<DevicesHT />);
 		else if(path=='devicehws')
 			return (<DeviceHWS />);
-		else if(path=='logs')
-			return (<LogsState />);
 		else if(path=='energy')
 			return (<Energy />);
 		else if(path=='config')
@@ -105,8 +102,7 @@ export class App extends React.Component
 					<i className="scf scf-thermometer" onClick={() => this.changeURL('?loc=devicesht')} />
 					<i className="scf scf-droplet" onClick={() => this.changeURL('?loc=devicehws')}></i>
 					<i className="scf scf-electricity" onClick={() => this.changeURL('?loc=energy')} />
-					<i className="scf scf-logs" onClick={() => this.changeURL('?loc=logs')} />
-					<i className="scf scf-cogs" onClick={() => this.changeURL('?loc=config')} />
+					<i className="scf scf-menu" onClick={() => this.changeURL('?loc=config')} />
 				</div>
 				<div>
 					{this.renderScreen()}
