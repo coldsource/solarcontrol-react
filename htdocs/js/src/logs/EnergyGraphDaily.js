@@ -80,10 +80,14 @@ export class EnergyGraphDaily extends React.Component
 					let global = entries[0];
 					let grid = 0;
 					let pv = 0;
+					let grid_excess = 0;
 					if(global!==undefined)
 					{
+						if(global['grid-excess']!==undefined)
+							grid_excess = global['grid-excess'];
+
 						grid = global.grid;
-						pv = global.pv - global['grid-excess'];
+						pv = global.pv - grid_excess;
 					}
 
 					y_grid.push(grid);
