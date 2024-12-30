@@ -34,11 +34,18 @@ export class Global extends React.Component
 		return (<i className="scf scf-leaf" />);
 	}
 
+	calcLinearGradient(prct, angle) {
+		if(prct<1)
+			return {};
+
+		return {background: `linear-gradient(${angle}deg, rgba(51,201,85,1) 0%, rgba(51,201,85,1) ${prct}%, rgba(255,255,255,1) ${prct + 2}%, rgba(255,255,255,1) 100%)`};
+	}
+
 	calcPowerMixStyle() {
 		let prct = 100;
 		if(this.state.grid>0)
 			prct = this.state.pv / (this.state.pv + this.state.grid) * 100;
-		return {background: `linear-gradient(0deg, rgba(51,201,85,1) 0%, rgba(51,201,85,1) ${prct}%, rgba(255,255,255,1) ${prct + 5}%, rgba(255,255,255,1) 100%)`};
+		return this.calcLinearGradient(prct, 0);
 	}
 
 	getPVRatio() {
@@ -48,7 +55,7 @@ export class Global extends React.Component
 
 	calcEnergyMixStyle() {
 		let prct = this.getPVRatio();
-		return {background: `linear-gradient(90deg, rgba(51,201,85,1) 0%, rgba(51,201,85,1) ${prct}%, rgba(255,255,255,1) ${prct + 5}%, rgba(255,255,255,1) 100%)`};
+		return this.calcLinearGradient(prct, 90);
 	}
 
 	render() {
