@@ -91,7 +91,7 @@ export class EnergyGraphMonthly extends React.Component
 				datasets.push({
 					type : 'line',
 					data : y_temperature,
-					label : "Telmperature",
+					label : "Temperature",
 					backgroundColor: '#3a85f0',
 					borderColor: '#3a85f0',
 					yAxisID: 'temperature',
