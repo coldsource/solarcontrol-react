@@ -64,12 +64,12 @@ export class Global extends React.Component
 				<div className="production">
 					<div className="round">
 						<div><i className="scf scf-electricity" /></div>
-						<span className="meter right"><KWh value={this.state.grid_energy} /></span>
+						<span className="meter right energy"><KWh value={this.state.grid_energy} /></span>
 					</div>
 					<div></div>
 					<div className="round">
 						<div><i className="scf scf-sun" /></div>
-						<span className="meter left"><KWh value={this.state.pv_energy} /></span>
+						<span className="meter left energy"><KWh value={this.state.pv_energy} /></span>
 					</div>
 				</div>
 				<div className="network">
@@ -91,9 +91,9 @@ export class Global extends React.Component
 					<span className="meter"><KW value={this.state.total} /></span>
 				</div>
 				<div className="home" style={this.calcEnergyMixStyle()}>
-					<span><KW value={this.state.grid_energy + this.state.pv_energy - this.state.grid_exported_energy} /></span>
+					<span className="energy"><KWh value={this.state.grid_energy + this.state.pv_energy - this.state.grid_exported_energy} /></span>
 					<i className="scf scf-house" />
-					<span>{this.getPVRatio().toFixed(0) + '% PV'}</span>
+					<span><span>{this.getPVRatio().toFixed(0) + '% PV'}</span></span>
 				</div>
 				<div className="home-devices">
 					<div></div>
@@ -104,7 +104,7 @@ export class Global extends React.Component
 						</div>
 						<div className="round">
 							<div><i className="scf scf-droplet" /></div>
-							<span className="meter bottom"><KWh value={this.state.hws_energy} /></span>
+							<span className="meter bottom energy"><KWh value={this.state.hws_energy} /></span>
 						</div>
 					</div>
 					<div>

@@ -147,9 +147,12 @@ $border-size: 3px;
 			font-size: 3rem;
 		}
 
-		span {
+		span>span {
 			font-size: 1.3rem;
 			font-weight: bold;
+			border-radius: 5px;
+			padding: 0.2rem;
+			background-color: white;
 		}
 	}
 
