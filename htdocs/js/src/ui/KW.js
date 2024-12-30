@@ -17,7 +17,7 @@ export class KW extends React.Component
 			unit = 'kW';
 		}
 
-		return f.toFixed(1) + ' ' + unit;
+		return f.toFixed(1) + '\xa0' + unit;
 	}
 
 	render() {

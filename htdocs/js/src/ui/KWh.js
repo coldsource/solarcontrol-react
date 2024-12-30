@@ -19,7 +19,7 @@ export class KWh extends React.Component
 			digits = 1;
 		}
 
-		return f.toFixed(digits) + ' ' + unit;
+		return f.toFixed(digits) + '\xa0' + unit;
 	}
 
 	render() {
