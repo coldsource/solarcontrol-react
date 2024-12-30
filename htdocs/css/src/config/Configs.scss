@@ -3,12 +3,13 @@ div.sc-configs {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	align-items: center;
+	gap: 2rem;
 
 	div {
 		text-align: center;
 
 		i {
-			font-size: 4rem;
+			font-size: 3rem;
 		}
 
 		span {
