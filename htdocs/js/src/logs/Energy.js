@@ -4,6 +4,7 @@ import {EnergyGraphDaily} from './EnergyGraphDaily.js';
 import {EnergyGraphMonthly} from './EnergyGraphMonthly.js';
 import {Modal} from '../ui/Modal.js';
 import {DateOnly} from '../ui/DateOnly.js';
+import {API} from '../websocket/API.js';
 
 export class Energy extends React.Component
 {
@@ -14,6 +15,7 @@ export class Energy extends React.Component
 			day: false,
 			graph_type: false,
 			mbefore: -1,
+			unit: 'kwh',
 		};
 	}
 
@@ -39,7 +41,7 @@ export class Energy extends React.Component
 
 	renderTab() {
 		if(this.state.day===false)
-			return (<EnergyGlobal key={this.state.mbefore} mbefore={this.state.mbefore} onClickDay={day => this.setState({day: day})}/>);
+			return (<EnergyGlobal key={this.state.mbefore} mbefore={this.state.mbefore} unit={this.state.unit} onClickDay={day => this.setState({day: day})}/>);
 		else
 			return (<EnergyDetail day={this.state.day} />);
 	}
@@ -55,7 +57,7 @@ export class Energy extends React.Component
 		);
 	}
 
-	renderGraphBtn() {
+	renderDateBtn() {
 		if(this.state.day===false)
 		{
 			return (
@@ -63,11 +65,22 @@ export class Energy extends React.Component
 					<span>
 						<i className="scf scf-arrow-left" onClick={ () => this.setState({mbefore: this.state.mbefore + 1}) } />
 					</span>
-					{this.state.mbefore>=0?(
-						<span>
-							<i className="scf scf-arrow-right" onClick={ () => this.setState({mbefore: this.state.mbefore - 1}) } />
-						</span>
-					): null}
+					<span>
+						<i className={"scf scf-arrow-right" + (this.state.mbefore==-1?' disabled':'')} onClick={ () => this.state.mbefore>=0?this.setState({mbefore: this.state.mbefore - 1}):null } />
+					</span>
+				</div>
+			);
+		}
+	}
+
+	renderToolsBtn() {
+		if(this.state.day===false)
+		{
+			return (
+				<div>
+					<span>
+						<i className="scf scf-euro" onClick={ () => this.setState({unit: this.state.unit=='kwh'?'euro':'kwh'}) } />
+					</span>
 					<span>
 						<i className="scf scf-graph" onClick={ () => this.setState({graph_type: 'monthly'}) } />
 					</span>
@@ -93,7 +106,8 @@ export class Energy extends React.Component
 				{this.renderGraph()}
 				<div className="header">
 					{this.renderBackBtn()}
-					{this.renderGraphBtn()}
+					{this.renderDateBtn()}
+					{this.renderToolsBtn()}
 				</div>
 				{this.renderTab()}
 			</div>

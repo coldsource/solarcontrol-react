@@ -1,6 +1,7 @@
 import {SolarControl} from './SolarControl.js';
 import {LogsState} from '../logs/LogsState.js';
 import {Temperatures} from './Temperatures.js';
+import {Pricing} from './Pricing.js';
 import {Subscreen} from '../ui/Subscreen.js';
 
 export class Configs extends React.Component
@@ -17,6 +18,7 @@ export class Configs extends React.Component
 			{name: 'Settings', icon: 'scf-cogs', value: 'settings'},
 			{name: 'State logs', icon: 'scf-logs', value: 'logs'},
 			{name: 'Temperatures', icon: 'scf-thermometer', value: 'temperatures'},
+			{name: 'Pricing', icon: 'scf-euro', value: 'pricing'},
 		];
 	}
 
@@ -38,6 +40,8 @@ export class Configs extends React.Component
 			return (<SolarControl />);
 		else if(this.state.screen=='temperatures')
 			return (<Temperatures />);
+		else if(this.state.screen=='pricing')
+			return (<Pricing />);
 	}
 
 	render() {
