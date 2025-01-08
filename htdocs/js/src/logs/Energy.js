@@ -4,7 +4,6 @@ import {EnergyGraphDaily} from './EnergyGraphDaily.js';
 import {EnergyGraphMonthly} from './EnergyGraphMonthly.js';
 import {Modal} from '../ui/Modal.js';
 import {DateOnly} from '../ui/DateOnly.js';
-import {API} from '../websocket/API.js';
 
 export class Energy extends React.Component
 {

@@ -1,6 +1,7 @@
 import {Meter} from '../websocket/Meter.js';
 import {KWh} from '../ui/KWh.js';
 import {KW} from '../ui/KW.js';
+import {API} from '../websocket/API.js';
 
 export class Global extends React.Component
 {
@@ -8,6 +9,7 @@ export class Global extends React.Component
 		super(props);
 
 		this.state = {
+			hws_min: 0,
 		}
 
 		this.ref = React.createRef();
@@ -17,6 +19,15 @@ export class Global extends React.Component
 
 	componentDidMount() {
 		this.meter = new Meter(this.update);
+
+		 API.instance.command('config', 'get', {module: 'energy'}).then(config => {
+			 let hws_min = config.config["energy.hws.min"];
+			 if(hws_min.substr(-3)=='kwh' || hws_min.substr(-3)=='kWh')
+				 hws_min = hws_min.substr(0, hws_min.length-3) * 1000;
+			 else if(hws_min.substr(-2)=='wh' || hws_min.substr(-2)=='Wh')
+				 hws_min = hws_min.substr(0, hws_min.length-2);
+			 this.setState({hws_min: hws_min});
+		 });
 	}
 
 	componentWillUnmount() {
@@ -41,6 +52,13 @@ export class Global extends React.Component
 		return {background: `linear-gradient(${angle}deg, rgba(51,201,85,1) 0%, rgba(51,201,85,1) ${prct}%, rgba(255,255,255,1) ${prct + 2}%, rgba(255,255,255,1) 100%)`};
 	}
 
+	calcLinearGradient2(prct1, prct2, angle) {
+		if(prct1 + prct2<1)
+			return {};
+
+		return {background: `linear-gradient(${angle}deg, rgba(247,8,8,1) 0%, rgba(247,8,8,1) ${prct1}%, rgba(51,201,85,1) ${prct1}%, rgba(51,201,85,1) ${prct1 + prct2}%, rgba(255,255,255,1) ${prct1 + prct2}%, rgba(255,255,255,1) 100%)`};
+	}
+
 	calcPowerMixStyle() {
 		let prct = 100;
 		if(this.state.grid>0)
@@ -56,6 +74,27 @@ export class Global extends React.Component
 	calcEnergyMixStyle() {
 		let prct = this.getPVRatio();
 		return this.calcLinearGradient(prct, 90);
+	}
+
+	calcHWSMixStyle() {
+		if(this.state.hws_min==0)
+			return {};
+
+		if(this.state.hws_energy===undefined)
+			return {};
+
+		let hws_energy = this.state.hws_energy;
+		let hws_min = this.state.hws_min;
+		let hws_energy_forced = this.state.hws_energy_forced;
+		let hws_energy_offload = this.state.hws_energy_offload;
+
+		let hws_fill_prct = hws_energy / hws_min;
+		if(hws_fill_prct>=1)
+			hws_fill_prct = 1;
+
+		let prct_forced = hws_energy_forced / hws_energy * hws_fill_prct * 100;
+		let prct_offload = hws_energy_offload / hws_energy * hws_fill_prct * 100;
+		return this.calcLinearGradient2(prct_forced, prct_offload, 0);
 	}
 
 	render() {
@@ -102,7 +141,7 @@ export class Global extends React.Component
 							<img className="arrow-down" src="/images/arrow-down.svg" />
 							<span className="meter"><KW value={this.state.hws} /></span>
 						</div>
-						<div className="round">
+						<div className="round" style={this.calcHWSMixStyle()}>
 							<div><i className="scf scf-droplet" /></div>
 							<span className="meter bottom energy"><KWh value={this.state.hws_energy} /></span>
 						</div>
