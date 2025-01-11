@@ -1,4 +1,6 @@
 import {API} from '../websocket/API.js';
+import {Loader} from '../ui/Loader.js';
+import {NormalizeEnergyLog} from './EnergyLog.js';
 
 export class EnergyGraphMonthly extends React.Component
 {
@@ -6,7 +8,6 @@ export class EnergyGraphMonthly extends React.Component
 		super(props);
 
 		this.state = {
-			energy: {},
 		};
 
 		this.ref = React.createRef();
@@ -23,7 +24,7 @@ export class EnergyGraphMonthly extends React.Component
 			temperatures = await API.instance.command('logs', 'ht', {device_id: temperatures_config.outdoor, mbefore: this.props.mbefore});
 
 		API.instance.command('logs', 'energy', {mbefore: this.props.mbefore}).then(energy => {
-			this.setState({energy: energy});
+			energy = NormalizeEnergyLog(energy);
 
 			let units = {0: 'kWh', 1: 'kWh', 2: '%', 3: '°C'};
 
@@ -33,17 +34,11 @@ export class EnergyGraphMonthly extends React.Component
 			let y_pv = [];
 			let y_percent = [];
 			let y_temperature = [];
-			for(const [date, entry] of Object.entries(energy))
+			for(const [date, devices] of Object.entries(energy))
 			{
 				x.push(date);
-				let grid = (entry.grid_consumption)/1000;
-				let pv = (entry.pv_production - entry.grid_excess)/1000;
-
-				if(isNaN(grid))
-					grid = 0;
-				if(isNaN(pv))
-					pv = 0;
-
+				let grid = devices.grid.consumption.energy / 1000;
+				let pv = devices.pv.consumption.energy / 1000;
 				let percent = pv / (grid + pv) * 100;
 
 				y_grid.push(grid);

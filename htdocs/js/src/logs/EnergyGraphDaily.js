@@ -1,4 +1,5 @@
 import {API} from '../websocket/API.js';
+import {NormalizeEnergyLog} from './EnergyLog.js';
 
 export class EnergyGraphDaily extends React.Component
 {
@@ -6,7 +7,6 @@ export class EnergyGraphDaily extends React.Component
 		super(props);
 
 		this.state = {
-			energy: {},
 		};
 
 		this.ref = React.createRef();
@@ -18,7 +18,7 @@ export class EnergyGraphDaily extends React.Component
 
 	reload() {
 		API.instance.command('logs', 'energydetail', {day: this.props.day}).then(energy => {
-			this.setState({energy: energy});
+			energy = NormalizeEnergyLog(energy);
 
 			let type = this.props.type;
 			let unit = 'Wh';
@@ -31,36 +31,35 @@ export class EnergyGraphDaily extends React.Component
 				let devices = {};
 				for(const [date, entries] of Object.entries(energy))
 				{
-					for(const [device_id, entry] of Object.entries(entries))
-						devices[device_id] = device_id==0?'HWS':entry.name;
+					for(let [device_name, entry] of Object.entries(entries))
+					{
+						if(device_name=='grid' || device_name=='pv')
+							continue;
+
+						devices[device_name] = true;;
+					}
 				}
 
+				devices = Object.keys(devices);
+
 				let y_devices = {};
-				for(const device_id in devices)
-					y_devices[device_id] = [];
+				for(const device_name of devices)
+					y_devices[device_name] = [];
 
 				for(const [date, entries] of Object.entries(energy))
 				{
 					let d = date.substr(11, 5);
 					x.push(d);
 
-					for(const device_id in y_devices)
-					{
-						let v = 0;
-						if(device_id==0 && entries[0]!==undefined && entries[0].hws!==undefined)
-							v = entries[0].hws;
-						if(device_id>0 && entries[device_id]!==undefined)
-							v = entries[device_id].device;
-
-						y_devices[device_id].push(v);
-					}
+					for(const device_name in y_devices)
+						y_devices[device_name].push(entries[device_name]!==undefined?entries[device_name].consumption.energy:0);
 				}
 
-				for(const [device_id, device_name] of Object.entries(devices))
+				for(const device_name of devices)
 				{
 					datasets.push({
 						type : 'bar',
-						data : y_devices[device_id],
+						data : y_devices[device_name],
 						label : device_name,
 						stack: 'device',
 						yAxisID: 'wh',
@@ -72,26 +71,13 @@ export class EnergyGraphDaily extends React.Component
 			{
 				let y_grid = [];
 				let y_pv = [];
-				for(const [date, entries] of Object.entries(energy))
+				for(const [date, devices] of Object.entries(energy))
 				{
 					let d = date.substr(11, 5);
 					x.push(d);
 
-					let global = entries[0];
-					let grid = 0;
-					let pv = 0;
-					let grid_excess = 0;
-					if(global!==undefined)
-					{
-						if(global['grid-excess']!==undefined)
-							grid_excess = global['grid-excess'];
-
-						grid = global.grid;
-						pv = global.pv - grid_excess;
-					}
-
-					y_grid.push(grid);
-					y_pv.push(pv);
+					y_grid.push(devices.grid.consumption.energy);
+					y_pv.push(devices.pv.consumption.energy);
 				}
 
 				datasets = [

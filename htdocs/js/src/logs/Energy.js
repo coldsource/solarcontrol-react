@@ -70,6 +70,8 @@ export class Energy extends React.Component
 				</div>
 			);
 		}
+
+		return (<div></div>);
 	}
 
 	renderToolsBtn() {
