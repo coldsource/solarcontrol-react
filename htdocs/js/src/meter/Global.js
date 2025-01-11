@@ -85,14 +85,14 @@ export class Global extends React.Component
 
 		let hws_energy = this.state.hws_energy;
 		let hws_min = this.state.hws_min;
-		let hws_energy_forced = this.state.hws_energy_forced;
 		let hws_energy_offload = this.state.hws_energy_offload;
+		let hws_energy_grid = hws_energy - hws_energy_offload;
 
 		let hws_fill_prct = hws_energy / hws_min;
 		if(hws_fill_prct>=1)
 			hws_fill_prct = 1;
 
-		let prct_forced = hws_energy_forced / hws_energy * hws_fill_prct * 100;
+		let prct_forced = hws_energy_grid / hws_energy * hws_fill_prct * 100;
 		let prct_offload = hws_energy_offload / hws_energy * hws_fill_prct * 100;
 		return this.calcLinearGradient2(prct_forced, prct_offload, 0);
 	}
