@@ -23,12 +23,12 @@ export class HTGraph extends React.Component
 			let type = this.props.type;
 			let unit = (type=='t')?'°C':'%';
 
+			let points = [];
 			let x = [];
-			let x_full = [];
 			let y = [];
-			let min = [];
-			let delta = [];
-			let max = [];
+			let spacer = [];
+			let delta_neg = [];
+			let delta_pos = [];
 			let axis_min = 999;
 			let axis_max = 0;
 			let n = 0;
@@ -40,16 +40,33 @@ export class HTGraph extends React.Component
 				let d = date.substr(11, 5);
 				let v = ((data_min+data_max)/2).toFixed(1);
 				x.push((n%4==0)?d:'');
-				x_full.push(d);
 				y.push(v);
-				min.push(data_min);
-				max.push(data_max);
-				delta.push(data_max - data_min);
+
+				if(data_min>=0)
+				{
+					delta_neg.push(null);
+					delta_pos.push(data_max - data_min);
+					spacer.push(data_min);
+				}
+				else if(data_min<0 && data_max>=0)
+				{
+					delta_neg.push(data_min);
+					delta_pos.push(data_max);
+					spacer.push(null);
+				}
+				else if(data_max<0)
+				{
+					delta_neg.push(data_min - data_max);
+					delta_pos.push(null);
+					spacer.push(data_max);
+				}
 
 				if(data_min<axis_min)
 					axis_min = data_min;
 				if(data_max>axis_max)
 					axis_max = data_max;
+
+				points.push({date: d, min: data_min, max: data_max});
 
 				n++;
 			}
@@ -67,7 +84,7 @@ export class HTGraph extends React.Component
 						},
 						{
 							type : 'bar',
-							data : min,
+							data : spacer,
 							label : "",
 							backgroundColor: 'rgba(255, 255, 255, 0)',
 							stack: 'minmax',
@@ -75,7 +92,15 @@ export class HTGraph extends React.Component
 						},
 						{
 							type : 'bar',
-							data : delta,
+							data : delta_neg,
+							label : "Interval",
+							backgroundColor: '#e38a8a',
+							stack: 'minmax',
+							barThickness: 2
+						},
+						{
+							type : 'bar',
+							data : delta_pos,
 							label : "Interval",
 							backgroundColor: '#e38a8a',
 							stack: 'minmax',
@@ -102,11 +127,11 @@ export class HTGraph extends React.Component
 						tooltip: {
 							usePointStyle: true,
 							callbacks: {
-								title: (point) => { return x_full[point[0].dataIndex]; },
+								title: (point) => { return points[point[0].dataIndex].date; },
 								label: (point) => {
 									let t = y[point.dataIndex];
-									let t_min = (min[point.dataIndex]).toFixed(1);
-									let t_max = (max[point.dataIndex]).toFixed(1);
+									let t_min = (points[point.dataIndex]).min.toFixed(1);
+									let t_max = (points[point.dataIndex]).max.toFixed(1);
 									let lines = [t + unit];
 									if(t_min!=t)
 										lines.push('Min: ' + t_min + unit);
