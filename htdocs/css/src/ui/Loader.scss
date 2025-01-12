@@ -4,11 +4,23 @@ div.sc-loader {
 	left: 0;
 	width: 100vw;
 	height: 100vh;
+	background-color: rgba(255, 255, 255, 0.8);
+	z-index: 1000;
 
 	i {
 		display: block;
 		font-size: 5rem;
 		text-align: center;
 		margin-top: calc(50vh - 5rem);
+
+		animation: loading 2s linear infinite;
+		@keyframes loading {
+			0% {
+				transform: rotate(0);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
 	}
 }
