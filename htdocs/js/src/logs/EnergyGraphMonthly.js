@@ -1,5 +1,5 @@
 import {API} from '../websocket/API.js';
-import {Loader} from '../ui/Loader.js';
+import {App} from '../app/App.js';
 import {NormalizeEnergyLog} from './EnergyLog.js';
 
 export class EnergyGraphMonthly extends React.Component
@@ -14,6 +14,7 @@ export class EnergyGraphMonthly extends React.Component
 	}
 
 	componentDidMount() {
+		App.loader(true);
 		this.reload();
 	}
 
@@ -160,6 +161,8 @@ export class EnergyGraphMonthly extends React.Component
 					}
 				},
 			};
+
+			App.loader(false);
 
 			new Chart(this.ref.current, data);
 		});

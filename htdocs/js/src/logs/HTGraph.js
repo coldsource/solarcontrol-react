@@ -1,4 +1,5 @@
 import {API} from '../websocket/API.js';
+import {App} from '../app/App.js';
 
 export class HTGraph extends React.Component
 {
@@ -13,6 +14,8 @@ export class HTGraph extends React.Component
 	}
 
 	componentDidMount() {
+		App.loader(true);
+
 		this.reload();
 	}
 
@@ -145,6 +148,8 @@ export class HTGraph extends React.Component
 					}
 				}
 			};
+
+			App.loader(false);
 
 			new Chart(this.ref.current, data);
 		});
