@@ -6,6 +6,7 @@ import {DevicesHT} from '../device/DevicesHT.js';
 import {DeviceHWS} from '../device/DeviceHWS.js';
 import {Energy} from '../logs/Energy.js';
 import {Configs} from '../config/Configs.js';
+import {Loader} from '../ui/Loader.js';
 
 export class App extends React.Component
 {
@@ -18,7 +19,8 @@ export class App extends React.Component
 		this.state = {
 			get: get,
 			error: '',
-			message: ''
+			message: '',
+			loader: false
 		};
 
 		let self = this;
@@ -93,9 +95,17 @@ export class App extends React.Component
 			return (<Configs />);
 	}
 
+	renderLoader() {
+		if(!this.state.loader)
+			return;
+
+		return (<Loader />);
+	}
+
 	render() {
 		return (
 			<div className="sc-app">
+				{this.renderLoader()}
 				<div className="menu">
 					<i className="scf scf-meter" onClick={() => this.changeURL('?loc=meter')} />
 					<i className="scf scf-plug" onClick={() => this.changeURL('?loc=devicesonoff')} />
@@ -121,6 +131,10 @@ App.error = (msg) => {
 
 App.message = (msg) => {
 	App.instance.setState({message: msg});
+}
+
+App.loader = (enabled) => {
+	App.instance.setState({loader: enabled});
 }
 
 let el = document.getElementById('main');
