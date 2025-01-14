@@ -34,11 +34,13 @@ export class API
 			let ret = JSON.parse(ev.data);
 			if(ret!==null && ret.status!==undefined && ret.status=='error')
 			{
+				App.loader(false);
 				App.error(ret.message);
 				self.api_reject(ret.message);
 				return;
 			}
 
+			App.loader(false);
 			self.api_resolve(ret);
 		}
 	}
@@ -46,6 +48,7 @@ export class API
 	command(module, cmd, parameters = {})
 	{
 		this.api_promise = new Promise((resolve, reject) => { this.api_resolve = resolve; this.api_reject = reject; });
+		App.loader(true);
 
 		this.cnx_promise.then(() => {
 			this.ws.send(JSON.stringify({module: module, cmd: cmd, parameters: parameters}));
