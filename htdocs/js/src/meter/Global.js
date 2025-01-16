@@ -115,7 +115,7 @@ export class Global extends React.Component
 					<div className="connector-grid">
 						{this.state.grid<0?(<img className="arrow-grid" src="/images/arrow-up.svg" />):''}
 						{this.state.grid>=0?(<img className="arrow-bolt" src="/images/arrow-right.svg" />):''}
-						<span className="meter"><KW value={this.state.grid} /> {this.renderLeaf()}</span>
+						<span className="meter"><KW value={this.state.grid} />&#160;{this.renderLeaf()}</span>
 					</div>
 					<div className="round bolt" style={this.calcPowerMixStyle()}>
 						<div><i className="scf scf-bolt" /></div>
