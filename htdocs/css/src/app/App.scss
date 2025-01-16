@@ -1,10 +1,12 @@
 div.sc-app {
+	max-width: 600px;
+	margin: auto;
+
 	.menu {
 		font-size: 2.5rem;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
 		margin: 0px auto 1rem auto;
-		max-width: 500px;
 
 		i {
 			text-align: center;
