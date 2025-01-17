@@ -98,6 +98,27 @@ export class EnergyGlobal extends React.Component
 	}
 
 	renderHistory() {
+		if(this.props.device!='')
+		{
+			let device = this.props.device;
+			return Object.keys(this.state.energy).sort().reverse().map(date => {
+				const data = this.state.energy[date];
+
+				if(data[device]===undefined)
+					return; // No data for this day
+
+				return (
+					<tr key={date}>
+						<td><DateOnly value={date} /></td>
+						<td>{this.renderKWHEuro(data[device].consumption, 'global')}</td>
+						<td>{this.renderKWHEuro(data[device].offload, 'global')}</td>
+						<td><Percent v1={data[device].offload.energy} v2={data[device].consumption.energy - data[device].offload.energy} /></td>
+						<td><Percent v1={data[device].consumption.offpeak - data[device].offload.offpeak} v2={data[device].consumption.peak - data[device].offload.peak} /></td>
+					</tr>
+				);
+			});
+		}
+
 		if(this.state.mode=='global')
 		{
 			return Object.keys(this.state.energy).sort().reverse().map(date => {
@@ -164,6 +185,24 @@ export class EnergyGlobal extends React.Component
 	renderTotal() {
 		let total = ReduceEnergyLog(this.state.energy);
 
+		if(this.props.device!='')
+		{
+			let device = this.props.device;
+
+			if(total[device]===undefined)
+				return;
+
+			return (
+				<tr key="total">
+					<td><b>Total</b></td>
+					<td>{this.renderKWHEuro(total[device].consumption, 'global')}</td>
+					<td>{this.renderKWHEuro(total[device].offload, 'global')}</td>
+					<td><Percent v1={total[device].offload.energy} v2={total[device].consumption.energy - total[device].offload.energy} /></td>
+					<td><Percent v1={total[device].consumption.offpeak - total[device].offload.offpeak} v2={total[device].consumption.peak - total[device].offload.peak} /></td>
+				</tr>
+			);
+		}
+
 		if(this.state.mode=='global')
 		{
 			return (
@@ -215,6 +254,21 @@ export class EnergyGlobal extends React.Component
 	}
 
 	renderHeader() {
+		if(this.props.device!='')
+		{
+			return (
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Consumption</th>
+						<th>Offload</th>
+						<th>PV %</th>
+						<th>Offpeak %</th>
+					</tr>
+				</thead>
+			);
+		}
+
 		if(this.state.mode=='global')
 		{
 			return (

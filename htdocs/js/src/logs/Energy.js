@@ -4,6 +4,8 @@ import {EnergyGraphDaily} from './EnergyGraphDaily.js';
 import {EnergyGraphMonthly} from './EnergyGraphMonthly.js';
 import {Modal} from '../ui/Modal.js';
 import {DateOnly} from '../ui/DateOnly.js';
+import {SelectDevice} from '../ui/SelectDevice.js';
+import {Subscreen} from '../ui/Subscreen.js';
 
 export class Energy extends React.Component
 {
@@ -15,6 +17,8 @@ export class Energy extends React.Component
 			graph_type: false,
 			mbefore: -1,
 			unit: 'kwh',
+			device_chooser: false,
+			device: '',
 		};
 	}
 
@@ -40,7 +44,7 @@ export class Energy extends React.Component
 
 	renderTab() {
 		if(this.state.day===false)
-			return (<EnergyGlobal key={this.state.mbefore} mbefore={this.state.mbefore} unit={this.state.unit} onClickDay={day => this.setState({day: day})}/>);
+			return (<EnergyGlobal key={this.state.mbefore} mbefore={this.state.mbefore} unit={this.state.unit} device={this.state.device} onClickDay={day => this.setState({day: day})}/>);
 		else
 			return (<EnergyDetail day={this.state.day} />);
 	}
@@ -74,11 +78,29 @@ export class Energy extends React.Component
 		return (<div></div>);
 	}
 
+	renderDeviceBtn() {
+		if(this.state.device=='')
+		{
+			return (
+				<span>
+					<i className="scf scf-mag" onClick={ () => this.setState({device_chooser: true}) } />
+				</span>
+			);
+		}
+
+		return (
+			<span>
+				<i className="scf scf-cross" onClick={ () => this.setState({device: ''}) } />
+			</span>
+		);
+	}
+
 	renderToolsBtn() {
 		if(this.state.day===false)
 		{
 			return (
 				<div>
+					{this.renderDeviceBtn()}
 					<span>
 						<i className="scf scf-euro" onClick={ () => this.setState({unit: this.state.unit=='kwh'?'euro':'kwh'}) } />
 					</span>
@@ -102,6 +124,15 @@ export class Energy extends React.Component
 	}
 
 	render() {
+		if(this.state.device_chooser)
+		{
+			return (
+				<Subscreen onClose={ () => this.setState({device_chooser: false}) }>
+					<SelectDevice onChange={ ev => this.setState({device_chooser: false, device: ev.target.value.name}) }type="energy" />
+				</Subscreen>
+			);
+		}
+
 		return (
 			<div className="sc-energy">
 				{this.renderGraph()}

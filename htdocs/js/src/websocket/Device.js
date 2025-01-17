@@ -72,7 +72,7 @@ export class Device extends Events
 		}
 	}
 
-	GetOnOff(id)
+	GetOnOff(id = 0)
 	{
 		if(id==0)
 			return this.devices_onoff;
@@ -89,7 +89,7 @@ export class Device extends Events
 		return null;
 	}
 
-	GetPassive(id)
+	GetPassive(id = 0)
 	{
 		if(id==0)
 			return this.devices_passive;
@@ -103,7 +103,7 @@ export class Device extends Events
 		return null;
 	}
 
-	GetHT(id)
+	GetHT(id = 0)
 	{
 		if(id==0)
 			return this.devices_ht;
