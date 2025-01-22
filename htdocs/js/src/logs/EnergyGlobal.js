@@ -343,6 +343,9 @@ export class EnergyGlobal extends React.Component
 		if(this.state.loading)
 			return (<Loader />);
 
+		if(Object.keys(this.state.energy).length==0)
+			return (<div className="center">No data to display</div>);
+
 		return (
 			<div className="sc-logsenergy">
 				<table className="layout-evenodd">
