@@ -68,6 +68,10 @@ export class Global extends React.Component
 
 	getPVRatio() {
 		let pv_consumed = this.state.pv_energy - this.state.grid_exported_energy;
+
+		if(pv_consumed + this.state.grid_energy == 0)
+			return 0;
+
 		return pv_consumed / (this.state.grid_energy + pv_consumed) * 100;
 	}
 
