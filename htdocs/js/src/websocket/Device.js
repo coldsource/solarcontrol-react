@@ -35,7 +35,7 @@ export class Device extends Events
 				this.hws = device;
 			if(['passive'].indexOf(device.device_type)>=0)
 				this.devices_passive.push(device);
-			else if(['ht', 'htmini'].indexOf(device.device_type)>=0)
+			else if(['ht', 'htmini', 'wind'].indexOf(device.device_type)>=0)
 				this.devices_ht.push(device);
 		}
 

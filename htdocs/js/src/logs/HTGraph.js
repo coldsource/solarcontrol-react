@@ -24,7 +24,13 @@ export class HTGraph extends React.Component
 			this.setState({ht: ht});
 
 			let type = this.props.type;
-			let unit = (type=='t')?'°C':'%';
+			let unit;
+			if(type=='t')
+				unit = '°C';
+			else if(type=='h')
+				unit = '%';
+			else if(type=='w')
+				unit = 'km/h';
 
 			let points = [];
 			let x = [];

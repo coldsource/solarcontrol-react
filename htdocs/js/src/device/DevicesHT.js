@@ -57,12 +57,45 @@ export class DevicesHT extends React.Component
 	}
 
 	renderModalTitle() {
+		if(this.state.graph_type=='w')
+		{
+			return (
+				<div className="httitle">
+					<input type="date" value={this.state.date} onChange={ ev => this.setState({date: ev.target.value}) } />
+				</div>
+			);
+		}
+
 		return (
 			<div className="httitle">
 				<i className="scf scf-thermometer" onClick={ () => this.setState({graph_type: 't'}) }/>
 				<i className="scf scf-droplet" onClick={ () => this.setState({graph_type: 'h'}) } />
 				<input type="date" value={this.state.date} onChange={ ev => this.setState({date: ev.target.value}) } />
 			</div>
+		);
+	}
+
+	renderHT(device) {
+		if(device.temperature===null || device.humidity===null)
+			return;
+
+		return (
+			<React.Fragment>
+				<i className="scf scf-thermometer" /> {device.temperature} °C
+				&#160;&#160;
+				<i className="scf scf-droplet" /> {device.humidity} %
+			</React.Fragment>
+		);
+	}
+
+	renderWind(device) {
+		if(device.wind===null)
+			return;
+
+		return (
+			<React.Fragment>
+				<i className="scf scf-wind" /> {device.wind} km/h
+			</React.Fragment>
 		);
 	}
 
@@ -78,13 +111,12 @@ export class DevicesHT extends React.Component
 							{device.device_name}
 						</span>
 						<div className="ht">
-							<i className="scf scf-thermometer" /> {device.temperature} °C
-							&#160;&#160;
-							<i className="scf scf-droplet" /> {device.humidity} %
+							{this.renderHT(device)}
+							{this.renderWind(device)}
 						</div>
 					</div>
 					<div>
-						<i className="scf scf-graph" onClick={ () => this.setState({graph_type: 't', graph_id: device.device_id}) } />
+						<i className="scf scf-graph" onClick={ () => this.setState({graph_type: device.device_type=='wind'?'w':'t', graph_id: device.device_id}) } />
 					</div>
 				</div>
 			);

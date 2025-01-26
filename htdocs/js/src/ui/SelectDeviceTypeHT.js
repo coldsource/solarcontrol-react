@@ -5,7 +5,8 @@ export class SelectDeviceTypeHT extends React.Component
 
 		this.types = {
 			'ht': 'scf-wifi',
-			'htmini': 'scf-bluetooth'
+			'htmini': 'scf-bluetooth',
+			'wind': 'scf-wind'
 		};
 	}
 

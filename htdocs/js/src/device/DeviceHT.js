@@ -47,7 +47,7 @@ export class DeviceHT extends React.Component
 			device_config: {}
 		};
 
-		if(device.device_type=='ht')
+		if(device.device_type=='ht' || device.device_type=='wind')
 			params.device_config.mqtt_id = config.mqtt_id;
 
 		if(device.device_type=='htmini')
@@ -96,7 +96,7 @@ export class DeviceHT extends React.Component
 	renderHTFields() {
 		const device = this.state.device;
 
-		if(device.device_type!='ht')
+		if(device.device_type!='ht' && device.device_type!='wind')
 			return;
 
 		const config = device.device_config;
