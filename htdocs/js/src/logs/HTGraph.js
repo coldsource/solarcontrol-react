@@ -20,10 +20,12 @@ export class HTGraph extends React.Component
 	}
 
 	reload() {
-		API.instance.command('logs', 'ht', {device_id: parseInt(this.props.id), day: this.props.day}).then(ht => {
+		let type = this.props.type;
+		let api_type = type=='w'?'wind':'ht';
+
+		API.instance.command('logs', api_type, {device_id: parseInt(this.props.id), day: this.props.day}).then(ht => {
 			this.setState({ht: ht});
 
-			let type = this.props.type;
 			let unit;
 			if(type=='t')
 				unit = '°C';
@@ -47,7 +49,13 @@ export class HTGraph extends React.Component
 				let data_max = data[type + 'max'];
 
 				let d = date.substr(11, 5);
-				let v = ((data_min+data_max)/2).toFixed(1);
+
+				let v;
+				if(data[type + 'avg']!==undefined)
+					v = data[type + 'avg'].toFixed(1); // Average is provided
+				else
+					v = ((data_min+data_max)/2).toFixed(1); // Compute average
+
 				x.push((n%4==0)?d:'');
 				y.push(v);
 

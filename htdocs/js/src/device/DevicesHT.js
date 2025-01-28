@@ -94,17 +94,26 @@ export class DevicesHT extends React.Component
 
 		return (
 			<React.Fragment>
-				<i className="scf scf-wind" /> {device.wind} km/h
+				{device.wind} km/h
 			</React.Fragment>
 		);
 	}
 
 	renderDevices() {
-		return this.state.devices.map(device => {
+		return this.state.devices.sort((a, b) => {
+			const A = a.device_name.toUpperCase();
+			const B = b.device_name.toUpperCase();
+			if(A<B)
+				return -1;
+			if(A>B)
+				return 1;
+			return 0;
+		}).map(device => {
+			let icon = device.device_type=='wind'?'scf-wind':'scf-thermometer-droplet';
 			return (
 				<div key={device.device_id}>
 					<div>
-						<i className="scf scf-thermometer-droplet" />
+						<i className={"scf " + icon} />
 					</div>
 					<div>
 						<span className="name" onClick={ () => this.edit(device.device_id) }>

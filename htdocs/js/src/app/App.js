@@ -109,7 +109,7 @@ export class App extends React.Component
 				<div className="menu">
 					<i className="scf scf-meter" onClick={() => this.changeURL('?loc=meter')} />
 					<i className="scf scf-plug" onClick={() => this.changeURL('?loc=devicesonoff')} />
-					<i className="scf scf-thermometer" onClick={() => this.changeURL('?loc=devicesht')} />
+					<i className="scf scf-weather" onClick={() => this.changeURL('?loc=devicesht')} />
 					<i className="scf scf-droplet" onClick={() => this.changeURL('?loc=devicehws')}></i>
 					<i className="scf scf-electricity" onClick={() => this.changeURL('?loc=energy')} />
 					<i className="scf scf-menu" onClick={() => this.changeURL('?loc=config')} />
