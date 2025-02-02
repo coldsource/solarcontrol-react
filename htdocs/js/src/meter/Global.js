@@ -2,6 +2,7 @@ import {Meter} from '../websocket/Meter.js';
 import {KWh} from '../ui/KWh.js';
 import {KW} from '../ui/KW.js';
 import {API} from '../websocket/API.js';
+import {Device as ProtocolDevice} from '../websocket/Device.js';
 
 export class Global extends React.Component
 {
@@ -10,11 +11,15 @@ export class Global extends React.Component
 
 		this.state = {
 			hws_min: 0,
+			devices_onoff: [],
+			devices_passive: [],
 		}
 
 		this.ref = React.createRef();
 
 		this.update = this.update.bind(this);
+		this.reload_onoff = this.reload_onoff.bind(this);
+		this.reload_passive = this.reload_passive.bind(this);
 	}
 
 	componentDidMount() {
@@ -28,14 +33,28 @@ export class Global extends React.Component
 				 hws_min = hws_min.substr(0, hws_min.length-2);
 			 this.setState({hws_min: hws_min});
 		 });
+
+		ProtocolDevice.instance.Subscribe('onoff', 0, this.reload_onoff);
+		ProtocolDevice.instance.Subscribe('passive', 0, this.reload_passive);
 	}
 
 	componentWillUnmount() {
 		this.meter.disconnect();
+
+		ProtocolDevice.instance.Unsubscribe('onoff', 0, this.reload_onoff);
+		ProtocolDevice.instance.Unsubscribe('passive', 0, this.reload_passive);
 	}
 
 	update(data) {
 		this.setState(data);
+	}
+
+	reload_onoff(devices) {
+		this.setState({devices_onoff: devices});
+	}
+
+	reload_passive(devices) {
+		this.setState({devices_passive: devices});
 	}
 
 	renderLeaf() {
@@ -101,6 +120,43 @@ export class Global extends React.Component
 		return this.calcLinearGradient2(prct_forced, prct_offload, 0);
 	}
 
+	renderTopDevice() {
+		let devices = this.state.devices_onoff.concat(this.state.devices_passive);
+
+		// Find most consuming device
+		let max = -1, max_device = null;
+		for(const device of devices)
+		{
+			if(device.power && device.power>max)
+			{
+				max = device.power;
+				max_device = device;
+			}
+		}
+
+		if(max_device===null)
+			return;
+
+		let name = max_device.device_name;
+		if(name.length>20)
+			name = name.substr(0, 20) + '...';
+
+		return (
+			<div>
+				<div className="label">{name}</div>
+				<div>
+					<div className="network-vert">
+						<img className="arrow-down" src="/images/arrow-down.svg" />
+						<span className="meter"><KW value={max_device.power} /></span>
+					</div>
+					<div className="round">
+						<div><i className="scf scf-bolt" /></div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
 	render() {
 		return (
 			<div className="sc-meter-global">
@@ -139,27 +195,32 @@ export class Global extends React.Component
 					<span><span>{this.getPVRatio().toFixed(0) + '% PV'}</span></span>
 				</div>
 				<div className="home-devices">
-					<div></div>
 					<div>
-						<div className="network-vert">
-							<img className="arrow-down" src="/images/arrow-down.svg" />
-							<span className="meter"><KW value={this.state.hws} /></span>
-						</div>
-						<div className="round" style={this.calcHWSMixStyle()}>
-							<div><i className="scf scf-droplet" /></div>
-							<span className="meter bottom energy"><KWh value={this.state.hws_energy} /></span>
+						<div>
+							<div className="label">HWS</div>
+							<div className="network-vert">
+								<img className="arrow-down" src="/images/arrow-down.svg" />
+								<span className="meter"><KW value={this.state.hws} /></span>
+							</div>
+							<div className="round" style={this.calcHWSMixStyle()}>
+								<div><i className="scf scf-droplet" /></div>
+								<span className="meter bottom energy"><KWh value={this.state.hws_energy} /></span>
+							</div>
 						</div>
 					</div>
 					<div>
-						<div className="network-vert">
-							<img className="arrow-down" src="/images/arrow-down.svg" />
-							<span className="meter"><KW value={this.state.net_available} /></span>
-						</div>
-						<div className="round">
-							<div><i className="scf scf-available-energy" /></div>
+						<div className="label">Available power</div>
+						<div>
+							<div className="network-vert">
+								<img className="arrow-down" src="/images/arrow-down.svg" />
+								<span className="meter"><KW value={this.state.net_available} /></span>
+							</div>
+							<div className="round">
+								<div><i className="scf scf-available-energy" /></div>
+							</div>
 						</div>
 					</div>
-					<div></div>
+					{this.renderTopDevice()}
 				</div>
 			</div>
 		);
