@@ -166,7 +166,8 @@ $border-size: 3px;
 			.label {
 				position: absolute;
 				margin-left: -1.2rem;
-				writing-mode: sideways-lr;
+				writing-mode: vertical-lr;
+				transform: rotate(180deg);
 				text-align: center;
 				font-size: 75%;
 				height: calc(#{$network-size + $item-radius});
