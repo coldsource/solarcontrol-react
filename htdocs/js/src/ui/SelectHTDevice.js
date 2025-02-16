@@ -41,6 +41,9 @@ export class SelectHTDevice extends React.Component
 
 	renderTiles() {
 		return this.state.ht_devices.map(ht_device => {
+			if(['ht', 'htmini'].indexOf(ht_device.device_type)==-1)
+				return; // Filter only HT devices
+
 			return (
 				<div
 					key={ht_device.device_id}
