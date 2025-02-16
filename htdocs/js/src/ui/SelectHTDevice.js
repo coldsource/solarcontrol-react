@@ -11,6 +11,16 @@ export class SelectHTDevice extends React.Component
 		}
 	}
 
+	componentDidMount() {
+		if(this.props.multiple=="no")
+			return;
+
+		// Check all devices exist as it's not possible to remove an invalid device in multiple mode
+		let new_value = this.props.value.filter(device_id => ProtocolDevice.instance.GetHT(device_id)!==null);
+		if(new_value.length!=this.props.value.length)
+			this.props.onChange({target: {name: this.props.name, value: new_value}})
+	}
+
 	isSelected(device_id)
 	{
 		if(this.props.multiple=="no")
