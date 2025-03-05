@@ -40,9 +40,6 @@ export class DeviceElectrical extends React.Component
 		else
 		{
 			let device = ProtocolDevice.instance.GetElectrical(this.props.id);
-			if(device.device_type=='hws')
-				device.device_config.min_energy_for_last = device.device_config.min_energy_for_last * 86400; // Convert days to seconds
-
 			this.setState({device: device});
 		}
 	}
