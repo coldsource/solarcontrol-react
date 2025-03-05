@@ -11,15 +11,13 @@ export class Global extends React.Component
 
 		this.state = {
 			hws_min: 0,
-			devices_onoff: [],
-			devices_passive: [],
+			devices: [],
 		}
 
 		this.ref = React.createRef();
 
 		this.update = this.update.bind(this);
-		this.reload_onoff = this.reload_onoff.bind(this);
-		this.reload_passive = this.reload_passive.bind(this);
+		this.reload = this.reload.bind(this);
 	}
 
 	componentDidMount() {
@@ -34,27 +32,21 @@ export class Global extends React.Component
 			 this.setState({hws_min: hws_min});
 		 });
 
-		ProtocolDevice.instance.Subscribe('onoff', 0, this.reload_onoff);
-		ProtocolDevice.instance.Subscribe('passive', 0, this.reload_passive);
+		ProtocolDevice.instance.Subscribe('electrical', 0, this.reload);
 	}
 
 	componentWillUnmount() {
 		this.meter.disconnect();
 
-		ProtocolDevice.instance.Unsubscribe('onoff', 0, this.reload_onoff);
-		ProtocolDevice.instance.Unsubscribe('passive', 0, this.reload_passive);
+		ProtocolDevice.instance.Unsubscribe('electrical', 0, this.reload);
 	}
 
 	update(data) {
 		this.setState(data);
 	}
 
-	reload_onoff(devices) {
-		this.setState({devices_onoff: devices});
-	}
-
-	reload_passive(devices) {
-		this.setState({devices_passive: devices});
+	reload(devices) {
+		this.setState({devices: devices});
 	}
 
 	renderLeaf() {
@@ -121,7 +113,7 @@ export class Global extends React.Component
 	}
 
 	renderTopDevice() {
-		let devices = this.state.devices_onoff.concat(this.state.devices_passive);
+		let devices = this.state.devices;
 
 		// Find most consuming device
 		let max = -1, max_device = null;

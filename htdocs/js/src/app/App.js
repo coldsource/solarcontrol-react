@@ -1,7 +1,7 @@
 import {API as ProtocolAPI} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {Global} from '../meter/Global.js';
-import {DevicesOnOff} from '../device/DevicesOnOff.js';
+import {DevicesElectrical} from '../device/DevicesElectrical.js';
 import {DevicesHT} from '../device/DevicesHT.js';
 import {DeviceHWS} from '../device/DeviceHWS.js';
 import {Energy} from '../logs/Energy.js';
@@ -83,8 +83,8 @@ export class App extends React.Component
 
 		if(path=='' || path=='meter')
 			return (<Global />);
-		else if(path=='devicesonoff')
-			return (<DevicesOnOff />);
+		else if(path=='deviceselectrical')
+			return (<DevicesElectrical />);
 		else if(path=='devicesht')
 			return (<DevicesHT />);
 		else if(path=='devicehws')
@@ -108,11 +108,11 @@ export class App extends React.Component
 				{this.renderLoader()}
 				<div className="menu">
 					<i className="scf scf-meter" onClick={() => this.changeURL('?loc=meter')} />
-					<i className="scf scf-plug" onClick={() => this.changeURL('?loc=devicesonoff')} />
+					<i className="scf scf-plug" onClick={() => this.changeURL('?loc=deviceselectrical')} />
 					<i className="scf scf-weather" onClick={() => this.changeURL('?loc=devicesht')} />
 					<i className="scf scf-droplet" onClick={() => this.changeURL('?loc=devicehws')}></i>
 					<i className="scf scf-electricity" onClick={() => this.changeURL('?loc=energy')} />
-					<i className="scf scf-menu" onClick={() => this.changeURL('?loc=config')} />
+					<i className="scf scf-settings" onClick={() => this.changeURL('?loc=config')} />
 				</div>
 				<div>
 					{this.renderScreen()}

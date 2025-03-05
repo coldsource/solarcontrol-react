@@ -1,7 +1,7 @@
 import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
-import {DeviceOnOff} from './DeviceOnOff.js';
+import {DeviceElectrical} from './DeviceElectrical.js';
 
 
 export class DeviceHWS extends React.Component
@@ -29,7 +29,7 @@ export class DeviceHWS extends React.Component
 	}
 
 	setManualState(state) {
-		API.instance.command('deviceonoff', 'setstate', {device_id: this.state.devicehws.device_id, state: state});
+		API.instance.command('deviceelectrical', 'setstate', {device_id: this.state.devicehws.device_id, state: state});
 	}
 
 	renderStateType() {
@@ -68,7 +68,7 @@ export class DeviceHWS extends React.Component
 						</tr>
 					</tbody>
 				</table>
-				<DeviceOnOff id={this.state.devicehws.device_id} />
+				<DeviceElectrical id={this.state.devicehws.device_id} parts={['Force', 'HWS']}/>
 			</div>
 		);
 	}

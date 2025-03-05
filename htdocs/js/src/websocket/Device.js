@@ -6,9 +6,12 @@ export class Device extends Events
 	{
 		super("device");
 
-		this.devices_onoff = [];
-		this.devices_passive = [];
+		this.devices_electrical = [];
 		this.devices_ht = [];
+
+		// Special devices
+		this.grid = null;
+		this.pv = null;
 		this.hws = null;
 
 		this.subscriptions = [];
@@ -23,18 +26,19 @@ export class Device extends Events
 
 	handle_message(devices)
 	{
-		this.devices_onoff = [];
-		this.devices_passive = [];
+		this.devices_electrical = [];
 		this.devices_ht = [];
 
 		for(const device of devices)
 		{
-			if(['heater', 'cmv', 'timerange'].indexOf(device.device_type)>=0)
-				this.devices_onoff.push(device);
+			if(['heater', 'cmv', 'timerange', 'passive'].indexOf(device.device_type)>=0)
+				this.devices_electrical.push(device);
+			else if(device.device_type=='grid')
+				this.grid = device;
+			else if(device.device_type=='pv')
+				this.pv = device;
 			else if(device.device_type=='hws')
 				this.hws = device;
-			if(['passive'].indexOf(device.device_type)>=0)
-				this.devices_passive.push(device);
 			else if(['ht', 'htmini', 'wind'].indexOf(device.device_type)>=0)
 				this.devices_ht.push(device);
 		}
@@ -47,15 +51,17 @@ export class Device extends Events
 		for(const sub of this.subscriptions)
 		{
 			let devices;
-			if(sub.type=='onoff')
-				devices = this.devices_onoff;
-			else if(sub.type=='passive')
-				devices = this.devices_passive;
+			if(sub.type=='electrical')
+				devices = this.devices_electrical;
 			else if(sub.type=='ht')
 				devices = this.devices_ht;
 
 			if(sub.id==0)
 				sub.cbk(devices);
+			else if(sub.id=='grid')
+				sub.cbk(this.grid);
+			else if(sub.id=='pv')
+				sub.cbk(this.pv);
 			else if(sub.id=='hws')
 				sub.cbk(this.hws);
 			else
@@ -72,29 +78,20 @@ export class Device extends Events
 		}
 	}
 
-	GetOnOff(id = 0)
+	GetElectrical(id = 0)
 	{
 		if(id==0)
-			return this.devices_onoff;
+			return this.devices_electrical;
 
 		if(this.hws.device_id==id)
-			return this.hws; // Special HWS device is also OnOff device
+			return this.hws; // Special HWS device
+		else if(this.grid.device_id==id)
+			return this.grid; // Special Grid
+		else if(this.pv.device_id==id)
+			return this.pv; // Special PV device
 
-		for(const device of this.devices_onoff)
-		{
-			if(device.device_id==id)
-				return device;
-		}
 
-		return null;
-	}
-
-	GetPassive(id = 0)
-	{
-		if(id==0)
-			return this.devices_passive;
-
-		for(const device of this.devices_passive)
+		for(const device of this.devices_electrical)
 		{
 			if(device.device_id==id)
 				return device;

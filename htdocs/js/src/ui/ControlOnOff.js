@@ -10,7 +10,7 @@ export class ControlOnOff extends React.Component
 
 	toggleState() {
 		let new_state = !this.props.state;
-		API.instance.command('deviceonoff', 'setstate', {device_id: this.props.device_id, state: new_state?'on':'off'});
+		API.instance.command('deviceelectrical', 'setstate', {device_id: this.props.device_id, state: new_state?'on':'off'});
 	}
 
 	render() {
