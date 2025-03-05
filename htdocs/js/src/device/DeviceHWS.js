@@ -17,11 +17,11 @@ export class DeviceHWS extends React.Component
 	}
 
 	componentDidMount() {
-		ProtocolDevice.instance.Subscribe('onoff', 'hws', this.reload);
+		ProtocolDevice.instance.Subscribe('electrical', 'hws', this.reload);
 	}
 
 	componentWillUnmount() {
-		ProtocolDevice.instance.Unsubscribe('onoff', 'hws', this.reload);
+		ProtocolDevice.instance.Unsubscribe('electrical', 'hws', this.reload);
 	}
 
 	reload(devicehws) {

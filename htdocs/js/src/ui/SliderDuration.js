@@ -45,7 +45,6 @@ export class SliderDuration extends React.Component
 	}
 
 	componentDidMount() {
-
 		this.ref_cursor.current.addEventListener('mousedown', this.startDragging, {passive: false});
 		this.ref_cursor.current.addEventListener('touchstart', this.startDragging, {passive: false});
 
@@ -66,6 +65,12 @@ export class SliderDuration extends React.Component
 		this.ref_cursor.current.removeEventListener('touchstart', this.startDragging);
 		document.removeEventListener('mouseup', this.stopDragging);
 		document.removeEventListener('touchend', this.stopDragging);
+	}
+
+	getValue() {
+		if(this.props.type!==undefined && this.props.type=='days')
+			return this.props.value * 86400; // Convert days to seconds
+		return this.props.value;
 	}
 
 	startDragging(ev) {
@@ -93,8 +98,11 @@ export class SliderDuration extends React.Component
 			new_pos = 1;
 
 		let new_duration = this.getDuration(new_pos);
-		if(new_duration==this.props.value)
+		if(new_duration==this.getValue())
 			return;
+
+		if(this.props.type!==undefined && this.props.type=='days')
+			new_duration /= 86400; // Convert back to days
 
 		this.props.onChange({target: {name: this.props.name, value: new_duration}});
 	}
@@ -191,7 +199,7 @@ export class SliderDuration extends React.Component
 	render() {
 		let margin = 0;
 		if(this.state.container_width_px!=0)
-			margin = (this.state.container_width_px - this.state.cursor_width_px) * this.getPosition(this.props.value);
+			margin = (this.state.container_width_px - this.state.cursor_width_px) * this.getPosition(this.getValue());
 
 		return (
 			<div ref={this.ref_container} className="sc-slider-duration">
@@ -199,7 +207,7 @@ export class SliderDuration extends React.Component
 					<div className="track"></div>
 					<i ref={this.ref_cursor} className="scf scf-button" style={{marginLeft: margin}} />
 				</div>
-				<div className="label">{this.renderDuration(this.props.value)}</div>
+				<div className="label">{this.renderDuration(this.getValue())}</div>
 			</div>
 		);
 	}
