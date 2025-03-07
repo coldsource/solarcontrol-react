@@ -7,7 +7,9 @@ export class API
 		API.instance = this;
 
 		this.cnx_promise = new Promise(resolve => this.cnx_resolve = resolve);
-		this.api_promise = null;
+		this.api_promises = {};
+
+		this.api_id = 0;
 	}
 
 	async connect()
@@ -32,28 +34,36 @@ export class API
 				return; // Keepalive answer
 
 			let ret = JSON.parse(ev.data);
-			if(ret!==null && ret.status!==undefined && ret.status=='error')
+			let promise = self.api_promises[ret.id];
+			delete self.api_promises[ret.id];
+
+			if(ret!==null && ret.status=='error')
 			{
 				App.loader(false);
 				App.error(ret.message);
-				self.api_reject(ret.message);
+				promise.reject(ret.message);
 				return;
 			}
 
 			App.loader(false);
-			self.api_resolve(ret);
+			promise.resolve(ret.res);
 		}
 	}
 
 	command(module, cmd, parameters = {})
 	{
-		this.api_promise = new Promise((resolve, reject) => { this.api_resolve = resolve; this.api_reject = reject; });
+		let id = ++this.api_id;
+
+		let promise = {};
+		promise.object = new Promise((resolve, reject) => { promise.resolve = resolve; promise.reject = reject; });
+		this.api_promises[id] = promise;
+
 		App.loader(true);
 
 		this.cnx_promise.then(() => {
-			this.ws.send(JSON.stringify({module: module, cmd: cmd, parameters: parameters}));
+			this.ws.send(JSON.stringify({id: id, module: module, cmd: cmd, parameters: parameters}));
 		});
 
-		return this.api_promise;
+		return promise.object;
 	}
 }
