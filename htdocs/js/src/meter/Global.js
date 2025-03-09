@@ -32,6 +32,8 @@ export class Global extends React.Component
 			hws_min = hws_min.substr(0, hws_min.length-2);
 
 		let limits = await API.instance.command('storage', 'get', {name: 'limits'});
+		if(limits===null)
+			limits = {};
 
 		this.setState({hws_min: hws_min, limits: limits});
 
