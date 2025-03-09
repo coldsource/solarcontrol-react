@@ -139,8 +139,14 @@ export class DeviceElectrical extends React.Component
 			config.control.ip = auto_device.ip;
 			config.control.mqtt_id = topic;
 		}
-		else if(config.meter!==undefined)
+
+		if(config.meter!==undefined)
 		{
+			if(auto_device.type=='Pro3EM')
+				config.meter.type = '3em';
+			else
+				config.meter.type = 'plug';
+
 			config.meter.mqtt_id = topic;
 		}
 
