@@ -23,7 +23,7 @@ export class DeviceElectrical extends React.Component
 			cmv: ['Name', 'Prio', 'Control', 'CMV', 'ExpectedConsumption', 'Offload', 'Force', 'MinOnOff', 'MaxOn'],
 			hws: ['Meter', 'Control', 'Force', 'HWS'],
 			passive: ['Name', 'Meter'],
-			grid: ['Meter'],
+			grid: ['Meter', 'Input'],
 			pv: ['Meter']
 		}
 
@@ -69,7 +69,8 @@ export class DeviceElectrical extends React.Component
 		if(device.device_type=='hws')
 			return;
 
-		this.props.onClose();
+		if(this.props.onClose!==undefined)
+			this.props.onClose();
 	}
 
 	deletedevice() {

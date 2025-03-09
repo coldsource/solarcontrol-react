@@ -3,6 +3,7 @@ import {SelectHTDevice} from '../ui/SelectHTDevice.js';
 import {SliderDuration} from '../ui/SliderDuration.js';
 import {ConfigDeviceControl} from '../ui/ConfigDeviceControl.js';
 import {ConfigDeviceMeter} from '../ui/ConfigDeviceMeter.js';
+import {ConfigDeviceInput} from '../ui/ConfigDeviceInput.js';
 import {Tooltip} from '../ui/Tooltip.js';
 
 export class DeviceConfig extends React.Component
@@ -26,6 +27,10 @@ export class DeviceConfig extends React.Component
 			Control: {
 				render: this.renderControl,
 				config: {control: {type: 'plug', ip: ''}}
+			},
+			Input: {
+				render: this.renderInput,
+				config: {meter: {type: 'pro', mqtt_id: '', outlet: 0}}
 			},
 			ExpectedConsumption: {
 				render: this.renderExpectedConsumption,
@@ -141,6 +146,12 @@ export class DeviceConfig extends React.Component
 	renderControl(device, config, onChange) {
 		return (
 			<ConfigDeviceControl name="control" value={config.control} onChange={onChange} />
+		);
+	}
+
+	renderInput(device, config, onChange) {
+		return (
+			<ConfigDeviceInput name="input" value={config.input} onChange={onChange} />
 		);
 	}
 

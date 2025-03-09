@@ -1,4 +1,3 @@
-import {SelectInteger} from './SelectInteger.js';
 import {SelectLetter} from './SelectLetter.js';
 import {Tooltip} from './Tooltip.js';
 
