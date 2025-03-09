@@ -11,7 +11,7 @@ export class Autodetect extends React.Component
 	}
 
 	componentDidMount() {
-		API.instance.command('shelly', 'autodetect', {host: window.location.hostname}).then(res => {
+		API.instance.command('shelly', 'autodetect', {}).then(res => {
 			this.setState({devices: res});
 		});
 	}
