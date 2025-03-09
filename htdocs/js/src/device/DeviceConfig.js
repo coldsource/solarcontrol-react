@@ -3,6 +3,7 @@ import {SelectHTDevice} from '../ui/SelectHTDevice.js';
 import {SliderDuration} from '../ui/SliderDuration.js';
 import {ConfigDeviceControl} from '../ui/ConfigDeviceControl.js';
 import {ConfigDeviceMeter} from '../ui/ConfigDeviceMeter.js';
+import {Tooltip} from '../ui/Tooltip.js';
 
 export class DeviceConfig extends React.Component
 {
@@ -108,7 +109,11 @@ export class DeviceConfig extends React.Component
 	renderName(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<dt>Name</dt>
+				<dt>
+					<Tooltip content="Name of the device, only used by you">
+						Name
+					</Tooltip>
+				</dt>
 				<dd><input type="text" name="device_name" value={device.device_name} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
@@ -117,7 +122,11 @@ export class DeviceConfig extends React.Component
 	renderPrio(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<dt>Priority</dt>
+				<dt>
+					<Tooltip content="When offloading, highest priority devices will be switched on first if sufficient PV power is available. 0 is the highest priority.">
+						Priority
+					</Tooltip>
+				</dt>
 				<dd><input type="number" name="prio" value={config.prio} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
@@ -138,7 +147,11 @@ export class DeviceConfig extends React.Component
 	renderExpectedConsumption(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<dt>Expected consumption (W)</dt>
+				<dt>
+					<Tooltip content="When offloading, the device will only be switched on if at least this power is available from PV. You can usually find this value on the device.">
+						Expected consumption (W)
+					</Tooltip>
+				</dt>
 				<dd><input type="number" name="expected_consumption" value={config.expected_consumption} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
@@ -147,11 +160,23 @@ export class DeviceConfig extends React.Component
 	renderHeater(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<dt>Linked thermometer</dt>
+				<dt>
+					<Tooltip content="Themometer used to get current temperature.">
+						Linked thermometer
+					</Tooltip>
+				</dt>
 				<dd><SelectHTDevice type="temperature" name="ht_device_id" value={config.ht_device_id} onChange={onChange} /></dd>
-				<dt>Forced mode target temperature (°C)</dt>
+				<dt>
+					<Tooltip content="When in «&#160; forced mode&#160;», the heater will be switched on until this temperature is reached.">
+						Forced mode target temperature (°C)
+					</Tooltip>
+				</dt>
 				<dd><input type="number" name="force_max_temperature" value={config.force_max_temperature} onChange={onChange} /></dd>
-				<dt>Offload mode target temperature (°C)</dt>
+				<dt>
+					<Tooltip content="When in «&#160; offload mode&#160;», the heater will be switched on until this temperature is reached.">
+						Offload mode target temperature (°C)
+					</Tooltip>
+				</dt>
 				<dd><input type="number" name="offload_max_temperature" value={config.offload_max_temperature} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
@@ -160,24 +185,49 @@ export class DeviceConfig extends React.Component
 	renderCMV(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<dt>Linked hygrometer</dt>
+				<dt>
+					<Tooltip content="Hygrometer used to get current humidity.">
+						Linked hygrometer
+					</Tooltip>
+				</dt>
 				<dd><SelectHTDevice type="humidity" multiple="yes" name="ht_device_ids" value={config.ht_device_ids} onChange={onChange} /></dd>
-				<dt>Forced mode target moisture (%)</dt>
+				<dt>
+					<Tooltip content="When in «&#160; forced mode&#160;», the CMV will be switched on until moisture is lower than this value or «&#160;Max on time&#160;» is reached.">
+						Forced mode target moisture (%)
+					</Tooltip>
+				</dt>
 				<dd><input type="number" name="force_max_moisture" value={config.force_max_moisture} onChange={onChange} /></dd>
-				<dt>Offload mode target moisture (%)</dt>
+				<dt>
+					<Tooltip content="When in «&#160; offload mode&#160;», the CMV will be switched on until moisture is lower than this value or «&#160;Max on time&#160;» is reached.">
+						Offload mode target moisture (%)
+					</Tooltip>
+				</dt>
 				<dd><input type="number" name="offload_max_moisture" value={config.offload_max_moisture} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
 	}
 
 	renderRemainder(device, config, onChange) {
+		let tooltip = "Compute how long this device has been turned on during the period represented by «\xa0For the last\xa0». If the device has been on for less than «\xa0Ensure minimum charging time of\xa0», it will be switched on in the period indicated by «\xa0During this period\xa0» to make the remainder.";
 		return (
 			<React.Fragment>
-				<dt>Ensure minimum charging time of</dt>
+				<dt>
+					<Tooltip content={tooltip}>
+						Ensure minimum charging time of
+					</Tooltip>
+				</dt>
 				<dd><SliderDuration name="min_on_time" value={config.min_on_time} onChange={onChange} /></dd>
-				<dt>For the last</dt>
+				<dt>
+					<Tooltip content={tooltip}>
+						For the last
+					</Tooltip>
+				</dt>
 				<dd><SliderDuration name="min_on_for_last" value={config.min_on_for_last} long={true} onChange={onChange} /></dd>
-				<dt>During this period</dt>
+				<dt>
+					<Tooltip content={tooltip}>
+						During this period
+					</Tooltip>
+				</dt>
 				<dd><TimeRanges name="remainder" value={config.remainder} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
@@ -186,7 +236,11 @@ export class DeviceConfig extends React.Component
 	renderOffload(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<dt>Offload</dt>
+				<dt>
+					<Tooltip content="Time ranges when the device will be in «&#160;Offload&#160;» mode. In offload mode the device will be switched on only if sufficient PV power is available (see «&#160;Expected Consumption&#160;»). Leaf indicates offpeak hours if configured.">
+						Offload
+					</Tooltip>
+				</dt>
 				<dd><TimeRanges name="offload" value={config.offload} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
@@ -195,20 +249,37 @@ export class DeviceConfig extends React.Component
 	renderForce(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<dt>Force</dt>
+				<dt>
+					<Tooltip content="Time ranges when the device will be in «&#160;Forced&#160;» mode. In forced mode the device will be switched on whatever the current production is. Leaf indicates offpeak hours if configured.">
+						Force
+					</Tooltip>
+				</dt>
 				<dd><TimeRanges name="force" value={config.force} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
 	}
 
 	renderHWS(device, config, onChange) {
+		let tooltip = "Compute how many energy has been taken by HWS during the period represented by «\xa0For the last\xa0». If HWS has taken less than «\xa0Ensure minimum Wh of\xa0», it will be switched on in the period indicated by «\xa0During this period\xa0» to make the remainder.";
 		return (
 			<React.Fragment>
-				<dt>Ensure minimum Wh of</dt>
+				<dt>
+					<Tooltip content={tooltip}>
+						Ensure minimum Wh of
+					</Tooltip>
+				</dt>
 				<dd><input type="number" name="min_energy" value={config.min_energy} onChange={onChange} /></dd>
-				<dt>For the last</dt>
+				<dt>
+					<Tooltip content={tooltip}>
+						For the last
+					</Tooltip>
+				</dt>
 				<dd><SliderDuration type="days" name="min_energy_for_last" value={config.min_energy_for_last} long={true} onChange={onChange} /></dd>
-				<dt>During this period</dt>
+				<dt>
+					<Tooltip content={tooltip}>
+						During this period
+					</Tooltip>
+				</dt>
 				<dd><TimeRanges name="remainder" value={config.remainder} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
@@ -217,7 +288,11 @@ export class DeviceConfig extends React.Component
 	renderMaxOn(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<dt>Maximum on time</dt>
+				<dt>
+					<Tooltip content="Once switched on, the device will always be switched off after this amount of time.">
+						Maximum on time
+					</Tooltip>
+				</dt>
 				<dd><SliderDuration name="max_on" value={config.max_on} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
@@ -226,9 +301,17 @@ export class DeviceConfig extends React.Component
 	renderMinOnOff(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<dt>Minimum on time</dt>
+				<dt>
+					<Tooltip content="Once switched on, the device will never be switched off before this amount of time. Use this to avoid too frequent on/off when offloading.">
+						Minimum on time
+					</Tooltip>
+				</dt>
 				<dd><SliderDuration name="min_on" value={config.min_on} onChange={onChange} /></dd>
-				<dt>Minimum off time</dt>
+				<dt>
+					<Tooltip content="Once switched off, the device will never be switched on before this amount of time. Use this to avoid too frequent on/off when offloading.">
+						Minimum off time
+					</Tooltip>
+				</dt>
 				<dd><SliderDuration name="min_off" value={config.min_off} onChange={onChange} /></dd>
 			</React.Fragment>
 		);

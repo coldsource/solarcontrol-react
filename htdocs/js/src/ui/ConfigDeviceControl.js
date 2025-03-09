@@ -1,4 +1,5 @@
 import {SelectInteger} from './SelectInteger.js';
+import {Tooltip} from './Tooltip.js';
 
 export class ConfigDeviceControl extends React.Component
 {
@@ -60,7 +61,11 @@ export class ConfigDeviceControl extends React.Component
 
 		return (
 			<React.Fragment>
-				<dt>Outlet number</dt>
+				<dt>
+					<Tooltip content="Outlet number on the Shelly device">
+						Outlet number
+					</Tooltip>
+				</dt>
 				<dd><SelectInteger min={1} max={3} sum={-1} name="outlet" value={value.outlet} onChange={this.change} /></dd>
 			</React.Fragment>
 		);
@@ -72,7 +77,11 @@ export class ConfigDeviceControl extends React.Component
 
 		return (
 			<React.Fragment>
-				<dt>MQTT ID</dt>
+				<dt>
+					<Tooltip content="MQTT ID configured on the Shelly device. This is mandatory to get power consumption. Will be configured automatically if you use auto detection wizard.">
+						MQTT ID
+					</Tooltip>
+				</dt>
 				<dd><input type="text" name="mqtt_id" value={mqtt_id} onChange={this.change} /></dd>
 			</React.Fragment>
 		);
@@ -82,13 +91,21 @@ export class ConfigDeviceControl extends React.Component
 		let value = this.props.value;
 		return (
 			<React.Fragment>
-				<dt>Device controller type</dt>
+				<dt>
+					<Tooltip content="Type of Shelly device used to switch on or off your device">
+						Device controller type
+					</Tooltip>
+				</dt>
 				<dd>
 					<div className="sc-select-controltype">
 						{this.renderTiles()}
 					</div>
 				</dd>
-				<dt>IP address</dt>
+				<dt>
+					<Tooltip content="IP address of the Shelly device (can be found in Shelly app or Autodetected). Will be configured automatically if you use auto detection wizard.">
+						IP address
+					</Tooltip>
+				</dt>
 				<dd><input type="text" name="ip" value={value.ip} onChange={this.change} /></dd>
 				{this.renderOutlet()}
 				{this.renderMQTTID()}
