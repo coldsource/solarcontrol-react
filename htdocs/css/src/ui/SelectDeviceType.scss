@@ -1,15 +1,15 @@
 .sc-select-devicetype {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	margin-bottom: 0.7rem;
+	dl.legend {
+		display: grid;
+		grid-template-columns: 3rem 1fr;
+		align-items: center;
+		gap: 1rem;
 
-	i {
-		@include tile;
-
-		font-size: 3rem;
-
-		&.selected {
-			background-color: $color-selected;
+		dt {
+			text-align: center;
+			i {
+				font-size: 4rem;
+			}
 		}
 	}
 }

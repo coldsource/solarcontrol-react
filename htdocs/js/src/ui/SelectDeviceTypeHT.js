@@ -10,23 +10,29 @@ export class SelectDeviceTypeHT extends React.Component
 		};
 	}
 
-	renderTiles() {
-		return Object.keys(this.types).map(type => {
-			let icon = this.types[type];
-			return (
-				<i
-					key={type}
-					className={"scf " + icon + ((this.props.value==type)?' selected':'')}
-					onClick={() => this.props.onChange({target: {name: this.props.name, value: type}})}
-				></i>
-			);
-		});
-	}
-
 	render() {
 		return (
 			<div className="sc-select-devicetype">
-				{this.renderTiles()}
+				<dl className="legend">
+					<dt>
+						<i className="scf scf-wifi" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'ht'}})} />
+					</dt>
+					<dd>
+						A Wifi controlled hyumidity and heat sensor.
+					</dd>
+					<dt>
+						<i className="scf scf-bluetooth" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'htmini'}})} />
+					</dt>
+					<dd>
+						A Bluetooth controlled hyumidity and heat sensor.
+					</dd>
+					<dt>
+						<i className="scf scf-wind" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'wind'}})} />
+					</dt>
+					<dd>
+						An anemometer controlled by shelly uni plus.
+					</dd>
+				</dl>
 			</div>
 		);
 	}
