@@ -11,6 +11,7 @@ export class Global extends React.Component
 
 		this.state = {
 			hws_min: 0,
+			limits: {},
 			devices: [],
 		}
 
@@ -20,17 +21,19 @@ export class Global extends React.Component
 		this.reload = this.reload.bind(this);
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.meter = new Meter(this.update);
 
-		API.instance.command('config', 'get', {module: 'energy'}).then(config => {
-			 let hws_min = config.config["energy.hws.min"];
-			 if(hws_min.substr(-3)=='kwh' || hws_min.substr(-3)=='kWh')
-				 hws_min = hws_min.substr(0, hws_min.length-3) * 1000;
-			 else if(hws_min.substr(-2)=='wh' || hws_min.substr(-2)=='Wh')
-				 hws_min = hws_min.substr(0, hws_min.length-2);
-			 this.setState({hws_min: hws_min});
-		 });
+		let config = await API.instance.command('config', 'get', {module: 'energy'})
+		let hws_min = config.config["energy.hws.min"];
+		if(hws_min.substr(-3)=='kwh' || hws_min.substr(-3)=='kWh')
+			hws_min = hws_min.substr(0, hws_min.length-3) * 1000;
+		else if(hws_min.substr(-2)=='wh' || hws_min.substr(-2)=='Wh')
+			hws_min = hws_min.substr(0, hws_min.length-2);
+
+		let limits = await API.instance.command('storage', 'get', {name: 'limits'});
+
+		this.setState({hws_min: hws_min, limits: limits});
 
 		ProtocolDevice.instance.Subscribe('electrical', 0, this.reload);
 	}
@@ -49,6 +52,20 @@ export class Global extends React.Component
 		this.setState({devices: devices});
 	}
 
+	getGridPrct() {
+		if(!this.state.limits.grid)
+			return 0;
+
+		return parseFloat(this.state.grid_energy) / parseFloat(this.state.limits.grid) * 100;
+	}
+
+	getPVPrct() {
+		if(!this.state.limits.pv)
+			return 0;
+
+		return parseFloat(this.state.pv_energy) / parseFloat(this.state.limits.pv) * 100;
+	}
+
 	renderLeaf() {
 		if(!this.state.offpeak)
 			return;
@@ -56,11 +73,14 @@ export class Global extends React.Component
 		return (<i className="scf scf-leaf" />);
 	}
 
-	calcLinearGradient(prct, angle) {
+	calcLinearGradient(prct, angle, color = '51,201,85,1') {
 		if(prct<1)
 			return {};
 
-		return {background: `linear-gradient(${angle}deg, rgba(51,201,85,1) 0%, rgba(51,201,85,1) ${prct}%, rgba(255,255,255,1) ${prct + 2}%, rgba(255,255,255,1) 100%)`};
+		if(prct>100)
+			prct = 100;
+
+		return {background: `linear-gradient(${angle}deg, rgba(${color}) 0%, rgba(${color}) ${prct}%, rgba(255,255,255,1) ${prct + 2}%, rgba(255,255,255,1) 100%)`};
 	}
 
 	calcLinearGradient2(prct1, prct2, angle) {
@@ -153,12 +173,12 @@ export class Global extends React.Component
 		return (
 			<div className="sc-meter-global">
 				<div className="production">
-					<div className="round">
+					<div className="round" style={this.calcLinearGradient(this.getGridPrct(), 0, '245, 130, 29')}>
 						<div><i className="scf scf-electricity" /></div>
 						<span className="meter right energy"><KWh value={this.state.grid_energy} /></span>
 					</div>
 					<div></div>
-					<div className="round">
+					<div className="round" style={this.calcLinearGradient(this.getPVPrct(), 0)}>
 						<div><i className="scf scf-sun" /></div>
 						<span className="meter left energy"><KWh value={this.state.pv_energy} /></span>
 					</div>
