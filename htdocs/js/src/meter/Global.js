@@ -1,6 +1,7 @@
 import {Meter} from '../websocket/Meter.js';
 import {KWh} from '../ui/KWh.js';
 import {KW} from '../ui/KW.js';
+import {Tooltip} from '../ui/Tooltip.js';
 import {API} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
 
@@ -161,7 +162,9 @@ export class Global extends React.Component
 				<div>
 					<div className="network-vert">
 						<img className="arrow-down" src="/images/arrow-down.svg" />
-						<span className="meter"><KW value={max_device.power} /></span>
+						<Tooltip content="Instant power of most consuming device">
+							<span className="meter"><KW value={max_device.power} /></span>
+						</Tooltip>
 					</div>
 					<div className="round">
 						<div><i className="scf scf-bolt" /></div>
@@ -177,36 +180,50 @@ export class Global extends React.Component
 				<div className="production">
 					<div className="round" style={this.calcLinearGradient(this.getGridPrct(), 0, '245, 130, 29')}>
 						<div><i className="scf scf-electricity" /></div>
-						<span className="meter right energy"><KWh value={this.state.grid_energy} /></span>
+						<Tooltip content="Total energy consumed today from the grid in Wh or kWh">
+							<span className="meter right energy"><KWh value={this.state.grid_energy} /></span>
+						</Tooltip>
 					</div>
 					<div></div>
 					<div className="round" style={this.calcLinearGradient(this.getPVPrct(), 0)}>
 						<div><i className="scf scf-sun" /></div>
-						<span className="meter left energy"><KWh value={this.state.pv_energy} /></span>
+						<Tooltip content="Total energy produced today by PV in Wh or kWh">
+							<span className="meter left energy"><KWh value={this.state.pv_energy} /></span>
+						</Tooltip>
 					</div>
 				</div>
 				<div className="network">
 					<div className="connector-grid">
 						{this.state.grid<0?(<img className="arrow-grid" src="/images/arrow-up.svg" />):''}
 						{this.state.grid>=0?(<img className="arrow-bolt" src="/images/arrow-right.svg" />):''}
-						<span className="meter"><KW value={this.state.grid} />&#160;{this.renderLeaf()}</span>
+						<Tooltip content="Instant power currently taken from or sent back to the grid">
+							<span className="meter"><KW value={this.state.grid} />&#160;{this.renderLeaf()}</span>
+						</Tooltip>
 					</div>
 					<div className="round bolt" style={this.calcPowerMixStyle()}>
 						<div><i className="scf scf-bolt" /></div>
 					</div>
 					<div className="connector-pv">
 						<img className="arrow-bolt" src="/images/arrow-left.svg" />
-						<span className="meter"><KW value={this.state.pv} /></span>
+						<Tooltip content="Instant power currently produced by PV">
+							<span className="meter"><KW value={this.state.pv} /></span>
+						</Tooltip>
 					</div>
 				</div>
 				<div className="network-vert">
 					<img className="arrow-down" src="/images/arrow-down.svg" />
-					<span className="meter"><KW value={this.state.total} /></span>
+					<Tooltip content="Instant power currently consumed by the house">
+						<span className="meter"><KW value={this.state.total} /></span>
+					</Tooltip>
 				</div>
 				<div className="home" style={this.calcEnergyMixStyle()}>
-					<span className="energy"><KWh value={this.state.grid_energy + this.state.pv_energy - this.state.grid_exported_energy} /></span>
+					<Tooltip content="Percent of energy consumed from PV for the day">
+						<span><span>{this.getPVRatio().toFixed(0) + '% PV'}</span></span>
+					</Tooltip>
 					<i className="scf scf-house" />
-					<span><span>{this.getPVRatio().toFixed(0) + '% PV'}</span></span>
+					<Tooltip content="Total amount of energy consumed for the day (PV + Grid, ignoring export)">
+						<span className="energy"><KWh value={this.state.grid_energy + this.state.pv_energy - this.state.grid_exported_energy} /></span>
+					</Tooltip>
 				</div>
 				<div className="home-devices">
 					<div>
@@ -214,11 +231,15 @@ export class Global extends React.Component
 							<div className="label">HWS</div>
 							<div className="network-vert">
 								<img className="arrow-down" src="/images/arrow-down.svg" />
-								<span className="meter"><KW value={this.state.hws} /></span>
+								<Tooltip content="Instant power HWS">
+									<span className="meter"><KW value={this.state.hws} /></span>
+								</Tooltip>
 							</div>
 							<div className="round" style={this.calcHWSMixStyle()}>
 								<div><i className="scf scf-droplet" /></div>
-								<span className="meter bottom energy"><KWh value={this.state.hws_energy} /></span>
+								<Tooltip content="Total energy taken by HWS for today">
+									<span className="meter bottom energy"><KWh value={this.state.hws_energy} /></span>
+								</Tooltip>
 							</div>
 						</div>
 					</div>
@@ -227,7 +248,9 @@ export class Global extends React.Component
 						<div>
 							<div className="network-vert">
 								<img className="arrow-down" src="/images/arrow-down.svg" />
-								<span className="meter"><KW value={this.state.net_available} /></span>
+								<Tooltip content="Instant power available after filling HWS">
+									<span className="meter"><KW value={this.state.net_available} /></span>
+								</Tooltip>
 							</div>
 							<div className="round">
 								<div><i className="scf scf-available-energy" /></div>

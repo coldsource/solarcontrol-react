@@ -1,0 +1,21 @@
+div.sc-tooltip {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(255, 255, 255, 0.9);
+	z-index: 100;
+
+	.content {
+		max-width: $max-app-width;
+		margin: auto;
+		padding-top: 30vh;
+		padding-left: 2rem;
+		padding-right: 2rem;
+		text-align: center !important;
+		font-size: 1rem !important;
+		font-weight: normal !important;
+		font-style: italic !important;
+	}
+}
