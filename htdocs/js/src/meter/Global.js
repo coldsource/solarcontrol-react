@@ -23,7 +23,7 @@ export class Global extends React.Component
 	componentDidMount() {
 		this.meter = new Meter(this.update);
 
-		 API.instance.command('config', 'get', {module: 'energy'}).then(config => {
+		API.instance.command('config', 'get', {module: 'energy'}).then(config => {
 			 let hws_min = config.config["energy.hws.min"];
 			 if(hws_min.substr(-3)=='kwh' || hws_min.substr(-3)=='kWh')
 				 hws_min = hws_min.substr(0, hws_min.length-3) * 1000;

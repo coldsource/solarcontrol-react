@@ -1,0 +1,21 @@
+div.sc-autodetect {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 1rem;
+
+	div {
+		text-align: center;
+
+		.name {
+			font-weight: bold;
+		}
+
+		.icon {
+			font-size: 2rem;
+		}
+
+		.type {
+			font-style: italic;
+		}
+	}
+}
