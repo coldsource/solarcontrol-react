@@ -58,14 +58,14 @@ export class Global extends React.Component
 		if(!this.state.limits.grid)
 			return 0;
 
-		return parseFloat(this.state.grid_energy) / parseFloat(this.state.limits.grid) * 100;
+		return parseFloat(this.state.grid) / parseFloat(this.state.limits.grid) * 100;
 	}
 
 	getPVPrct() {
 		if(!this.state.limits.pv)
 			return 0;
 
-		return parseFloat(this.state.pv_energy) / parseFloat(this.state.limits.pv) * 100;
+		return parseFloat(this.state.pv) / parseFloat(this.state.limits.pv) * 100;
 	}
 
 	renderLeaf() {
