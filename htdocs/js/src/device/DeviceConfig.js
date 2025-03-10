@@ -67,6 +67,14 @@ export class DeviceConfig extends React.Component
 			HWS: {
 				render: this.renderHWS,
 				config: {min_energy: 0, min_energy_for_last: 0}
+			},
+			MQTT: {
+				render: this.renderMQTT,
+				config: {mqtt_id: ''}
+			},
+			BLE: {
+				render: this.renderBLE,
+				config: {ble_addr: ''}
 			}
 		};
 
@@ -324,6 +332,36 @@ export class DeviceConfig extends React.Component
 					</Tooltip>
 				</dt>
 				<dd><SliderDuration name="min_off" value={config.min_off} onChange={onChange} /></dd>
+			</React.Fragment>
+		);
+	}
+
+	renderMQTT(device, config, onChange) {
+		return (
+			<React.Fragment>
+				<dt>
+					<Tooltip content="MQTT ID configured on the Shelly device.">
+						MQTT ID
+					</Tooltip>
+				</dt>
+				<dd>
+					<input type="text" name="mqtt_id" value={config.mqtt_id} onChange={onChange} />
+				</dd>
+			</React.Fragment>
+		);
+	}
+
+	renderBLE(device, config, onChange) {
+		return (
+			<React.Fragment>
+				<dt>
+					<Tooltip content="Bluetooth addres of the device.">
+						Bluetooth address
+					</Tooltip>
+				</dt>
+				<dd>
+					<input type="text" name="ble_addr" value={config.ble_addr} onChange={onChange} />
+				</dd>
 			</React.Fragment>
 		);
 	}

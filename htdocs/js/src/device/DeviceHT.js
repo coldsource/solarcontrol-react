@@ -3,6 +3,7 @@ import {API} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {Loader} from '../ui/Loader.js';
+import {DeviceConfig} from './DeviceConfig.js';
 
 export class DeviceHT extends React.Component
 {
@@ -13,9 +14,14 @@ export class DeviceHT extends React.Component
 			device: null,
 		};
 
+		this.config_parts = {
+			ht: ['Name', 'MQTT'],
+			htmini: ['Name', 'BLE'],
+			wind: ['Name', 'MQTT'],
+		};
+
 		this.save = this.save.bind(this);
 		this.deletedevice = this.deletedevice.bind(this);
-		this.changeDevice = this.changeDevice.bind(this);
 		this.changeConfig = this.changeConfig.bind(this);
 	}
 
@@ -24,11 +30,7 @@ export class DeviceHT extends React.Component
 		{
 			this.setState({device: {
 				device_type: this.props.device_type,
-				device_name: 'New device',
-				device_config: {
-					mqtt_id: "",
-					ble_addr: ""
-				}
+				device_name: 'New device'
 			}});
 		}
 		else
@@ -38,37 +40,13 @@ export class DeviceHT extends React.Component
 		}
 	}
 
-	save() {
+	async save() {
 		const device = this.state.device;
 		const config = device.device_config;
 
-		let params = {
-			device_name: device.device_name,
-			device_config: {}
-		};
-
-		if(device.device_type=='ht' || device.device_type=='wind')
-			params.device_config.mqtt_id = config.mqtt_id;
-
-		if(device.device_type=='htmini')
-			params.device_config.ble_addr = config.ble_addr;
-
-		let cmd;
-		if(this.props.id!=0)
-		{
-			params.device_id = parseInt(device.device_id);
-			cmd = 'set';
-		}
-		else
-		{
-			params.device_type = device.device_type;
-			cmd = 'create';
-		}
-
-		API.instance.command('deviceht', cmd, params).then(res => {
-			App.message("Device saved");
-			this.props.onClose();
-		});
+		await API.instance.command('deviceht', this.props.id!=0?'set':'create', device);
+		App.message("Device saved");
+		this.props.onClose();
 	}
 
 	deletedevice() {
@@ -78,58 +56,12 @@ export class DeviceHT extends React.Component
 		});
 	}
 
-	changeDevice(ev) {
-		let device = Object.assign({}, this.state.device);
-		device[ev.target.name] = ev.target.value;
+	changeConfig(device) {
 		this.setState({device: device});
-	}
-
-	changeConfig(ev) {
-		let config = Object.assign({}, this.state.device.device_config);
-		config[ev.target.name] = ev.target.value;
-
-		let device = Object.assign({}, this.state.device);
-		device.device_config = config;
-		this.setState({device: device});
-	}
-
-	renderHTFields() {
-		const device = this.state.device;
-
-		if(device.device_type!='ht' && device.device_type!='wind')
-			return;
-
-		const config = device.device_config;
-
-		return (
-			<React.Fragment>
-				<dt>MQTT ID</dt>
-				<dd><input type="text" name="mqtt_id" value={config.mqtt_id} onChange={this.changeConfig} /></dd>
-			</React.Fragment>
-		);
-	}
-
-	renderHTMiniFields() {
-		const device = this.state.device;
-
-		if(device.device_type!='htmini')
-			return;
-
-		const config = device.device_config;
-
-		return (
-			<React.Fragment>
-				<dt>Bluetooth address</dt>
-				<dd><input type="text" name="ble_addr" value={config.ble_addr} onChange={this.changeConfig} /></dd>
-			</React.Fragment>
-		);
 	}
 
 	renderDelete() {
 		if(this.props.id==0)
-			return;
-
-		if(this.state.device!==null && this.state.device.device_type=='hws')
 			return;
 
 		return (
@@ -146,18 +78,13 @@ export class DeviceHT extends React.Component
 		if(device===null)
 			return (<Loader />);
 
-		const config = device.device_config;
+		let parts = this.props.parts!==undefined?this.props.parts:this.config_parts[device.device_type];
 
 		return (
 			<div className="sc-device">
 				<Subscreen title={device.device_name} onClose={this.props.onClose}>
 					<div className="layout-form">
-						<dl>
-							<dt>Name</dt>
-							<dd><input type="text" name="device_name" value={device.device_name} onChange={this.changeDevice} /></dd>
-							{this.renderHTFields()}
-							{this.renderHTMiniFields()}
-						</dl>
+						<DeviceConfig parts={parts} device={device} onChange={this.changeConfig} />
 						<div className="submit" onClick={this.save}>Save</div>
 						{this.renderDelete()}
 					</div>
