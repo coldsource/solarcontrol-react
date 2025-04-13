@@ -39,7 +39,7 @@ export class TimeRanges extends React.Component
 		const name = this.props.name;
 
 		let time_ranges = this.props.value;
-		time_range.splice(idx, 1);
+		time_ranges.splice(idx, 1);
 		this.props.onChange({target: {name: name, value: time_ranges}});
 	}
 
