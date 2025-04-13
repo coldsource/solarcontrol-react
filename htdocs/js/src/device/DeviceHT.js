@@ -4,6 +4,7 @@ import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {Loader} from '../ui/Loader.js';
 import {DeviceConfig} from './DeviceConfig.js';
+import {AutodetectBLE} from './AutodetectBLE.js';
 
 export class DeviceHT extends React.Component
 {
@@ -12,6 +13,7 @@ export class DeviceHT extends React.Component
 
 		this.state = {
 			device: null,
+			autodetect: false,
 		};
 
 		this.config_parts = {
@@ -23,6 +25,7 @@ export class DeviceHT extends React.Component
 		this.save = this.save.bind(this);
 		this.deletedevice = this.deletedevice.bind(this);
 		this.changeConfig = this.changeConfig.bind(this);
+		this.autoConfig = this.autoConfig.bind(this);
 	}
 
 	componentDidMount() {
@@ -72,11 +75,47 @@ export class DeviceHT extends React.Component
 		);
 	}
 
+	autoConfig(addr) {
+
+		let device = this.state.device;
+		let config = device.device_config;
+
+		if(addr)
+			config.ble_addr = addr;
+
+		this.setState({autodetect: false, device: device});
+	}
+
+	renderAutoDetectBLE() {
+		if(this.props.id!=0)
+			return;
+
+		if(this.state.device.device_type!='htmini')
+			return;
+
+		return (
+			<div className="wizard" onClick={ () => this.setState({autodetect: true}) }>
+				<i className="scf scf-wizard" /> Autodetect
+			</div>
+		);
+	}
+
 	render() {
 		const device = this.state.device;
 
 		if(device===null)
 			return (<Loader />);
+
+		if(this.state.autodetect)
+		{
+			return (
+				<div className="sc-device">
+					<Subscreen title="Press device's button" onClose={ () => this.setState({autodetect: false}) }>
+						<AutodetectBLE onSelect={this.autoConfig} />
+					</Subscreen>
+				</div>
+			);
+		}
 
 		let parts = this.props.parts!==undefined?this.props.parts:this.config_parts[device.device_type];
 
@@ -84,6 +123,7 @@ export class DeviceHT extends React.Component
 			<div className="sc-device">
 				<Subscreen title={device.device_name} onClose={this.props.onClose}>
 					<div className="layout-form">
+						{this.renderAutoDetectBLE()}
 						<DeviceConfig parts={parts} device={device} onChange={this.changeConfig} />
 						<div className="submit" onClick={this.save}>Save</div>
 						{this.renderDelete()}
