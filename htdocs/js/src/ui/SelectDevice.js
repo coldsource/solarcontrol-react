@@ -22,7 +22,11 @@ export class SelectDevice extends React.Component
 	}
 
 	renderDevices() {
-		return this.state.devices.sort().map(device => {
+		return this.state.devices.sort((dev1, dev2) => {
+			if(dev1.device_name.toUpperCase()<dev2.device_name.toUpperCase())
+				return -1;
+			return 1;
+		}).map(device => {
 			return (
 				<div key={device.device_id} onClick={ () => this.props.onChange({target: {name: this.props.name, value: {id: device.device_id, name: device.device_name}}}) }>{device.device_name}</div>
 			);
