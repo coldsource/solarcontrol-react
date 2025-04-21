@@ -15,11 +15,8 @@ export class SelectDevice extends React.Component
 			return console.error("Missing device type");
 
 		let devices = [];
-		if(this.props.type=='onoff' || this.props.type=='energy')
-			devices = devices.concat(Device.instance.GetOnOff());
-
-		if(this.props.type=='passive' || this.props.type=='energy')
-			devices = devices.concat(Device.instance.GetPassive());
+		if(this.props.type=='energy')
+			devices = devices.concat(Device.instance.GetElectrical());
 
 		this.setState({devices: devices});
 	}

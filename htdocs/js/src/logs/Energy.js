@@ -128,7 +128,7 @@ export class Energy extends React.Component
 		{
 			return (
 				<Subscreen onClose={ () => this.setState({device_chooser: false}) }>
-					<SelectDevice onChange={ ev => this.setState({device_chooser: false, device: ev.target.value.name}) }type="energy" />
+					<SelectDevice onChange={ ev => this.setState({device_chooser: false, device: ev.target.value.name}) } type="energy" />
 				</Subscreen>
 			);
 		}
