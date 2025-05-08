@@ -1,7 +1,7 @@
 div.sc-timerange {
 	display: inline-block;
 
-	span {
+	&>span {
 		display: inline-block;
 		margin-left: 0.5rem;
 		margin-right: 0.5rem;
@@ -27,5 +27,24 @@ div.sc-timerange {
 		font-size: 1.7rem;
 		margin-left: 0.8rem;
 		vertical-align: middle;
+	}
+
+	div.options {
+		margin-top: 0.5rem;
+
+		i {
+			margin: 0;
+		}
+
+		input {
+			display: inline-block;
+			width: 50%;
+			-moz-appearance: textfield;
+		}
+
+		.tooltip {
+			margin-top: 0.3rem;
+			font-style: italic;
+		}
 	}
 }

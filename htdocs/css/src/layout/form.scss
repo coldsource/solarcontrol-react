@@ -22,7 +22,7 @@
 		}
 
 		dd:has(input[type="text"]) {
-			input {
+			&>input {
 				width: 100%;
 				border: 1px solid $color-form-border;
 				border-radius: 5px;
@@ -32,7 +32,7 @@
 		}
 
 		dd:has(input[type="number"]) {
-			input {
+			&>input {
 				width: 100%;
 				border: 1px solid $color-form-border;
 				border-radius: 5px;

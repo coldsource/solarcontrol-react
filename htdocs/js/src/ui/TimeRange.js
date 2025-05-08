@@ -6,6 +6,8 @@ export class TimeRange extends React.Component
 		this.state = {
 			display_days: false
 		}
+
+		this.changeData = this.changeData.bind(this);
 	}
 
 	normalize_time(t) {
@@ -86,11 +88,45 @@ export class TimeRange extends React.Component
 		);
 	}
 
+	changeData(ev) {
+		let val = Object.assign({}, this.props.value);
+		val.data = {};
+		val.data[ev.target.name] = parseFloat(ev.target.value);
+		this.props.onChange({target: {name: this.props.name, value: val}});
+	}
+
+	renderComplementaryFields() {
+		const options = this.props.options;
+		if(options===undefined)
+			return;
+
+		let field = {};
+		if(this.props.options.temperature)
+			field = {name: 'temperature', icon: 'scf-thermometer', tooltip: "Target temperature in °C"};
+		else if(this.props.options.moisture)
+			field = {name: 'moisture', icon: 'scf-droplet', tooltip: "Target moisture percentage"};
+
+		let val = '';
+		if(this.props.value.data && this.props.value.data[field.name])
+			val = this.props.value.data[field.name];
+
+		return (
+			<div className="options">
+				<input type="number" value={val} name={field.name} onChange={this.changeData} />
+				<i className={"scf " + field.icon} />
+				<div className="tooltip">
+					{field.tooltip}
+				</div>
+			</div>
+		);
+	}
+
 	render() {
 		return (
 			<div className="sc-timerange">
 				{this.renderFromTo()}
 				{this.renderWeekDays()}
+				{this.renderComplementaryFields()}
 			</div>
 		);
 	}

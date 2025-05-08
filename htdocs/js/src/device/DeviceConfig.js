@@ -40,9 +40,29 @@ export class DeviceConfig extends React.Component
 				render: this.renderOffload,
 				config: {offload: []}
 			},
+			OffloadTemperature: {
+				render: this.renderOffload,
+				config: {offload: []},
+				options: {temperature: true}
+			},
+			OffloadMoisture: {
+				render: this.renderOffload,
+				config: {offload: []},
+				options: {moisture: true}
+			},
 			Force: {
 				render: this.renderForce,
 				config: {force: []}
+			},
+			ForceTemperature: {
+				render: this.renderForce,
+				config: {force: []},
+				options: {temperature: true}
+			},
+			ForceMoisture: {
+				render: this.renderForce,
+				config: {force: []},
+				options: {moisture: true}
 			},
 			Remainder: {
 				render: this.renderRemainder,
@@ -58,11 +78,11 @@ export class DeviceConfig extends React.Component
 			},
 			Heater: {
 				render: this.renderHeater,
-				config: {ht_device_id: 0, force_max_temperature: 0, offload_max_temperature: 0}
+				config: {ht_device_id: 0}
 			},
 			CMV: {
 				render: this.renderCMV,
-				config: {ht_device_ids: [], force_max_moisture: 0, offload_max_moisture: 0}
+				config: {ht_device_ids: []}
 			},
 			HWS: {
 				render: this.renderHWS,
@@ -185,18 +205,6 @@ export class DeviceConfig extends React.Component
 					</Tooltip>
 				</dt>
 				<dd><SelectHTDevice type="temperature" name="ht_device_id" value={config.ht_device_id} onChange={onChange} /></dd>
-				<dt>
-					<Tooltip content="When in «&#160; forced mode&#160;», the heater will be switched on until this temperature is reached.">
-						Forced mode target temperature (°C)
-					</Tooltip>
-				</dt>
-				<dd><input type="number" name="force_max_temperature" value={config.force_max_temperature} onChange={onChange} /></dd>
-				<dt>
-					<Tooltip content="When in «&#160; offload mode&#160;», the heater will be switched on until this temperature is reached.">
-						Offload mode target temperature (°C)
-					</Tooltip>
-				</dt>
-				<dd><input type="number" name="offload_max_temperature" value={config.offload_max_temperature} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
 	}
@@ -210,18 +218,6 @@ export class DeviceConfig extends React.Component
 					</Tooltip>
 				</dt>
 				<dd><SelectHTDevice type="humidity" multiple="yes" name="ht_device_ids" value={config.ht_device_ids} onChange={onChange} /></dd>
-				<dt>
-					<Tooltip content="When in «&#160; forced mode&#160;», the CMV will be switched on until moisture is lower than this value or «&#160;Max on time&#160;» is reached.">
-						Forced mode target moisture (%)
-					</Tooltip>
-				</dt>
-				<dd><input type="number" name="force_max_moisture" value={config.force_max_moisture} onChange={onChange} /></dd>
-				<dt>
-					<Tooltip content="When in «&#160; offload mode&#160;», the CMV will be switched on until moisture is lower than this value or «&#160;Max on time&#160;» is reached.">
-						Offload mode target moisture (%)
-					</Tooltip>
-				</dt>
-				<dd><input type="number" name="offload_max_moisture" value={config.offload_max_moisture} onChange={onChange} /></dd>
 			</React.Fragment>
 		);
 	}
@@ -252,7 +248,7 @@ export class DeviceConfig extends React.Component
 		);
 	}
 
-	renderOffload(device, config, onChange) {
+	renderOffload(device, config, onChange, options = {}) {
 		return (
 			<React.Fragment>
 				<dt>
@@ -260,12 +256,12 @@ export class DeviceConfig extends React.Component
 						Offload
 					</Tooltip>
 				</dt>
-				<dd><TimeRanges name="offload" value={config.offload} onChange={onChange} /></dd>
+				<dd><TimeRanges name="offload" value={config.offload} onChange={onChange} options={options} /></dd>
 			</React.Fragment>
 		);
 	}
 
-	renderForce(device, config, onChange) {
+	renderForce(device, config, onChange, options = {}) {
 		return (
 			<React.Fragment>
 				<dt>
@@ -273,7 +269,7 @@ export class DeviceConfig extends React.Component
 						Force
 					</Tooltip>
 				</dt>
-				<dd><TimeRanges name="force" value={config.force} onChange={onChange} /></dd>
+				<dd><TimeRanges name="force" value={config.force} onChange={onChange} options={options} /></dd>
 			</React.Fragment>
 		);
 	}
@@ -369,9 +365,10 @@ export class DeviceConfig extends React.Component
 	renderConfigParts() {
 		return this.props.parts.map(part => {
 			const config = this.config_parts[part];
+			const options = config.options!==undefined?config.options:{};
 			return (
 				<React.Fragment key={part}>
-					{config.render(this.props.device, this.props.device.device_config, this.change)}
+					{config.render(this.props.device, this.props.device.device_config, this.change, options)}
 				</React.Fragment>
 			);
 		});

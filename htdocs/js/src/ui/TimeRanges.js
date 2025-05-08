@@ -46,7 +46,7 @@ export class TimeRanges extends React.Component
 	renderTimeRange(time_range, idx) {
 		return (
 			<div className="timerange">
-				<TimeRange value={time_range} onChange={ev => this.changeTimeRange(idx, ev.target.value)} />
+				<TimeRange value={time_range} onChange={ev => this.changeTimeRange(idx, ev.target.value)} options={this.props.options} />
 				<i className="scf scf-cross" onClick={ev => this.removeTimeRange(idx)} />
 			</div>
 		);
