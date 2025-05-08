@@ -5,6 +5,8 @@ import {Pricing} from './Pricing.js';
 import {Limits} from './Limits.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {DeviceElectrical} from '../device/DeviceElectrical.js';
+import {App} from '../app/App.js';
+import {API} from '../websocket/API.js';
 
 export class Configs extends React.Component
 {
@@ -13,10 +15,14 @@ export class Configs extends React.Component
 
 		this.state = {
 			screen: false,
-			screen_name: ''
+			screen_name: '',
+			config_control: {}
 		};
 
+		this.renderAbsence = this.renderAbsence.bind(this);
+
 		this.modules = [
+			{render: this.renderAbsence, value: 'absence'},
 			{name: 'Grid', icon: 'scf-electricity', value: 'grid'},
 			{name: 'PV', icon: 'scf-sun', value: 'pv'},
 			{name: 'HWS', icon: 'scf-droplet', value: 'hws'},
@@ -28,10 +34,58 @@ export class Configs extends React.Component
 		];
 	}
 
+	componentDidMount() {
+		this.reloadConfig();
+	}
+
+	reloadConfig() {
+		API.instance.command('config', 'get', {module: 'control'}).then(res => {
+			this.setState({config_control: res.config});
+		});
+	}
+
+	toogleAbsence() {
+		let params = {
+			module: 'control',
+			name: 'control.absence.enabled',
+			value: this.state.config_control['control.absence.enabled']=='yes'?'no':'yes'
+		};
+
+		API.instance.command('config', 'set', params).then(res => {
+			this.reloadConfig();
+			if(params.value=='yes')
+				App.message("Absence mode enabled");
+			else
+				App.message("Absence mode disabled");
+		});
+	}
+
+	renderAbsence() {
+		let absence = (this.state.config_control['control.absence.enabled']!==undefined && this.state.config_control['control.absence.enabled']=='yes');
+
+		let cl = absence?' on':'';
+		return (
+			<div key="absence" onClick={() => this.toogleAbsence()}>
+				<i className={"scf scf-house-leave" + cl} />
+				<span className={cl}>Absent</span>
+			</div>
+		);
+	}
+
+	tileClick(module) {
+		if(module.action!==undefined)
+			return module.action();
+
+		this.setState({screen: module.value, screen_name: module.name})
+	}
+
 	renderTiles() {
 		return this.modules.map(module => {
+			if(module.render!==undefined)
+				return module.render();
+
 			return (
-				<div key={module.value} onClick={ () => this.setState({screen: module.value, screen_name: module.name}) }>
+				<div key={module.value} onClick={() => this.tileClick(module)}>
 					<i className={"scf " + module.icon} />
 					<span>{module.name}</span>
 				</div>
