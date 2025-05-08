@@ -31,7 +31,7 @@ export class Device extends Events
 
 		for(const device of devices)
 		{
-			if(['heater', 'cmv', 'timerange', 'passive'].indexOf(device.device_type)>=0)
+			if(['heater', 'cooler', 'cmv', 'timerange', 'passive'].indexOf(device.device_type)>=0)
 				this.devices_electrical.push(device);
 			else if(device.device_type=='grid')
 				this.grid = device;

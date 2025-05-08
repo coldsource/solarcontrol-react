@@ -18,7 +18,13 @@ export class SelectDeviceType extends React.Component
 						<i className="scf scf-heater" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'heater'}})} />
 					</dt>
 					<dd>
-						A timed controlled device similar to plug, but controlled by a thermometer. Can we used to control heaters.
+						A timed controlled device linked to a thermometer. Will switch on to increase temperature. Can be used to control heaters. When absent, device will keep frost-free conditions and offload.
+					</dd>
+					<dt>
+						<i className="scf scf-snow" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'cooler'}})} />
+					</dt>
+					<dd>
+						A timed controlled device linked to a thermometer. Will switch on to lower temperature. Can be used to control air-conditioner.  When absent, device is always off.
 					</dd>
 					<dt>
 						<i className="scf scf-fan" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'cmv'}})} />
