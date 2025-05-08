@@ -128,7 +128,7 @@ export class Device extends Events
 
 	Unsubscribe(type, id, cbk)
 	{
-		for(let idx = 0; idx<this.subscriptions.length; i++)
+		for(let idx = 0; idx<this.subscriptions.length; idx++)
 		{
 			const sub = this.subscriptions[idx];
 			if(sub.type==type && sub.id==id && sub.cbk===cbk)
