@@ -1,5 +1,6 @@
 import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
+import {Config} from '../websocket/Config.js';
 
 export class SolarControlTab extends React.Component
 {
@@ -13,15 +14,22 @@ export class SolarControlTab extends React.Component
 		};
 
 		this.changeConfig = this.changeConfig.bind(this);
+		this.reloadConfig = this.reloadConfig.bind(this);
 	}
 
 	componentDidMount() {
-		API.instance.command('config', 'get', {module: this.props.module}).then(res => {
-			this.setState({
-				config_master: res.config_master,
-				config: res.config,
-				config_local: Object.assign({}, res.config)
-			});
+		Config.instance.Subscribe(this.reloadConfig);
+	}
+
+	componentWillUnmount() {
+		Config.instance.Unsubscribe(this.reloadConfig);
+	}
+
+	reloadConfig(current, master) {
+		this.setState({
+			config_master: master[this.props.module].GetAll(),
+			config: Object.assign({}, current[this.props.module].GetAll()),
+			config_local: current[this.props.module].GetAll()
 		});
 	}
 
@@ -51,11 +59,6 @@ export class SolarControlTab extends React.Component
 		};
 
 		API.instance.command('config', 'reset', params).then(res => {
-			const config = this.state.config;
-			const config_local = this.state.config_local;
-			config[name] = res;
-			config_local[name] = res;
-			this.setState({config: config, config_local: config_local});
 			App.message("Configration reseted to default");
 		});
 	}

@@ -1,5 +1,6 @@
 import {API as ProtocolAPI} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
+import {Config} from '../websocket/Config.js';
 import {Global} from '../meter/Global.js';
 import {DevicesElectrical} from '../device/DevicesElectrical.js';
 import {DevicesHT} from '../device/DevicesHT.js';
@@ -31,6 +32,7 @@ export class App extends React.Component
 
 		this.api = new ProtocolAPI();
 		this.devices = new ProtocolDevice();
+		this.config = new Config();
 		this.api.connect();
 
 		App.instance = this;

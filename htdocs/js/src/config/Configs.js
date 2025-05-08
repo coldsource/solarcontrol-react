@@ -7,6 +7,7 @@ import {Subscreen} from '../ui/Subscreen.js';
 import {DeviceElectrical} from '../device/DeviceElectrical.js';
 import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
+import {Config} from '../websocket/Config.js';
 
 export class Configs extends React.Component
 {
@@ -16,10 +17,11 @@ export class Configs extends React.Component
 		this.state = {
 			screen: false,
 			screen_name: '',
-			config_control: {}
+			absence: false
 		};
 
 		this.renderAbsence = this.renderAbsence.bind(this);
+		this.reloadConfig = this.reloadConfig.bind(this);
 
 		this.modules = [
 			{render: this.renderAbsence, value: 'absence'},
@@ -35,24 +37,25 @@ export class Configs extends React.Component
 	}
 
 	componentDidMount() {
-		this.reloadConfig();
+		Config.instance.Subscribe(this.reloadConfig);
 	}
 
-	reloadConfig() {
-		API.instance.command('config', 'get', {module: 'control'}).then(res => {
-			this.setState({config_control: res.config});
-		});
+	componentWillUnmount() {
+		Config.instance.Unsubscribe(this.reloadConfig);
+	}
+
+	reloadConfig(config) {
+		this.setState({absence: config.control.GetBool('control.absence.enabled')});
 	}
 
 	toogleAbsence() {
 		let params = {
 			module: 'control',
 			name: 'control.absence.enabled',
-			value: this.state.config_control['control.absence.enabled']=='yes'?'no':'yes'
+			value: this.state.absence?'no':'yes'
 		};
 
 		API.instance.command('config', 'set', params).then(res => {
-			this.reloadConfig();
 			if(params.value=='yes')
 				App.message("Absence mode enabled");
 			else
@@ -61,9 +64,7 @@ export class Configs extends React.Component
 	}
 
 	renderAbsence() {
-		let absence = (this.state.config_control['control.absence.enabled']!==undefined && this.state.config_control['control.absence.enabled']=='yes');
-
-		let cl = absence?' on':'';
+		let cl = this.state.absence?' on':'';
 		return (
 			<div key="absence" onClick={() => this.toogleAbsence()}>
 				<i className={"scf scf-house-leave" + cl} />

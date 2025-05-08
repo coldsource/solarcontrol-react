@@ -4,6 +4,7 @@ import {KW} from '../ui/KW.js';
 import {Tooltip} from '../ui/Tooltip.js';
 import {API} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
+import {Config} from '../websocket/Config.js';
 
 export class Global extends React.Component
 {
@@ -12,6 +13,7 @@ export class Global extends React.Component
 
 		this.state = {
 			hws_min: 0,
+			absence: false,
 			limits: {},
 			devices: [],
 		}
@@ -20,23 +22,19 @@ export class Global extends React.Component
 
 		this.update = this.update.bind(this);
 		this.reload = this.reload.bind(this);
+		this.reloadConfig = this.reloadConfig.bind(this);
 	}
 
 	async componentDidMount() {
 		this.meter = new Meter(this.update);
 
-		let config = await API.instance.command('config', 'get', {module: 'energy'})
-		let hws_min = config.config["energy.hws.min"];
-		if(hws_min.substr(-3)=='kwh' || hws_min.substr(-3)=='kWh')
-			hws_min = hws_min.substr(0, hws_min.length-3) * 1000;
-		else if(hws_min.substr(-2)=='wh' || hws_min.substr(-2)=='Wh')
-			hws_min = hws_min.substr(0, hws_min.length-2);
+		Config.instance.Subscribe(this.reloadConfig);
 
 		let limits = await API.instance.command('storage', 'get', {name: 'limits'});
 		if(limits===null)
 			limits = {};
 
-		this.setState({hws_min: hws_min, limits: limits});
+		this.setState({limits: limits});
 
 		ProtocolDevice.instance.Subscribe('electrical', 0, this.reload);
 	}
@@ -44,7 +42,15 @@ export class Global extends React.Component
 	componentWillUnmount() {
 		this.meter.disconnect();
 
+		Config.instance.Unsubscribe(this.reloadConfig);
 		ProtocolDevice.instance.Unsubscribe('electrical', 0, this.reload);
+	}
+
+	reloadConfig(config) {
+		this.setState({
+			hws_min: config.energy.GetEnergy("energy.hws.min"),
+			absence: config.control.GetBool("control.absence.enabled")
+		});
 	}
 
 	update(data) {
@@ -174,9 +180,17 @@ export class Global extends React.Component
 		);
 	}
 
+	renderAbsence() {
+		if(!this.state.absence)
+			return;
+
+		return (<div className="on center"><b>Absence mode on</b></div>);
+	}
+
 	render() {
 		return (
 			<div className="sc-meter-global">
+				{this.renderAbsence()}
 				<div className="production">
 					<div className="round" style={this.calcLinearGradient(this.getGridPrct(), 0, '245, 130, 29')}>
 						<div><i className="scf scf-electricity" /></div>
