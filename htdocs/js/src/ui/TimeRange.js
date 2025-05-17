@@ -105,6 +105,8 @@ export class TimeRange extends React.Component
 			field = {name: 'temperature', icon: 'scf-thermometer', tooltip: "Target temperature in °C"};
 		else if(this.props.options.moisture)
 			field = {name: 'moisture', icon: 'scf-droplet', tooltip: "Target moisture percentage"};
+		else
+			return;
 
 		let val = '';
 		if(this.props.value.data && this.props.value.data[field.name])
