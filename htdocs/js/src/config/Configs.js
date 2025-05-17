@@ -17,14 +17,17 @@ export class Configs extends React.Component
 		this.state = {
 			screen: false,
 			screen_name: '',
-			absence: false
+			absence: false,
+			priority: 'hws'
 		};
 
 		this.renderAbsence = this.renderAbsence.bind(this);
+		this.renderPriority = this.renderPriority.bind(this);
 		this.reloadConfig = this.reloadConfig.bind(this);
 
 		this.modules = [
 			{render: this.renderAbsence, value: 'absence'},
+			{render: this.renderPriority, value: 'priority'},
 			{name: 'Grid', icon: 'scf-electricity', value: 'grid'},
 			{name: 'PV', icon: 'scf-sun', value: 'pv'},
 			{name: 'HWS', icon: 'scf-droplet', value: 'hws'},
@@ -45,7 +48,10 @@ export class Configs extends React.Component
 	}
 
 	reloadConfig(config) {
-		this.setState({absence: config.control.GetBool('control.absence.enabled')});
+		this.setState({
+			absence: config.control.GetBool('control.absence.enabled'),
+			priority: config.control.Get('control.priority'),
+		});
 	}
 
 	toogleAbsence() {
@@ -63,12 +69,44 @@ export class Configs extends React.Component
 		});
 	}
 
+	tooglePriority() {
+		let params = {
+			module: 'control',
+			name: 'control.priority',
+			value: this.state.priority=='hws'?'offload':'hws'
+		};
+
+		API.instance.command('config', 'set', params).then(res => {
+			if(params.value=='hws')
+				App.message("Priority set to HWS");
+			else
+				App.message("Priority set to Offload");
+		});
+	}
+
 	renderAbsence() {
 		let cl = this.state.absence?' on':'';
 		return (
 			<div key="absence" onClick={() => this.toogleAbsence()}>
 				<i className={"scf scf-house-leave" + cl} />
 				<span className={cl}>Absent</span>
+			</div>
+		);
+	}
+
+	renderPriority() {
+		if(this.state.priority=='hws')
+		{
+			return (
+				<div key="priority" onClick={() => this.tooglePriority()}>
+					<span>HWS Priority</span>
+				</div>
+			);
+		}
+
+		return (
+			<div key="priority" onClick={() => this.tooglePriority()}>
+				<span>Offload Priority</span>
 			</div>
 		);
 	}
