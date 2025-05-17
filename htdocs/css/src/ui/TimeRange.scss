@@ -1,15 +1,17 @@
 div.sc-timerange {
 	display: inline-block;
 
-	&>span {
-		display: inline-block;
-		margin-left: 0.5rem;
-		margin-right: 0.5rem;
-		padding: 0.2rem;
-		cursor: pointer;
+	div {
+		&>span {
+			display: inline-block;
+			margin-left: 0.5rem;
+			margin-right: 0.5rem;
+			padding: 0.2rem;
+			cursor: pointer;
 
-		&.selected {
-			border: 1px solid $color-selected;
+			&.selected {
+				border: 1px solid $color-selected;
+			}
 		}
 	}
 
