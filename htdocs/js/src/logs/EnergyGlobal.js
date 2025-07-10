@@ -160,7 +160,7 @@ export class EnergyGlobal extends React.Component
 						<td><DateOnly value={date} /></td>
 						<td>{this.renderKWHEuro(data.pv.production, 'global')}</td>
 						<td>{this.renderKWHEuro(data.grid.excess, 'global')}</td>
-						<td><Percent v1={data.pv.production.energy} v2={data.grid.excess.energy} /></td>
+						<td><Percent v1={data.pv.consumption.energy} v2={data.grid.excess.energy} /></td>
 					</tr>
 				);
 			});
