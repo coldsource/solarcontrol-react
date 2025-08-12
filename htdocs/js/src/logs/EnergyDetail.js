@@ -89,9 +89,9 @@ export class EnergyDetail extends React.Component
 
 		let device_pv = 0;
 		if(energy[device_name].offload!==undefined)
-			device_pv = energy[device_name].offload.energy;
+			device_pv = energy[device_name].offload.energy; // Device
 		else if(energy[device_name].production!==undefined)
-			device_pv = energy[device_name].production.energy;
+			device_pv = energy[device_name].production.energy; // PV or Battery
 
 		let device_grid = 0;
 		if(energy[device_name].consumption!==undefined)
@@ -116,10 +116,10 @@ export class EnergyDetail extends React.Component
 			a = a.toLowerCase()
 			b = b.toLowerCase();
 
-			if(a=='grid' || a=='pv')
+			if(a=='grid' || a=='pv' || a=='battery')
 				return 1;
 
-			if(b=='grid' || b=='pv')
+			if(b=='grid' || b=='pv' || b=='battery')
 				return -1;
 
 			if(a==b)
@@ -139,6 +139,8 @@ export class EnergyDetail extends React.Component
 				device_name = 'Grid';
 			else if(device_name=='pv')
 				device_name = 'PV';
+			else if(device_name=='battery')
+				device_name = 'Battery';
 
 			return (
 				<tr key={device_name} style={{background: prct.grad}}>

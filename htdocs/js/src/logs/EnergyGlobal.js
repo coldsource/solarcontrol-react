@@ -159,6 +159,7 @@ export class EnergyGlobal extends React.Component
 					<tr key={date + "_pv"}>
 						<td><DateOnly value={date} /></td>
 						<td>{this.renderKWHEuro(data.pv.production, 'global')}</td>
+						<td>{this.renderKWHEuro(data.battery.production, 'global')}</td>
 						<td>{this.renderKWHEuro(data.grid.excess, 'global')}</td>
 						<td><Percent v1={data.pv.consumption.energy} v2={data.grid.excess.energy} /></td>
 					</tr>
@@ -234,8 +235,9 @@ export class EnergyGlobal extends React.Component
 				<tr key={"total_pv"}>
 					<td><b>Total</b></td>
 					<td>{this.renderKWHEuro(total.pv.production, 'global')}</td>
+					<td>{this.renderKWHEuro(total.battery.production, 'global')}</td>
 					<td>{this.renderKWHEuro(total.grid.excess, 'global')}</td>
-					<td><Percent v1={total.pv.production.energy} v2={total.grid.excess.energy} /></td>
+					<td><Percent v1={total.pv.consumption.energy} v2={total.grid.excess.energy} /></td>
 				</tr>
 			);
 		}
@@ -308,11 +310,12 @@ export class EnergyGlobal extends React.Component
 				<thead>
 					<tr>
 						<th>Date</th>
-						<th colSpan="2" onClick={() => this.setState({mode: 'global'})}>PV <i className="scf scf-bolt" /></th>
+						<th colSpan="3" onClick={() => this.setState({mode: 'global'})}>PV <i className="scf scf-bolt" /></th>
 					</tr>
 					<tr>
 						<th></th>
 						<th>Prod.</th>
+						<th>Battery</th>
 						<th>Excess</th>
 						<th>Ratio</th>
 					</tr>

@@ -5,6 +5,7 @@ import {Pricing} from './Pricing.js';
 import {Limits} from './Limits.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {DeviceElectrical} from '../device/DeviceElectrical.js';
+import {DeviceBattery} from '../device/DeviceBattery.js';
 import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
 import {Config} from '../websocket/Config.js';
@@ -30,6 +31,7 @@ export class Configs extends React.Component
 			{render: this.renderPriority, value: 'priority'},
 			{name: 'Grid', icon: 'scf-electricity', value: 'grid'},
 			{name: 'PV', icon: 'scf-sun', value: 'pv'},
+			{name: 'Battery', icon: 'scf-battery', value: 'battery'},
 			{name: 'HWS', icon: 'scf-droplet', value: 'hws'},
 			{name: 'Temperatures', icon: 'scf-thermometer', value: 'temperatures'},
 			{name: 'Pricing', icon: 'scf-euro', value: 'pricing'},
@@ -144,11 +146,13 @@ export class Configs extends React.Component
 		else if(this.state.screen=='limits')
 			return (<Limits />);
 		else if(this.state.screen=='grid')
-			return (<div className="sc-devicehws"><DeviceElectrical id="-1" /></div>);
+			return (<div className="sc-deviceconfig"><DeviceElectrical id="-1" /></div>);
 		else if(this.state.screen=='pv')
-			return (<div className="sc-devicehws"><DeviceElectrical id="-2" /></div>);
+			return (<div className="sc-deviceconfig"><DeviceElectrical id="-2" /></div>);
 		else if(this.state.screen=='hws')
-			return (<div className="sc-devicehws"><DeviceElectrical id="-3" parts={['Meter', 'Control']}/></div>);
+			return (<div className="sc-deviceconfig"><DeviceElectrical id="-3" parts={['Meter', 'Control']}/></div>);
+		else if(this.state.screen=='battery')
+			return (<div className="sc-deviceconfig"><DeviceBattery /></div>);
 	}
 
 	render() {

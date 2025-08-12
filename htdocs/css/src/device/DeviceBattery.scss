@@ -1,0 +1,15 @@
+.sc-devicebattery {
+	.header {
+		width: 100%;
+
+		dl {
+			display: grid;
+			grid-template-columns: 1fr 2fr;
+			gap: 0.5rem;
+
+			dd {
+				font-weight: bold;
+			}
+		}
+	}
+}

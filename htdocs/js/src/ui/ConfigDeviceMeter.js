@@ -8,6 +8,7 @@ export class ConfigDeviceMeter extends React.Component
 
 		this.types = {
 			'plug': {icon: 'scf-plug', name: 'Plug S'},
+			'em': {icon: 'scf-meter', name: 'Pro EM'},
 			'3em': {icon: 'scf-meter', name: 'Pro 3EM'}
 		};
 
@@ -42,7 +43,13 @@ export class ConfigDeviceMeter extends React.Component
 	renderPhase() {
 		const value = this.props.value;
 
-		if(value.type!='3em')
+		let last_letter = '';
+		if(value.type=='3em')
+			last_letter = 'c';
+		else if(value.type=='em')
+			last_letter = 'b';
+
+		if(last_letter=='')
 			return;
 
 		return (
@@ -52,7 +59,7 @@ export class ConfigDeviceMeter extends React.Component
 						Meter Phase
 					</Tooltip>
 				</dt>
-				<dd><SelectLetter from="a" to="c" name="phase" value={value.phase} onChange={this.change} /></dd>
+				<dd><SelectLetter from="a" to={last_letter} name="phase" value={value.phase} onChange={this.change} /></dd>
 			</React.Fragment>
 		);
 	}
@@ -62,8 +69,8 @@ export class ConfigDeviceMeter extends React.Component
 		return (
 			<React.Fragment>
 				<dt>
-					<Tooltip content="Type of Shelly device used to switch on or off your device">
-						Device controller type
+					<Tooltip content="Type of Shelly device used to monitor your device">
+						Device meter type
 					</Tooltip>
 				</dt>
 				<dd>

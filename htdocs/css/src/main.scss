@@ -12,6 +12,7 @@
 @import 'device/Devices';
 @import 'device/Device';
 @import 'device/DeviceHWS';
+@import 'device/DeviceBattery';
 @import 'device/Autodetect';
 
 @import 'logs/LogsState';
@@ -34,3 +35,4 @@
 @import 'ui/ConfigControlType';
 @import 'ui/Modal';
 @import 'ui/Tooltip';
+@import 'ui/ConfigDeviceVoltmeter';

@@ -1,0 +1,19 @@
+div.sc-voltmeter {
+	.threshold {
+		display: grid;
+		grid-template-columns: 1fr 1fr 2rem;
+		gap: 1rem;
+		margin-top:0.5rem;
+		margin-bottom: 0.5rem;
+
+		&>:nth-child(3) {
+			font-size: 150%;
+		}
+	}
+
+	.add {
+		text-align: center;
+		font-weight: bold;
+		margin-top:1rem;
+	}
+}

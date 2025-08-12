@@ -20,6 +20,13 @@ export function NormalizeEnergyLog(energy)
 			devices.pv.production = empty_amount;
 		}
 
+		// Set default values for battery
+		if(devices.battery===undefined)
+		{
+			devices.battery = {};
+			devices.battery.production = empty_amount;
+		}
+
 		// Set default values for hws
 		if(devices.hws===undefined)
 			devices.hws = {};
@@ -32,8 +39,9 @@ export function NormalizeEnergyLog(energy)
 
 		// Compute PV consumption (net consummed)
 		const pv = devices.pv.production;
+		const battery = devices.battery.production;
 		const excess = devices.grid.excess;
-		devices.pv.consumption = {energy: pv.energy - excess.energy, peak: pv.peak - excess.peak, offpeak: pv.offpeak - excess.offpeak};
+		devices.pv.consumption = {energy: pv.energy + battery.energy - excess.energy, peak: pv.peak + battery.peak - excess.peak, offpeak: pv.offpeak + battery.offpeak - excess.offpeak};
 
 		// Compute HWS grid energy
 		const hws_consumption = devices.hws.consumption;
@@ -42,7 +50,7 @@ export function NormalizeEnergyLog(energy)
 
 		for(const [device_name, counters] of Object.entries(devices))
 		{
-			if(device_name=='grid' || device_name=='pv' || device_name=='hws')
+			if(device_name=='grid' || device_name=='pv' || device_name=='battery' || device_name=='hws')
 				continue; // Skip special devices
 
 			if(counters.offload===undefined)

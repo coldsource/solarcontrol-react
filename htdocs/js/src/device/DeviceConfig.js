@@ -3,6 +3,7 @@ import {SelectHTDevice} from '../ui/SelectHTDevice.js';
 import {SliderDuration} from '../ui/SliderDuration.js';
 import {ConfigDeviceControl} from '../ui/ConfigDeviceControl.js';
 import {ConfigDeviceMeter} from '../ui/ConfigDeviceMeter.js';
+import {ConfigDeviceVoltmeter} from '../ui/ConfigDeviceVoltmeter.js';
 import {ConfigDeviceInput} from '../ui/ConfigDeviceInput.js';
 import {Tooltip} from '../ui/Tooltip.js';
 
@@ -23,6 +24,14 @@ export class DeviceConfig extends React.Component
 			Meter: {
 				render: this.renderMeter,
 				config: {meter: {type: '3em', mqtt_id: '', phase: 'a'}}
+			},
+			Voltmeter: {
+				render: this.renderVoltmeter,
+				config: {voltmeter: {mqtt_id: ''}}
+			},
+			MeterDisable: {
+				render: this.renderMeterDisable,
+				config: {}
 			},
 			Control: {
 				render: this.renderControl,
@@ -168,6 +177,21 @@ export class DeviceConfig extends React.Component
 	renderMeter(device, config, onChange) {
 		return (
 			<ConfigDeviceMeter name="meter" value={config.meter} onChange={onChange} />
+		);
+	}
+
+	renderVoltmeter(device, config, onChange) {
+		return (
+			<ConfigDeviceVoltmeter name="voltmeter" value={config.voltmeter} onChange={onChange} />
+		);
+	}
+
+	renderMeterDisable(device, config, onChange) {
+		return (
+			<React.Fragment>
+				<div className="warning-btn" onClick={() => onChange({target: {name: 'meter', value: {type: 'dummy'}}})}>Disable device</div>
+				<br />
+			</React.Fragment>
 		);
 	}
 

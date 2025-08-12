@@ -75,6 +75,13 @@ export class Global extends React.Component
 		return parseFloat(this.state.pv) / parseFloat(this.state.limits.pv) * 100;
 	}
 
+	getBatteryPrct() {
+		if(!this.state.limits.battery)
+			return 0;
+
+		return parseFloat(this.state.battery) / parseFloat(this.state.limits.battery) * 100;
+	}
+
 	renderLeaf() {
 		if(!this.state.offpeak)
 			return;
@@ -101,13 +108,14 @@ export class Global extends React.Component
 
 	calcPowerMixStyle() {
 		let prct = 100;
+		let battery = this.state.battery==-1?0:this.state.battery;
 		if(this.state.grid>0)
-			prct = this.state.pv / (this.state.pv + this.state.grid) * 100;
+			prct = (this.state.pv + battery) / (this.state.pv + this.state.grid + battery) * 100;
 		return this.calcLinearGradient(prct, 0);
 	}
 
 	getPVRatio() {
-		let pv_consumed = this.state.pv_energy - this.state.grid_exported_energy;
+		let pv_consumed = this.state.pv_energy - this.state.grid_exported_energy + this.state.battery_energy;
 
 		if(pv_consumed + this.state.grid_energy == 0)
 			return 0;
@@ -187,6 +195,44 @@ export class Global extends React.Component
 		return (<div className="on center"><b>Absence mode on</b></div>);
 	}
 
+	renderBattery() {
+		if(!this.state.has_battery)
+			return (<div></div>);
+
+		return (
+			<div className="round" style={this.calcLinearGradient(this.getBatteryPrct(), 0)}>
+				<div>
+					<i className="scf scf-battery" />
+				</div>
+				<div className="soc">{this.renderBatterySOC()}</div>
+				<Tooltip content="Total energy injected by battery in Wh or kWh">
+					<span className="meter top energy"><KWh value={this.state.battery_energy} /></span>
+				</Tooltip>
+			</div>
+		);
+	}
+
+	renderBatterySOC() {
+		if(this.state.battery_soc<=100)
+			return (<React.Fragment>{parseFloat(this.state.battery_soc).toFixed(0)}%</React.Fragment>);
+		return (<i className="scf scf-bolt" />);
+	}
+
+
+	renderBatteryConnector() {
+		if(!this.state.has_battery)
+			return;
+
+		return (
+			<div className="network-vert">
+				<img className="arrow-down" src="/images/arrow-down.svg" />
+				<Tooltip content="Instant power injected by battery">
+					<span className="meter"><KW value={this.state.battery} /></span>
+				</Tooltip>
+			</div>
+		);
+	}
+
 	render() {
 		return (
 			<div className="sc-meter-global">
@@ -195,14 +241,14 @@ export class Global extends React.Component
 					<div className="round" style={this.calcLinearGradient(this.getGridPrct(), 0, '245, 130, 29')}>
 						<div><i className="scf scf-electricity" /></div>
 						<Tooltip content="Total energy consumed today from the grid in Wh or kWh">
-							<span className="meter right energy"><KWh value={this.state.grid_energy} /></span>
+							<span className="meter top energy"><KWh value={this.state.grid_energy} /></span>
 						</Tooltip>
 					</div>
-					<div></div>
+					{this.renderBattery()}
 					<div className="round" style={this.calcLinearGradient(this.getPVPrct(), 0)}>
 						<div><i className="scf scf-sun" /></div>
 						<Tooltip content="Total energy produced today by PV in Wh or kWh">
-							<span className="meter left energy"><KWh value={this.state.pv_energy} /></span>
+							<span className="meter top energy"><KWh value={this.state.pv_energy} /></span>
 						</Tooltip>
 					</div>
 				</div>
@@ -211,16 +257,19 @@ export class Global extends React.Component
 						{this.state.grid<0?(<img className="arrow-grid" src="/images/arrow-up.svg" />):''}
 						{this.state.grid>=0?(<img className="arrow-bolt" src="/images/arrow-right.svg" />):''}
 						<Tooltip content="Instant power currently taken from or sent back to the grid">
-							<span className="meter"><KW value={this.state.grid} />&#160;{this.renderLeaf()}</span>
+							<span className="meter gridpv"><KW value={this.state.grid} />&#160;{this.renderLeaf()}</span>
 						</Tooltip>
 					</div>
-					<div className="round bolt" style={this.calcPowerMixStyle()}>
-						<div><i className="scf scf-bolt" /></div>
+					<div className="mix">
+						{this.renderBatteryConnector()}
+						<div className="round bolt" style={this.calcPowerMixStyle()}>
+							<div><i className="scf scf-bolt" /></div>
+						</div>
 					</div>
 					<div className="connector-pv">
 						<img className="arrow-bolt" src="/images/arrow-left.svg" />
 						<Tooltip content="Instant power currently produced by PV">
-							<span className="meter"><KW value={this.state.pv} /></span>
+							<span className="meter gridpv"><KW value={this.state.pv} /></span>
 						</Tooltip>
 					</div>
 				</div>
@@ -236,7 +285,7 @@ export class Global extends React.Component
 					</Tooltip>
 					<i className="scf scf-house" />
 					<Tooltip content="Total amount of energy consumed for the day (PV + Grid, ignoring export)">
-						<span className="energy"><KWh value={this.state.grid_energy + this.state.pv_energy - this.state.grid_exported_energy} /></span>
+						<span className="energy"><KWh value={this.state.grid_energy + this.state.pv_energy + this.state.battery_energy - this.state.grid_exported_energy} /></span>
 					</Tooltip>
 				</div>
 				<div className="home-devices">

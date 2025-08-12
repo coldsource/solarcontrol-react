@@ -12,6 +12,7 @@ export class Device extends Events
 		// Special devices
 		this.grid = null;
 		this.pv = null;
+		this.battery = null;
 		this.hws = null;
 
 		this.subscriptions = [];
@@ -37,6 +38,8 @@ export class Device extends Events
 				this.grid = device;
 			else if(device.device_type=='pv')
 				this.pv = device;
+			else if(device.device_type=='battery')
+				this.battery = device;
 			else if(device.device_type=='hws')
 				this.hws = device;
 			else if(['ht', 'htmini', 'wind'].indexOf(device.device_type)>=0)
@@ -62,6 +65,8 @@ export class Device extends Events
 				sub.cbk(this.grid);
 			else if(sub.id=='pv')
 				sub.cbk(this.pv);
+			else if(sub.id=='battery')
+				sub.cbk(this.battery);
 			else if(sub.id=='hws')
 				sub.cbk(this.hws);
 			else
@@ -89,6 +94,8 @@ export class Device extends Events
 			return this.grid; // Special Grid
 		else if(this.pv.device_id==id)
 			return this.pv; // Special PV device
+		else if(this.battery.device_id==id)
+			return this.battery; // Special PV device
 
 
 		for(const device of this.devices_electrical)

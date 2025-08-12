@@ -9,6 +9,7 @@ export class Limits extends React.Component
 		this.state = {
 			grid: '',
 			pv: '',
+			battery: '',
 		};
 
 		this.change = this.change.bind(this);
@@ -45,7 +46,7 @@ export class Limits extends React.Component
 	}
 
 	save() {
-		if(!this.checkFloat(this.state.grid) || !this.checkFloat(this.state.pv))
+		if(!this.checkFloat(this.state.grid) || !this.checkFloat(this.state.pv) || !this.checkFloat(this.state.battery))
 			return;
 
 		API.instance.command('storage', 'set', {name: 'limits', value: this.state}).then(res => {
@@ -65,6 +66,10 @@ export class Limits extends React.Component
 						<dt>PV maximum power (Wh)</dt>
 						<dd>
 							<input type="number" name="pv" value={this.state.pv} onChange={this.change} />
+						</dd>
+						<dt>Battery maximum power (Wh)</dt>
+						<dd>
+							<input type="number" name="battery" value={this.state.battery} onChange={this.change} />
 						</dd>
 					</dl>
 					<div className="submit" onClick={this.save}>Save</div>

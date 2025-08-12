@@ -50,19 +50,33 @@ $border-size: 3px;
 			bottom: -2rem;
 			left: calc(-#{$border-size} * 2 - 1px);
 		}
+
+		.meter.top {
+			top: -2rem;
+			left: calc(-#{$border-size} * 2 - 1px);
+		}
+
+		.soc {
+			position: absolute;
+			top: 1.9rem;
+			font-size: 0.7rem;
+			text-align: center;
+			width: 100%;
+		}
 	}
 
 	.production {
 		display: grid;
-		grid-template-columns: $item-radius 1fr $item-radius;
+		grid-template-columns: $item-radius $item-radius $item-radius;
+		justify-content: space-between;
+		margin-top: 2rem;
 	}
 
 	.network {
 		display: grid;
 		grid-template-columns: 1fr $item-radius 1fr;
-		height: 7rem;
 
-		.meter {
+		.meter.gridpv {
 			bottom: -10px;
 			left: calc((100% - #{$meter-width}) / 2);
 			font-style: italic;
@@ -91,7 +105,7 @@ $border-size: 3px;
 			}
 		}
 
-		div.bolt {
+		div.mix {
 			align-self: end;
 		}
 
