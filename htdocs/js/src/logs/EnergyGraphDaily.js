@@ -35,7 +35,7 @@ export class EnergyGraphDaily extends React.Component
 				{
 					for(let [device_name, entry] of Object.entries(entries))
 					{
-						if(device_name=='grid' || device_name=='pv')
+						if(device_name=='grid' || device_name=='pv'|| device_name=='battery')
 							continue;
 
 						devices[device_name] = true;;
