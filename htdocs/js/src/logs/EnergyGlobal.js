@@ -4,6 +4,7 @@ import {KWh} from '../ui/KWh.js';
 import {Euro} from '../ui/Euro.js';
 import {Percent} from '../ui/Percent.js';
 import {Loader} from '../ui/Loader.js';
+import {Tooltip} from '../ui/Tooltip.js';
 import {NormalizeEnergyLog, ReduceEnergyLog} from './EnergyLog.js';
 
 export class EnergyGlobal extends React.Component
@@ -314,10 +315,18 @@ export class EnergyGlobal extends React.Component
 					</tr>
 					<tr>
 						<th></th>
-						<th>Prod.</th>
-						<th>Battery</th>
-						<th>Excess</th>
-						<th>Ratio</th>
+						<th>
+							<Tooltip content="Photovoltaic gross production, excluding battery.">Prod.</Tooltip>
+						</th>
+						<th>
+							<Tooltip content="Battery production (ie, injected energy). Only includes energy really injected into the house, excluding any production excess linked to battery charging.">Battery</Tooltip>
+						</th>
+						<th>
+							<Tooltip content="Photovoltaic excess (excluding battery). This amount of energy has been sent back to the grid.">Excess</Tooltip>
+						</th>
+						<th>
+							<Tooltip content="Ratio of photovoltaic consumption (including PV + battery) vs total production.">Ratio</Tooltip>
+						</th>
 					</tr>
 				</thead>
 			);
