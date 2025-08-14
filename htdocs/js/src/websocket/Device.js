@@ -32,16 +32,16 @@ export class Device extends Events
 
 		for(const device of devices)
 		{
-			if(['heater', 'cooler', 'cmv', 'timerange', 'passive'].indexOf(device.device_type)>=0)
-				this.devices_electrical.push(device);
-			else if(device.device_type=='grid')
+			if(device.device_id==-1)
 				this.grid = device;
-			else if(device.device_type=='pv')
+			else if(device.device_id==-2)
 				this.pv = device;
-			else if(device.device_type=='battery')
+			else if(device.device_id==-4)
 				this.battery = device;
-			else if(device.device_type=='hws')
+			else if(device.device_id==-3)
 				this.hws = device;
+			else if(['heater', 'cooler', 'cmv', 'timerange', 'passive', 'battery'].indexOf(device.device_type)>=0)
+				this.devices_electrical.push(device);
 			else if(['ht', 'htmini', 'wind'].indexOf(device.device_type)>=0)
 				this.devices_ht.push(device);
 		}
@@ -88,14 +88,14 @@ export class Device extends Events
 		if(id==0)
 			return this.devices_electrical;
 
-		if(this.hws.device_id==id)
+		if(this.hws.device_id==id || id=='hws')
 			return this.hws; // Special HWS device
-		else if(this.grid.device_id==id)
+		else if(this.grid.device_id==id || id=='grid')
 			return this.grid; // Special Grid
-		else if(this.pv.device_id==id)
+		else if(this.pv.device_id==id || id=='pv')
 			return this.pv; // Special PV device
-		else if(this.battery.device_id==id)
-			return this.battery; // Special PV device
+		else if(this.battery.device_id==id || id=='battery')
+			return this.battery; // Special battery device
 
 
 		for(const device of this.devices_electrical)

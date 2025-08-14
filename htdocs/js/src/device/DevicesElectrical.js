@@ -4,6 +4,7 @@ import {SelectDeviceType} from '../ui/SelectDeviceType.js';
 import {DeviceElectrical} from './DeviceElectrical.js';
 import {ControlOnOff} from '../ui/ControlOnOff.js';
 import {KW} from '../ui/KW.js';
+import {SOC} from '../ui/SOC.js';
 import {Subscreen} from '../ui/Subscreen.js';
 
 export class DevicesElectrical extends React.Component
@@ -68,9 +69,24 @@ export class DevicesElectrical extends React.Component
 		);
 	}
 
+	renderSOC(device) {
+		if(device.device_type!='battery')
+			return;
+
+		return (
+			<React.Fragment>
+				<SOC value={device.soc} /> - {device.voltage.toFixed(2)}V
+			</React.Fragment>
+		);
+	}
+
 	renderDevices() {
 		return this.state.devices.map(device => {
-			let cl_auto = device.device_type=='passive'?'scf-meter':'scf-sun';
+			let cl_auto = 'scf-sun';
+			if(device.device_type=='passive')
+				cl_auto = 'scf-meter';
+			else if(device.device_type=='battery')
+				cl_auto = 'scf-battery';
 
 			return (
 				<div key={device.device_id}>
@@ -81,10 +97,11 @@ export class DevicesElectrical extends React.Component
 						<span className="name" onClick={ () => this.edit(device.device_id) }>{device.device_name}</span>
 						<div className="power">
 							{this.renderPower(device.power)}
+							{this.renderSOC(device)}
 						</div>
 					</div>
 					<div>
-						{device.device_type!='passive'?(<ControlOnOff device_id={device.device_id} state={device.state} />):null}
+						{(device.device_type!='passive' && device.device_type!='battery')?(<ControlOnOff device_id={device.device_id} state={device.state} />):null}
 					</div>
 				</div>
 			);

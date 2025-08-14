@@ -1,6 +1,7 @@
 import {Meter} from '../websocket/Meter.js';
 import {KWh} from '../ui/KWh.js';
 import {KW} from '../ui/KW.js';
+import {SOC} from '../ui/SOC.js';
 import {Tooltip} from '../ui/Tooltip.js';
 import {API} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
@@ -204,20 +205,13 @@ export class Global extends React.Component
 				<div>
 					<i className="scf scf-battery" />
 				</div>
-				<div className="soc">{this.renderBatterySOC()}</div>
+				<div className="soc"><SOC value={this.state.battery_soc} /></div>
 				<Tooltip content="Total energy injected by battery in Wh or kWh">
 					<span className="meter top energy"><KWh value={this.state.battery_energy} /></span>
 				</Tooltip>
 			</div>
 		);
 	}
-
-	renderBatterySOC() {
-		if(this.state.battery_soc<=100)
-			return (<React.Fragment>{parseFloat(this.state.battery_soc).toFixed(0)}%</React.Fragment>);
-		return (<i className="scf scf-bolt" />);
-	}
-
 
 	renderBatteryConnector() {
 		if(!this.state.has_battery)

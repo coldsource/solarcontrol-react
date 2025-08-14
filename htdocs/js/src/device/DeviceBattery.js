@@ -28,19 +28,6 @@ export class DeviceBattery extends React.Component
 		this.setState({devicebattery: devicebattery});
 	}
 
-	setManualState(state) {
-		API.instance.command('deviceelectrical', 'setstate', {device_id: this.state.devicehws.device_id, state: state});
-	}
-
-	renderStateType() {
-		const device = this.state.devicehws;
-
-		if(device.manual)
-			return (<i className="scf scf-hand" onClick={() => this.setManualState("auto")}></i>);
-
-		return (<i className="scf scf-sun"></i>);
-	}
-
 	renderState() {
 		return (
 			<dl>
@@ -61,7 +48,7 @@ export class DeviceBattery extends React.Component
 				<div className="header">
 					{this.renderState()}
 				</div>
-				<DeviceElectrical id={this.state.devicebattery.device_id} />
+				<DeviceElectrical id={this.props.id} parts={this.props.parts} />
 			</div>
 		);
 	}

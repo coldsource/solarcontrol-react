@@ -27,7 +27,7 @@ export class DeviceConfig extends React.Component
 			},
 			Voltmeter: {
 				render: this.renderVoltmeter,
-				config: {voltmeter: {mqtt_id: ''}}
+				config: {voltmeter: {mqtt_id: '', thresholds: []}}
 			},
 			MeterDisable: {
 				render: this.renderMeterDisable,
