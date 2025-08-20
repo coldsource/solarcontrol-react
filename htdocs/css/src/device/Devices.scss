@@ -4,10 +4,17 @@ div.sc-devices {
 	div.actions {
 		font-size: 1.5rem;
 		text-align: right;
+		i {
+			margin-left: 0.75rem;
+		}
 	}
 
-	div.list {
-		&>div {
+	div.sc-drag-drop-zone {
+		margin: 2rem;
+	}
+
+	div.list, div.sc-drag-drop-zone {
+		div.device {
 			position: relative;
 			margin-top: 0.5rem;
 			margin-bottom: 0.5rem;

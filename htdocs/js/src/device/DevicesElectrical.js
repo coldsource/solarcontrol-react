@@ -6,6 +6,8 @@ import {ControlOnOff} from '../ui/ControlOnOff.js';
 import {KW} from '../ui/KW.js';
 import {SOC} from '../ui/SOC.js';
 import {Subscreen} from '../ui/Subscreen.js';
+import {DragDropZone} from '../ui/DragDropZone.js';
+import {DragDropElement} from '../ui/DragDropElement.js';
 
 export class DevicesElectrical extends React.Component
 {
@@ -16,12 +18,14 @@ export class DevicesElectrical extends React.Component
 			devices: [],
 			editing: false,
 			creating: false,
+			prio: false,
 			device_type: "",
 		};
 
 		this.interval = null;
 
 		this.changeDeviceType = this.changeDeviceType.bind(this);
+		this.changePrio = this.changePrio.bind(this);
 		this.close = this.close.bind(this);
 		this.reload = this.reload.bind(this);
 	}
@@ -35,12 +39,6 @@ export class DevicesElectrical extends React.Component
 	}
 
 	reload(devices) {
-		devices.sort((dev1, dev2) => {
-			if(dev1.device_name.toUpperCase()<dev2.device_name.toUpperCase())
-				return -1;
-			return 1;
-		});
-
 		this.setState({devices: devices});
 	}
 
@@ -80,8 +78,36 @@ export class DevicesElectrical extends React.Component
 		);
 	}
 
-	renderDevices() {
-		return this.state.devices.map(device => {
+	getAllDevices() {
+		let devices = [...this.state.devices];
+
+		return devices.sort((dev1, dev2) => {
+			if(dev1.device_name.toUpperCase()<dev2.device_name.toUpperCase())
+				return -1;
+			return 1;
+		});
+	}
+
+	getOnOffDevices() {
+		let devices = [...this.state.devices];
+
+		devices = devices.filter(device => device.device_category==1);
+		return devices.sort((dev1, dev2) => {
+			if(dev1.device_config.prio<dev2.device_config.prio)
+				return -1;
+			return 1;
+		});
+	}
+
+	renderDevices(mode = 'list') {
+		let devices;
+
+		if(mode=='list')
+			devices = this.getAllDevices();
+		else if(mode=='prio')
+			devices = this.getOnOffDevices();
+
+		return devices.map(device => {
 			let cl_auto = 'scf-sun';
 			if(device.device_type=='passive')
 				cl_auto = 'scf-meter';
@@ -89,12 +115,12 @@ export class DevicesElectrical extends React.Component
 				cl_auto = 'scf-battery';
 
 			return (
-				<div key={device.device_id}>
+				<div key={device.device_id} className="device">
 					<div>
-						<i className={"scf " + ((device.manual)?'scf-hand':cl_auto)} onClick={() => { if(device.manual) this.setManualState(device.device_id, "auto") }} />
+						<i className={"scf " + ((device.manual)?'scf-hand':cl_auto)} onClick={mode=='list'?(() => { if(device.manual) this.setManualState(device.device_id, "auto") }):(() => {})} />
 					</div>
 					<div>
-						<span className="name" onClick={ () => this.edit(device.device_id) }>{device.device_name}</span>
+						<span className="name" onClick={ mode=='list'?(() => this.edit(device.device_id)):(() => {}) }>{device.device_name}</span>
 						<div className="power">
 							{this.renderPower(device.power)}
 							{this.renderSOC(device)}
@@ -116,6 +142,25 @@ export class DevicesElectrical extends React.Component
 		);
 	}
 
+	changePrio(ev) {
+		let devices = this.getOnOffDevices();
+		const moved_device = devices[ev.from];
+		devices.splice(ev.from, 1);
+		if(ev.from<ev.to)
+			devices.splice(ev.to-1, 0, moved_device);
+		else
+			devices.splice(ev.to, 0, moved_device);
+
+		let params = {};
+		for(let i=0; i<devices.length; i++)
+		{
+			const device = devices[i];
+			params[device.device_id] = i + 1;
+		}
+
+		API.instance.command('deviceelectrical', 'setprio', params);
+	}
+
 	render() {
 		if(this.state.editing!==false)
 			return (<DeviceElectrical id={this.state.editing} device_type={this.state.device_type} onClose={this.close} />);
@@ -123,9 +168,25 @@ export class DevicesElectrical extends React.Component
 		if(this.state.creating)
 			return this.renderDeviceType();
 
+		if(this.state.prio)
+		{
+			return (
+				<div className="sc-devices">
+					<div className="actions">
+						<i className="scf scf-cross" onClick={ () => this.setState({prio: false}) }></i>
+					</div>
+					<div className="center">
+						Set devices offload priority (first in the list is most prioritary)
+					</div>
+					<DragDropZone items={this.renderDevices('prio')} onChange={this.changePrio} />
+				</div>
+			);
+		}
+
 		return (
 			<div className="sc-devices">
 				<div className="actions">
+					<i className="scf scf-priority" onClick={ () => this.setState({prio: true}) }></i>
 					<i className="scf scf-plus" onClick={ () => this.setState({creating: true}) }></i>
 				</div>
 				<div className="list">
