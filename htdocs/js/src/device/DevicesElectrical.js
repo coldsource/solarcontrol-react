@@ -7,7 +7,6 @@ import {KW} from '../ui/KW.js';
 import {SOC} from '../ui/SOC.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {DragDropZone} from '../ui/DragDropZone.js';
-import {DragDropElement} from '../ui/DragDropElement.js';
 
 export class DevicesElectrical extends React.Component
 {

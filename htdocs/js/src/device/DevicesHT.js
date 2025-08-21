@@ -111,7 +111,7 @@ export class DevicesHT extends React.Component
 		}).map(device => {
 			let icon = device.device_type=='wind'?'scf-wind':'scf-thermometer-droplet';
 			return (
-				<div key={device.device_id}>
+				<div key={device.device_id} className="device">
 					<div>
 						<i className={"scf " + icon} />
 					</div>
