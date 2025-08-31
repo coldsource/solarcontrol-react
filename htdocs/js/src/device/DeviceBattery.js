@@ -2,7 +2,7 @@ import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {DeviceElectrical} from './DeviceElectrical.js';
-
+import {SOC} from '../ui/SOC.js';
 
 export class DeviceBattery extends React.Component
 {
@@ -36,7 +36,7 @@ export class DeviceBattery extends React.Component
 				<dt>Voltage</dt>
 				<dd>{this.state.devicebattery.voltage.toFixed(2)}&#160;V</dd>
 				<dt>SOC</dt>
-				<dd>{this.state.devicebattery.soc.toFixed(1)}&#160;%</dd>
+				<dd><SOC value={this.state.devicebattery.soc} /></dd>
 			</dl>
 		);
 	}
