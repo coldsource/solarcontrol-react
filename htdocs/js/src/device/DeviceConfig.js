@@ -41,8 +41,8 @@ export class DeviceConfig extends React.Component
 				render: this.renderBatteryBackup,
 				config: {battery_low: 30, battery_high: 50, min_grid_time: 7200}
 			},
-			MeterDisable: {
-				render: this.renderMeterDisable,
+			BatteryDisable: {
+				render: this.renderBatteryDisable,
 				config: {}
 			},
 			Control: {
@@ -201,10 +201,10 @@ export class DeviceConfig extends React.Component
 		);
 	}
 
-	renderMeterDisable(device, config, onChange) {
+	renderBatteryDisable(device, config, onChange) {
 		return (
 			<React.Fragment>
-				<div className="warning-btn" onClick={() => onChange({target: {name: 'meter', value: {type: 'dummy'}}})}>Disable device</div>
+				<div className="warning-btn" onClick={() => { onChange({target: {name: 'meter', value: {type: 'dummy'}}}); onChange({target: {name: 'voltmeter', value: {mqtt_id: '',  thresholds: []}}}) }}>Disable device</div>
 				<br />
 			</React.Fragment>
 		);
