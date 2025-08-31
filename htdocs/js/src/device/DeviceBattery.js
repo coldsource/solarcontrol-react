@@ -31,6 +31,8 @@ export class DeviceBattery extends React.Component
 	renderState() {
 		return (
 			<dl>
+				<dt>State</dt>
+				<dd>{this.state.devicebattery.state}</dd>
 				<dt>Voltage</dt>
 				<dd>{this.state.devicebattery.voltage.toFixed(2)}&#160;V</dd>
 				<dt>SOC</dt>

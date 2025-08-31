@@ -1,7 +1,8 @@
-import {SelectLetter} from './SelectLetter.js';
-import {Tooltip} from './Tooltip.js';
+import {SelectLetter} from '../../ui/SelectLetter.js';
+import {Tooltip} from '../../ui/Tooltip.js';
+import {ConfigBlock} from '../../ui/ConfigBlock.js';
 
-export class ConfigDeviceMeter extends React.Component
+export class Meter extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -67,7 +68,7 @@ export class ConfigDeviceMeter extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<React.Fragment>
+			<ConfigBlock title={"Device meter : " + (value.type!='dummy'?this.types[value.type].name:'None')}>
 				<dt>
 					<Tooltip content="Type of Shelly device used to monitor your device">
 						Device meter type
@@ -85,7 +86,7 @@ export class ConfigDeviceMeter extends React.Component
 				</dt>
 				<dd><input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} /></dd>
 				{this.renderPhase()}
-			</React.Fragment>
+			</ConfigBlock>
 		);
 	}
 }

@@ -1,11 +1,21 @@
 .layout-form {
 	dl {
-		margin: 0px;
+		margin: 0px 0px 1rem 0px;
+
 		dt {
 			padding: 0.5rem;
 			background-color: #b0e8e3;
 			border-radius: 10px;
 			font-weight: bold;
+
+			&.block {
+				background-color: transparent;
+				font-size: 1.2rem;
+			}
+
+			&.expanded {
+				margin-bottom: 0.5rem;
+			}
 		}
 
 		dd {

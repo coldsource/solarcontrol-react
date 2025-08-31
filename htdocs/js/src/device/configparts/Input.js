@@ -1,14 +1,15 @@
-import {SelectInteger} from './SelectInteger.js';
-import {Tooltip} from './Tooltip.js';
+import {SelectInteger} from '../../ui/SelectInteger.js';
+import {Tooltip} from '../../ui/Tooltip.js';
 
-export class ConfigDeviceControl extends React.Component
+export class Input extends React.Component
 {
 	constructor(props) {
 		super(props);
 
 		this.types = {
-			'plug': {icon: 'scf-plug', name: 'Plug S'},
-			'pro': {icon: 'scf-plugs', name: 'Pro'}
+			'dummy': {icon: 'scf-empty', name: 'None'},
+			'plus1pm': {icon: 'scf-plug', name: 'Plus 1PM'},
+			'pro': {icon: 'scf-plugs', name: 'Pro 3'}
 		};
 
 		this.change = this.change.bind(this);
@@ -20,22 +21,7 @@ export class ConfigDeviceControl extends React.Component
 		const name = ev.target.name;
 		let value = ev.target.value;
 
-		if(name=='outlet')
-			value = parseInt(value);
-
 		config[name] = value;
-
-		if(name=='type')
-		{
-			if(value=='plug')
-				delete config.outlet;
-
-			if(value=='pro')
-				config.outlet = 0;
-		}
-
-		if(name=='mqtt_id' && value=='')
-			delete config.mqtt_id;
 
 		this.props.onChange({target: {name: this.props.name, value: config}});
 	}
@@ -62,7 +48,7 @@ export class ConfigDeviceControl extends React.Component
 		return (
 			<React.Fragment>
 				<dt>
-					<Tooltip content="Outlet number on the Shelly device">
+					<Tooltip content="Input number on the Shelly device">
 						Outlet number
 					</Tooltip>
 				</dt>
@@ -71,18 +57,40 @@ export class ConfigDeviceControl extends React.Component
 		);
 	}
 
-	renderMQTTID() {
+	renderMQTT() {
 		const value = this.props.value;
-		let mqtt_id = value.mqtt_id!==undefined?value.mqtt_id:'';
+		if(value.type=='dummy')
+			return;
 
 		return (
 			<React.Fragment>
 				<dt>
-					<Tooltip content="MQTT ID configured on the Shelly device. This is mandatory to get power consumption. Will be configured automatically if you use auto detection wizard.">
-						MQTT ID
+					<Tooltip content="MQTT ID configured on the Shelly device. Will be configured automatically if you use auto detection wizard.">
+						Input MQTT ID
 					</Tooltip>
 				</dt>
-				<dd><input type="text" name="mqtt_id" value={mqtt_id} onChange={this.change} /></dd>
+				<dd>
+					<input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} />
+				</dd>
+			</React.Fragment>
+		);
+	}
+
+	renderIP() {
+		const value = this.props.value;
+		if(value.type=='dummy')
+			return;
+
+		return (
+			<React.Fragment>
+				<dt>
+					<Tooltip content="IP address of the Shelly device (can be found in Shelly app or Autodetected). Will be configured automatically if you use auto detection wizard.">
+						IP address
+					</Tooltip>
+				</dt>
+				<dd>
+					<input type="text" name="ip" value={value.ip} onChange={this.change} />
+				</dd>
 			</React.Fragment>
 		);
 	}
@@ -93,7 +101,7 @@ export class ConfigDeviceControl extends React.Component
 			<React.Fragment>
 				<dt>
 					<Tooltip content="Type of Shelly device used to switch on or off your device">
-						Device controller type
+						Device input type
 					</Tooltip>
 				</dt>
 				<dd>
@@ -101,14 +109,9 @@ export class ConfigDeviceControl extends React.Component
 						{this.renderTiles()}
 					</div>
 				</dd>
-				<dt>
-					<Tooltip content="IP address of the Shelly device (can be found in Shelly app or Autodetected). Will be configured automatically if you use auto detection wizard.">
-						IP address
-					</Tooltip>
-				</dt>
-				<dd><input type="text" name="ip" value={value.ip} onChange={this.change} /></dd>
+				{this.renderIP()}
+				{this.renderMQTT()}
 				{this.renderOutlet()}
-				{this.renderMQTTID()}
 			</React.Fragment>
 		);
 	}
