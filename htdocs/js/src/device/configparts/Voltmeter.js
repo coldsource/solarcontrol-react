@@ -25,7 +25,7 @@ export class Voltmeter extends React.Component
 	addThreshold() {
 		let thresholds = this.props.value.thresholds;
 		thresholds.push({percent: '', voltage: ''});
-		this.change({target: {name: thresholds, value: thresholds}});
+		this.change({target: {name: 'thresholds', value: thresholds}});
 	}
 
 	removeThreshold(idx) {
