@@ -1,5 +1,6 @@
 import {SelectInteger} from '../../ui/SelectInteger.js';
 import {Tooltip} from '../../ui/Tooltip.js';
+import {Select} from '../../ui/Select.js';
 import {ConfigBlock} from '../../ui/ConfigBlock.js';
 
 export class Control extends React.Component
@@ -91,6 +92,24 @@ export class Control extends React.Component
 		);
 	}
 
+	renderReverted() {
+		if(this.props.revert===undefined || !this.props.revert)
+			return;
+
+		return (
+			<React.Fragment>
+				<dt>
+					<Tooltip content="Sets how controller relay is used">
+						When on battery, relay is
+					</Tooltip>
+				</dt>
+				<dd>
+					<Select name="reverted" value={this.props.value.reverted} values={[{name: 'On', value: true}, {name: 'Off', value: false}]} onChange={this.change} />
+				</dd>
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		let value = this.props.value;
 		return (
@@ -110,9 +129,12 @@ export class Control extends React.Component
 						IP address
 					</Tooltip>
 				</dt>
-				<dd><input type="text" name="ip" value={value.ip} onChange={this.change} /></dd>
+				<dd>
+					<input type="text" name="ip" value={value.ip} onChange={this.change} />
+				</dd>
 				{this.renderOutlet()}
 				{this.renderMQTTID()}
+				{this.renderReverted()}
 			</ConfigBlock>
 		);
 	}

@@ -47,7 +47,12 @@ export class DeviceConfig extends React.Component
 			},
 			Control: {
 				render: this.renderControl,
-				config: {control: {type: 'plug', ip: ''}}
+				config: {control: {type: 'plug', ip: ''}},
+			},
+			ControlBattery: {
+				render: this.renderControl,
+				config: {control: {type: 'plug', ip: ''}},
+				options: {revert: true}
 			},
 			Input: {
 				render: this.renderInput,
@@ -210,9 +215,9 @@ export class DeviceConfig extends React.Component
 		);
 	}
 
-	renderControl(device, config, onChange) {
+	renderControl(device, config, onChange, options = {revert: false}) {
 		return (
-			<Control name="control" value={config.control} onChange={onChange} />
+			<Control name="control" value={config.control} onChange={onChange} revert={options.revert} />
 		);
 	}
 
