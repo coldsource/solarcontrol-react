@@ -176,16 +176,7 @@ export class DeviceConfig extends React.Component
 	}
 
 	renderPrio(device, config, onChange) {
-		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="When offloading, highest priority devices will be switched on first if sufficient PV power is available. 0 is the highest priority.">
-						Priority
-					</Tooltip>
-				</dt>
-				<dd><input type="number" name="prio" value={config.prio} onChange={onChange} /></dd>
-			</React.Fragment>
-		);
+		return; // Prio is not rendered, it can be changer later from devices listing
 	}
 
 	renderMeter(device, config, onChange) {
