@@ -80,6 +80,7 @@ export class Stats extends React.Component
 				<tr key={device.device_id}>
 					<td>{device.device_name}</td>
 					<td>{device.type}</td>
+					<td>{device.wanted_state}</td>
 					<td>{(device.prediction * 100).toFixed(1)} %</td>
 				</tr>
 			);
@@ -125,6 +126,7 @@ export class Stats extends React.Component
 							<tr>
 								<th>Device</th>
 								<th>Type</th>
+								<th>Wanted state</th>
 								<th>Prediction</th>
 							</tr>
 						</thead>
