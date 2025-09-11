@@ -2,6 +2,7 @@ import {API as ProtocolAPI} from '../websocket/API.js';
 import {Device as ProtocolDevice} from '../websocket/Device.js';
 import {Config} from '../websocket/Config.js';
 import {Global} from '../meter/Global.js';
+import {Summary} from '../meter/Summary.js';
 import {DevicesElectrical} from '../device/DevicesElectrical.js';
 import {DevicesHT} from '../device/DevicesHT.js';
 import {DeviceHWS} from '../device/DeviceHWS.js';
@@ -104,18 +105,27 @@ export class App extends React.Component
 		return (<Loader />);
 	}
 
+	renderMenu() {
+		return (
+			<div className="menu">
+				<i className="scf scf-meter" onClick={() => this.changeURL('?loc=meter')} />
+				<i className="scf scf-plug" onClick={() => this.changeURL('?loc=deviceselectrical')} />
+				<i className="scf scf-weather" onClick={() => this.changeURL('?loc=devicesht')} />
+				<i className="scf scf-droplet" onClick={() => this.changeURL('?loc=devicehws')}></i>
+				<i className="scf scf-electricity" onClick={() => this.changeURL('?loc=energy')} />
+				<i className="scf scf-settings" onClick={() => this.changeURL('?loc=config')} />
+			</div>
+		);
+	}
+
 	render() {
+		if(this.getPath()=='summary')
+			return (<Summary />);
+
 		return (
 			<div className="sc-app">
 				{this.renderLoader()}
-				<div className="menu">
-					<i className="scf scf-meter" onClick={() => this.changeURL('?loc=meter')} />
-					<i className="scf scf-plug" onClick={() => this.changeURL('?loc=deviceselectrical')} />
-					<i className="scf scf-weather" onClick={() => this.changeURL('?loc=devicesht')} />
-					<i className="scf scf-droplet" onClick={() => this.changeURL('?loc=devicehws')}></i>
-					<i className="scf scf-electricity" onClick={() => this.changeURL('?loc=energy')} />
-					<i className="scf scf-settings" onClick={() => this.changeURL('?loc=config')} />
-				</div>
+				{this.renderMenu()}
 				<div>
 					{this.renderScreen()}
 				</div>

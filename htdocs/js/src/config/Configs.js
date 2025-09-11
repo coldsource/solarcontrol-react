@@ -3,6 +3,7 @@ import {LogsState} from '../logs/LogsState.js';
 import {Temperatures} from './Temperatures.js';
 import {Pricing} from './Pricing.js';
 import {Limits} from './Limits.js';
+import {Stats} from './Stats.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {DeviceElectrical} from '../device/DeviceElectrical.js';
 import {DeviceBattery} from '../device/DeviceBattery.js';
@@ -37,6 +38,7 @@ export class Configs extends React.Component
 			{name: 'Pricing', icon: 'scf-euro', value: 'pricing'},
 			{name: 'Limits', icon: 'scf-meter', value: 'limits'},
 			{name: 'State logs', icon: 'scf-logs', value: 'logs'},
+			{name: 'Statistics', icon: 'scf-stats', value: 'stats'},
 			{name: 'Advanced', icon: 'scf-cogs', value: 'advanced'},
 		];
 	}
@@ -141,6 +143,8 @@ export class Configs extends React.Component
 			return (<SolarControl />);
 		else if(this.state.screen=='temperatures')
 			return (<Temperatures />);
+		else if(this.state.screen=='stats')
+			return (<Stats />);
 		else if(this.state.screen=='pricing')
 			return (<Pricing />);
 		else if(this.state.screen=='limits')
