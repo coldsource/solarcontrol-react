@@ -3,9 +3,6 @@ export class Events
 	constructor(protocol)
 	{
 		this.protocol = protocol;
-
-		this.connected = false;
-		this.reconnect_interval = null;
 	}
 
 	async connect()
@@ -16,22 +13,15 @@ export class Events
 
 		// Event on connection
 		self.ws.onopen = function (event) {
-			self.connected = true;
+			console.log("Connected (protocol " + self.protocol + ")");
 		};
 
 		// Event on disconnection
 		self.ws.onclose = function(ev) {
-			console.error("Disconnected" + (ev.reason?' : « ' + ev.reason + ' »':''));
+			console.error("Disconnected (protocol " + self.protocol + ") " + (ev.reason?' : « ' + ev.reason + ' »':''));
 
-			self.connected = false;
-			self.reconnect_interval = setInterval(() => {
-				if(self.connected)
-				{
-					clearInterval(self.reconnect_interval);
-					return;
-				}
-
-				console.log("Reconnecting...");
+			setTimeout(() => {
+				console.log("Reconnecting (protocol " + self.protocol + ") ...");
 				self.connect();
 			}, 10000);
 		}
