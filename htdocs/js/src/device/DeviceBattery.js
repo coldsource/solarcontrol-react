@@ -37,6 +37,8 @@ export class DeviceBattery extends React.Component
 				<dd>{this.state.devicebattery.voltage.toFixed(2)}&#160;V</dd>
 				<dt>SOC</dt>
 				<dd><SOC value={this.state.devicebattery.soc} /></dd>
+				<dt>SOC State</dt>
+				<dd>{this.state.devicebattery.soc_state}</dd>
 			</dl>
 		);
 	}

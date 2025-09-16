@@ -5,6 +5,7 @@ import {Control} from './configparts/Control.js';
 import {Meter} from './configparts/Meter.js';
 import {Voltmeter} from './configparts/Voltmeter.js';
 import {BatteryBackup} from './configparts/BatteryBackup.js';
+import {BatteryPolicy} from './configparts/BatteryPolicy.js';
 import {Offload} from './configparts/Offload.js';
 import {Force} from './configparts/Force.js';
 import {Input} from './configparts/Input.js';
@@ -44,6 +45,10 @@ export class DeviceConfig extends React.Component
 			BatteryDisable: {
 				render: this.renderBatteryDisable,
 				config: {}
+			},
+			BatteryPolicy: {
+				render: this.renderBatteryPolicy,
+				config: {policy: "battery"}
 			},
 			Control: {
 				render: this.renderControl,
@@ -203,6 +208,12 @@ export class DeviceConfig extends React.Component
 				<div className="warning-btn" onClick={() => { onChange({target: {name: 'meter', value: {type: 'dummy'}}}); onChange({target: {name: 'voltmeter', value: {mqtt_id: '',  thresholds: []}}}) }}>Disable device</div>
 				<br />
 			</React.Fragment>
+		);
+	}
+
+	renderBatteryPolicy(device, config, onChange) {
+		return (
+			<BatteryPolicy name="policy" value={config.policy} onChange={onChange} />
 		);
 	}
 
