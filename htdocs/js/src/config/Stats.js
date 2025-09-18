@@ -67,7 +67,7 @@ export class Stats extends React.Component
 
 		return (
 			<div>
-				More than <KW value={freqs[this.state.freq_idx].range} /> : <b>{(freqs[this.state.freq_idx].frequency * 100).toFixed(1)} %</b>
+				At least <KW value={freqs[this.state.freq_idx].range} /> : <b>{(freqs[this.state.freq_idx].frequency * 100).toFixed(1)} %</b>
 			</div>
 		);
 	}
