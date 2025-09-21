@@ -56,7 +56,7 @@ export class DeviceConfig extends React.Component
 			},
 			ControlBattery: {
 				render: this.renderControl,
-				config: {control: {type: 'plug', ip: ''}},
+				config: {control: {type: 'plug', ip: '', reverted: true}},
 				options: {revert: true}
 			},
 			Input: {
