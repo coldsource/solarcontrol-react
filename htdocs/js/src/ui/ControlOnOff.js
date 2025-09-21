@@ -14,9 +14,11 @@ export class ControlOnOff extends React.Component
 	}
 
 	render() {
-		let cl = this.props.state?' on':' off';
+		let cl = this.props.state?'scf-onoff on':'scf-onoff off';
+		if(this.props.type=='battery-controller')
+			cl = this.props.state?'scf-electricity':'scf-battery';
 		return (
-			<i className={'scf scf-onoff' + cl} onClick={this.toggleState} />
+			<i className={'scf ' + cl} onClick={this.toggleState} />
 		);
 	}
 }

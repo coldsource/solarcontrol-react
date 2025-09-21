@@ -128,7 +128,7 @@ export class DevicesElectrical extends React.Component
 						</div>
 					</div>
 					<div>
-						{(device.device_category!=self.CATEGORY_PASSIVE)?(<ControlOnOff device_id={device.device_id} state={device.state} />):null}
+						{(device.device_category!=self.CATEGORY_PASSIVE)?(<ControlOnOff device_id={device.device_id} state={device.state} type={device.device_type} />):null}
 					</div>
 				</div>
 			);

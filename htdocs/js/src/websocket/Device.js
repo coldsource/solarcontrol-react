@@ -40,7 +40,7 @@ export class Device extends Events
 				this.battery = device;
 			else if(device.device_id==-3)
 				this.hws = device;
-			else if(['heater', 'cooler', 'cmv', 'timerange', 'passive', 'battery-passive'].indexOf(device.device_type)>=0)
+			else if(['heater', 'cooler', 'cmv', 'timerange', 'passive', 'battery-passive', 'battery-controller'].indexOf(device.device_type)>=0)
 				this.devices_electrical.push(device);
 			else if(['ht', 'htmini', 'wind'].indexOf(device.device_type)>=0)
 				this.devices_ht.push(device);
