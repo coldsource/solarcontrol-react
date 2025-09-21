@@ -40,7 +40,7 @@ export class DeviceConfig extends React.Component
 			},
 			BatteryBackup: {
 				render: this.renderBatteryBackup,
-				config: {battery_low: 30, battery_high: 50, min_grid_time: 7200}
+				config: {backup: {battery_low: 30, battery_high: 50, min_grid_time: 7200}}
 			},
 			BatteryDisable: {
 				render: this.renderBatteryDisable,

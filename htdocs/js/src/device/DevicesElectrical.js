@@ -69,7 +69,7 @@ export class DevicesElectrical extends React.Component
 	}
 
 	renderSOC(device) {
-		if(device.device_type!='battery-passive')
+		if(device.device_type!='battery')
 			return;
 
 		return (
@@ -100,6 +100,22 @@ export class DevicesElectrical extends React.Component
 		});
 	}
 
+	renderAction(device) {
+		if(device.device_category==self.CATEGORY_PASSIVE)
+			return;
+
+		if(device.device_type=='battery')
+		{
+			if(device.state=='battery')
+				return (<i className="scf scf-battery" />);
+			return (<i className="scf scf-electricity" />);
+		}
+
+		return (
+			<ControlOnOff device_id={device.device_id} state={device.state} type={device.device_type} />
+		);
+	}
+
 	renderDevices(mode = 'list') {
 		let devices;
 
@@ -112,7 +128,7 @@ export class DevicesElectrical extends React.Component
 			let cl_auto = 'scf-sun';
 			if(device.device_type=='passive')
 				cl_auto = 'scf-meter';
-			else if(device.device_type=='battery-passive')
+			else if(device.device_type=='battery')
 				cl_auto = 'scf-battery';
 
 			return (
@@ -128,7 +144,7 @@ export class DevicesElectrical extends React.Component
 						</div>
 					</div>
 					<div>
-						{(device.device_category!=self.CATEGORY_PASSIVE)?(<ControlOnOff device_id={device.device_id} state={device.state} type={device.device_type} />):null}
+						{this.renderAction(device)}
 					</div>
 				</div>
 			);

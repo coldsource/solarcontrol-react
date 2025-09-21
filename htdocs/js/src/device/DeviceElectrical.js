@@ -26,8 +26,8 @@ export class DeviceElectrical extends React.Component
 			passive: ['Name', 'Meter'],
 			grid: ['Meter', 'Input'],
 			pv: ['Meter'],
-			'battery-passive': ['Name', 'Meter', 'Voltmeter'],
-			'battery-controller': ['Name', 'Prio', 'ControlBattery', 'Offload', 'Force'],
+			battery: ['Name', 'Prio', 'BatteryPolicy', 'Meter', 'Voltmeter', 'ControlBattery', 'BatteryBackup'],
+			controller: ['Name', 'Prio', 'ControlBattery', 'Offload', 'Force'],
 		}
 
 		this.save = this.save.bind(this);

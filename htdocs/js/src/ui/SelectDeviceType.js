@@ -39,13 +39,13 @@ export class SelectDeviceType extends React.Component
 						A metering only device used to monitor energy consumption. This is a read only device and cannot be controlled.
 					</dd>
 					<dt>
-						<i className="scf scf-battery" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'battery-passive'}})} />
+						<i className="scf scf-battery" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'battery'}})} />
 					</dt>
 					<dd>
 						A battery system used for power injection. Can be monitored for SOC (State Of Charge) and power injection.
 					</dd>
 					<dt>
-						<i className="scf scf-battery-grid" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'battery-controller'}})} />
+						<i className="scf scf-battery-grid" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'controller'}})} />
 					</dt>
 					<dd>
 						A battery controller used to switch part of the network between grid and battery.

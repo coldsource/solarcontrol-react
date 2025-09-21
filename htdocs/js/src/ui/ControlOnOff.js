@@ -15,7 +15,7 @@ export class ControlOnOff extends React.Component
 
 	render() {
 		let cl = this.props.state?'scf-onoff on':'scf-onoff off';
-		if(this.props.type=='battery-controller')
+		if(this.props.type=='controller')
 			cl = this.props.state?'scf-electricity':'scf-battery';
 		return (
 			<i className={'scf ' + cl} onClick={this.toggleState} />
