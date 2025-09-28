@@ -1,6 +1,5 @@
 import {SliderDuration} from '../../ui/SliderDuration.js';
 import {Tooltip} from '../../ui/Tooltip.js';
-import {ConfigBlock} from '../../ui/ConfigBlock.js';
 
 export class MinOnOff extends React.Component
 {
@@ -30,7 +29,7 @@ export class MinOnOff extends React.Component
 		let value = this.props.value;
 
 		return (
-			<ConfigBlock title="Device protection">
+			<React.Fragment>
 				<dt>
 					<Tooltip content="Once switched on, the device will never be switched off before this amount of time. Use this to avoid too frequent on/off when offloading.">
 						Minimum on time
@@ -46,7 +45,7 @@ export class MinOnOff extends React.Component
 					<SliderDuration name="min_off" value={value.min_off} onChange={this.props.onChange} />
 				</dd>
 				{this.renderMaxOn()}
-			</ConfigBlock>
+			</React.Fragment>
 		);
 	}
 }

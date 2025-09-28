@@ -1,6 +1,5 @@
 import {SelectLetter} from '../../ui/SelectLetter.js';
 import {Tooltip} from '../../ui/Tooltip.js';
-import {ConfigBlock} from '../../ui/ConfigBlock.js';
 
 export class Voltmeter extends React.Component
 {
@@ -65,7 +64,7 @@ export class Voltmeter extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<ConfigBlock title="Voltmeter">
+			<React.Fragment>
 				<dt>
 					<Tooltip content="MQTT ID configured on the Shelly device.">
 						Voltmeter MQTT ID
@@ -87,7 +86,7 @@ export class Voltmeter extends React.Component
 						<div onClick={this.addThreshold} className="add">Add threshold</div>
 					</div>
 				</dd>
-			</ConfigBlock>
+			</React.Fragment>
 		);
 	}
 }

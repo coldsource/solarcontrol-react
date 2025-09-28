@@ -1,6 +1,5 @@
 import {Tooltip} from '../../ui/Tooltip.js';
 import {TimeRanges} from '../../ui/TimeRanges.js';
-import {ConfigBlock} from '../../ui/ConfigBlock.js';
 
 export class Offload extends React.Component
 {
@@ -11,7 +10,7 @@ export class Offload extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<ConfigBlock title="Offload">
+			<React.Fragment>
 				<dt>
 					<Tooltip content="When offloading, the device will only be switched on if at least this power is available from PV. You can usually find this value on the device.">
 						Expected consumption (W)
@@ -26,7 +25,7 @@ export class Offload extends React.Component
 				<dd>
 					<TimeRanges name="offload" value={value.offload} onChange={this.props.onChange} options={this.props.options} />
 				</dd>
-			</ConfigBlock>
+			</React.Fragment>
 		);
 	}
 }

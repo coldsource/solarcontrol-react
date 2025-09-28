@@ -3,6 +3,8 @@
 		margin: 0px 0px 1rem 0px;
 
 		dt {
+			display: grid;
+			grid-template-columns: 1fr 1.5rem;
 			padding: 0.5rem;
 			background-color: #b0e8e3;
 			border-radius: 10px;
@@ -15,6 +17,18 @@
 
 			&.expanded {
 				margin-bottom: 0.5rem;
+			}
+
+			&.disabled {
+				color: grey;
+			}
+
+			&.enabled {
+				color: black;
+
+				.scf-check {
+					color: green;
+				}
 			}
 		}
 

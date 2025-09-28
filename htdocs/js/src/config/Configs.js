@@ -156,7 +156,7 @@ export class Configs extends React.Component
 		else if(this.state.screen=='hws')
 			return (<div className="sc-deviceconfig"><DeviceElectrical id="-3" parts={['Meter', 'Control']}/></div>);
 		else if(this.state.screen=='battery')
-			return (<div className="sc-deviceconfig"><DeviceBattery id="-4" parts={['BatteryPolicy', 'Meter', 'Voltmeter', 'ControlBattery', 'BatteryBackup', 'BatteryDisable']} /></div>);
+			return (<div className="sc-deviceconfig"><DeviceBattery id="-4" parts={['Voltmeter', 'Meter', 'ControlBattery', 'BatteryPolicy*', 'BatteryBackup*']} /></div>);
 	}
 
 	render() {

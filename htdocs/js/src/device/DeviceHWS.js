@@ -68,7 +68,7 @@ export class DeviceHWS extends React.Component
 						</tr>
 					</tbody>
 				</table>
-				<DeviceElectrical id={this.state.devicehws.device_id} parts={['Force', 'HWS']}/>
+				<DeviceElectrical id={this.state.devicehws.device_id} parts={['Force*', 'HWS*']}/>
 			</div>
 		);
 	}

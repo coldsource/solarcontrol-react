@@ -1,7 +1,6 @@
 import {SelectInteger} from '../../ui/SelectInteger.js';
 import {Tooltip} from '../../ui/Tooltip.js';
 import {Select} from '../../ui/Select.js';
-import {ConfigBlock} from '../../ui/ConfigBlock.js';
 
 export class Control extends React.Component
 {
@@ -113,7 +112,7 @@ export class Control extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<ConfigBlock title={"Controller : " + this.types[value.type].name}>
+			<React.Fragment>
 				<dt>
 					<Tooltip content="Type of Shelly device used to switch on or off your device">
 						Device controller type
@@ -135,7 +134,7 @@ export class Control extends React.Component
 				{this.renderOutlet()}
 				{this.renderMQTTID()}
 				{this.renderReverted()}
-			</ConfigBlock>
+			</React.Fragment>
 		);
 	}
 }

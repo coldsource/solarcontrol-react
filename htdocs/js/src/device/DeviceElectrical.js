@@ -18,16 +18,16 @@ export class DeviceElectrical extends React.Component
 		};
 
 		this.config_parts = {
-			timerange: ['Name', 'Prio', 'Control', 'Offload', 'Force', 'Remainder', 'MinOnOff'],
-			heater: ['Name', 'Prio', 'Control', 'Thermometer', 'OffloadTemperature', 'ForceTemperature', 'MinOnOff'],
-			cooler: ['Name', 'Prio', 'Control', 'Thermometer', 'OffloadTemperature', 'ForceTemperature', 'MinOnOff'],
-			cmv: ['Name', 'Prio', 'Control', 'CMV', 'OffloadMoisture', 'ForceMoisture', 'MinOnOffMax'],
-			hws: ['Meter', 'Control', 'Force', 'HWS'],
-			passive: ['Name', 'Meter'],
-			grid: ['Meter', 'Input'],
+			timerange: ['Name*', 'Prio*', 'Control*', 'Offload*', 'Force*', 'Remainder*', 'MinOnOff*'],
+			heater: ['Name*', 'Prio*', 'Control*', 'Thermometer*', 'OffloadTemperature*', 'ForceTemperature*', 'MinOnOff*'],
+			cooler: ['Name*', 'Prio*', 'Control*', 'Thermometer*', 'OffloadTemperature*', 'ForceTemperature*', 'MinOnOff*'],
+			cmv: ['Name*', 'Prio*', 'Control*', 'CMV*', 'OffloadMoisture*', 'ForceMoisture*', 'MinOnOffMax*'],
+			hws: ['Meter', 'Control', 'Force*', 'HWS'],
+			passive: ['Name', 'Meter*'],
+			grid: ['Meter', 'OffPeak'],
 			pv: ['Meter'],
-			battery: ['Name', 'Prio', 'BatteryPolicy', 'Meter', 'Voltmeter', 'ControlBattery', 'BatteryBackup'],
-			controller: ['Name', 'Prio', 'ControlBattery', 'Offload', 'Force'],
+			battery: ['Name*', 'Prio*', 'Voltmeter*', 'Meter', 'ControlBattery', 'BatteryPolicy*', 'BatteryBackup*'],
+			controller: ['Name*', 'Prio*', 'ControlBattery*', 'Offload*', 'Force*'],
 		}
 
 		this.save = this.save.bind(this);

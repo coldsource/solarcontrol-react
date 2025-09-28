@@ -1,7 +1,6 @@
 import {Tooltip} from '../../ui/Tooltip.js';
 import {TimeRanges} from '../../ui/TimeRanges.js';
 import {SliderDuration} from '../../ui/SliderDuration.js';
-import {ConfigBlock} from '../../ui/ConfigBlock.js';
 
 export class HWS extends React.Component
 {
@@ -13,7 +12,7 @@ export class HWS extends React.Component
 		let value = this.props.value;
 		let tooltip = "Compute how many energy has been taken by HWS during the period represented by «\xa0For the last\xa0». If HWS has taken less than «\xa0Ensure minimum Wh of\xa0», it will be switched on in the period indicated by «\xa0During this period\xa0» to make the remainder.";
 		return (
-			<ConfigBlock title="Remainder">
+			<React.Fragment>
 				<dt>
 					<Tooltip content={tooltip}>
 						Ensure minimum Wh of
@@ -34,7 +33,7 @@ export class HWS extends React.Component
 				<dd>
 					<TimeRanges name="remainder" value={value.remainder} onChange={this.props.onChange} />
 				</dd>
-			</ConfigBlock>
+			</React.Fragment>
 		);
 	}
 }

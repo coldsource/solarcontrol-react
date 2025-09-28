@@ -15,6 +15,7 @@ import {HWS} from './configparts/HWS.js';
 import {Thermometer} from './configparts/Thermometer.js';
 import {Hygrometer} from './configparts/Hygrometer.js';
 import {Tooltip} from '../ui/Tooltip.js';
+import {ConfigBlock} from '../ui/ConfigBlock.js';
 
 export class DeviceConfig extends React.Component
 {
@@ -32,89 +33,107 @@ export class DeviceConfig extends React.Component
 			},
 			Meter: {
 				render: this.renderMeter,
-				config: {meter: {type: '3em', mqtt_id: '', phase: 'a'}}
+				config: {meter: {type: '3em', mqtt_id: '', phase: 'a'}},
+				title: "Power Meter",
+				renderTitle: (config) => "Power Meter : " + config.meter.type
 			},
 			Voltmeter: {
 				render: this.renderVoltmeter,
-				config: {voltmeter: {mqtt_id: '', thresholds: []}}
+				config: {voltmeter: {mqtt_id: '', thresholds: []}},
+				title: "Voltmeter"
 			},
 			BatteryBackup: {
 				render: this.renderBatteryBackup,
-				config: {backup: {battery_low: 30, battery_high: 50, min_grid_time: 7200}}
-			},
-			BatteryDisable: {
-				render: this.renderBatteryDisable,
-				config: {}
+				config: {backup: {battery_low: 30, battery_high: 50, min_grid_time: 7200}},
+				title: "Battery backup"
 			},
 			BatteryPolicy: {
 				render: this.renderBatteryPolicy,
-				config: {policy: "battery"}
+				config: {policy: "battery"},
+				title: "Battery Policy"
 			},
 			Control: {
 				render: this.renderControl,
 				config: {control: {type: 'plug', ip: ''}},
+				title: "Controller",
+				renderTitle: config => "Controller : " + config.control.type,
 			},
 			ControlBattery: {
 				render: this.renderControl,
-				config: {control: {type: 'plug', ip: '', reverted: true}},
-				options: {revert: true}
+				config: {control: {type: 'uni', ip: '', reverted: true}},
+				options: {revert: true},
+				title: "Controller",
+				renderTitle: config => "Controller : " + config.control.type,
 			},
-			Input: {
+			OffPeak: {
 				render: this.renderInput,
-				config: {meter: {type: 'pro', mqtt_id: '', outlet: 0}}
+				config: {input: {type: 'pro', mqtt_id: '', outlet: 0}},
+				title: "Off Peak detection"
 			},
 			Offload: {
 				render: this.renderOffload,
-				config: {expected_consumption: 0, offload: []}
+				config: {expected_consumption: 0, offload: []},
+				title: "Offload"
 			},
 			OffloadTemperature: {
 				render: this.renderOffload,
 				config: {expected_consumption: 0, offload: []},
-				options: {temperature: true}
+				options: {temperature: true},
+				title: "Offload"
 			},
 			OffloadMoisture: {
 				render: this.renderOffload,
 				config: {expected_consumption: 0, offload: []},
-				options: {moisture: true}
+				options: {moisture: true},
+				title: "Offload"
 			},
 			Force: {
 				render: this.renderForce,
-				config: {force: []}
+				config: {force: []},
+				title: "Forced period"
 			},
 			ForceTemperature: {
 				render: this.renderForce,
 				config: {force: []},
-				options: {temperature: true}
+				options: {temperature: true},
+				title: "Forced period"
 			},
 			ForceMoisture: {
 				render: this.renderForce,
 				config: {force: []},
-				options: {moisture: true}
+				options: {moisture: true},
+				title: "Forced period"
 			},
 			Remainder: {
 				render: this.renderRemainder,
-				config: {remainder: [], min_on_time: 0, min_on_for_last: 0}
+				config: {remainder: [], min_on_time: 0, min_on_for_last: 0},
+				title: "Remainder"
 			},
 			MinOnOff: {
 				render: this.renderMinOnOff,
-				config: {min_on: 0, min_off: 0}
+				config: {min_on: 0, min_off: 0},
+				title: "Device protection"
 			},
 			MinOnOffMax: {
 				render: this.renderMinOnOff,
 				config: {min_on: 0, min_off: 0, max_on: 0},
-				options: {max_on: true}
+				options: {max_on: true},
+				title: "Device protection"
 			},
 			Thermometer: {
 				render: this.renderThermometer,
-				config: {ht_device_id: 0}
+				config: {ht_device_id: 0},
+				title: "Thermometer",
 			},
 			CMV: {
 				render: this.renderCMV,
-				config: {ht_device_ids: []}
+				config: {ht_device_ids: []},
+				title: "Hygrometers"
 			},
 			HWS: {
 				render: this.renderHWS,
-				config: {min_energy: 0, min_energy_for_last: 0}
+				config: {min_energy: 0, min_energy_for_last: 0},
+				title: "Remainder"
 			},
 			MQTT: {
 				render: this.renderMQTT,
@@ -141,10 +160,19 @@ export class DeviceConfig extends React.Component
 		}
 	}
 
+	getPartKey(part) {
+		if(part.substr(-1)=='*')
+			return part.substr(0, part.length-1);
+		return part;
+	}
+
 	buildDefaultConfig() {
 		let config = {};
 		for(const part of this.props.parts)
-			Object.assign(config, this.config_parts[part].config);
+		{
+			if(part.substr(-1)=='*') // Build default config only from required fields
+				Object.assign(config, this.config_parts[this.getPartKey(part)].config);
+		}
 		return config;
 	}
 
@@ -164,6 +192,19 @@ export class DeviceConfig extends React.Component
 		else
 			config[name] = value;
 
+		this.props.onChange(device);
+	}
+
+	enablePart(part) {
+		let device = structuredClone(this.props.device);
+		Object.assign(device.device_config, this.config_parts[part].config);
+		this.props.onChange(device);
+	}
+
+	disablePart(part) {
+		let device = structuredClone(this.props.device);
+		for(const key in this.config_parts[part].config)
+			delete device.device_config[key];
 		this.props.onChange(device);
 	}
 
@@ -199,15 +240,6 @@ export class DeviceConfig extends React.Component
 	renderBatteryBackup(device, config, onChange) {
 		return (
 			<BatteryBackup name="backup" value={config.backup} onChange={onChange} />
-		);
-	}
-
-	renderBatteryDisable(device, config, onChange) {
-		return (
-			<React.Fragment>
-				<div className="warning-btn" onClick={() => { onChange({target: {name: 'meter', value: {type: 'dummy'}}}); onChange({target: {name: 'voltmeter', value: {mqtt_id: '',  thresholds: []}}}) }}>Disable device</div>
-				<br />
-			</React.Fragment>
 		);
 	}
 
@@ -303,11 +335,31 @@ export class DeviceConfig extends React.Component
 
 	renderConfigParts() {
 		return this.props.parts.map(part => {
+			const device_config = this.props.device.device_config;
+
+			const optional = part.substr(-1)!='*';
+			part = this.getPartKey(part);
+
 			const config = this.config_parts[part];
+			const enabled = Object.keys(config.config).filter(value => !Object.keys(device_config).includes(value)).length==0
 			const options = config.options!==undefined?config.options:{};
+
+			if(config.title!==undefined)
+			{
+				let title = config.title;
+				if(enabled && config.renderTitle!==undefined)
+					title = config.renderTitle(device_config); // Custom title rendering function
+
+				return (
+					<ConfigBlock key={part} title={title} enabled={optional?enabled:null} onEnable={ () => this.enablePart(part) } onDisable={ () => this.disablePart(part) }>
+						{config.render(this.props.device, device_config, this.change, options)}
+					</ConfigBlock>
+				);
+			}
+
 			return (
 				<React.Fragment key={part}>
-					{config.render(this.props.device, this.props.device.device_config, this.change, options)}
+					{config.render(this.props.device, device_config, this.change, options)}
 				</React.Fragment>
 			);
 		});

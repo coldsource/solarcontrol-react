@@ -1,6 +1,5 @@
 import {SliderDuration} from '../../ui/SliderDuration.js';
 import {Tooltip} from '../../ui/Tooltip.js';
-import {ConfigBlock} from '../../ui/ConfigBlock.js';
 
 export class BatteryBackup extends React.Component
 {
@@ -23,7 +22,7 @@ export class BatteryBackup extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<ConfigBlock title="Battery backup">
+			<React.Fragment>
 				<dt>
 					<Tooltip content="Controller will switch to grid if this threshold is reached">
 						Battery low threshold
@@ -48,7 +47,7 @@ export class BatteryBackup extends React.Component
 				<dd>
 					<SliderDuration name="min_grid_time" value={value.min_grid_time} onChange={this.change} long={true} />
 				</dd>
-			</ConfigBlock>
+			</React.Fragment>
 		);
 	}
 }

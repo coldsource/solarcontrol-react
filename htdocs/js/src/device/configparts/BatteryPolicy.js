@@ -1,5 +1,4 @@
 import {Select} from '../../ui/Select.js';
-import {ConfigBlock} from '../../ui/ConfigBlock.js';
 import {Tooltip} from '../../ui/Tooltip.js';
 
 export class BatteryPolicy extends React.Component
@@ -17,7 +16,7 @@ export class BatteryPolicy extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<ConfigBlock title="Battery Policy">
+			<React.Fragment>
 				<dt>
 					<Tooltip content="Sets how battery vs grid should be used">
 						Usage policy
@@ -27,7 +26,7 @@ export class BatteryPolicy extends React.Component
 					<Select name="policy" value={this.props.value} values={[{name: 'Battery', value: 'battery'}, {name: 'Offload', value: 'offload'}, {name: 'Grid', value: 'grid'}]} onChange={this.props.onChange} />
 					<br /><i>{this.tips[this.props.value]}</i>
 				</dd>
-			</ConfigBlock>
+			</React.Fragment>
 		);
 	}
 }
