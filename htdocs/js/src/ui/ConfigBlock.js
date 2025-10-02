@@ -35,7 +35,7 @@ export class ConfigBlock extends React.Component
 		if(this.props.enabled===null)
 			return; // Config block is mandatory
 
-		return (<i className="scf scf-check" onClick={this.toggleEnable} />);
+		return (<span className="toggle" onClick={this.toggleEnable}>{this.props.enabled?"enabled":"disabled"}</span>);
 	}
 
 	renderShowHide() {

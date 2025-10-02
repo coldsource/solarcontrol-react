@@ -4,11 +4,13 @@
 
 		dt {
 			display: grid;
-			grid-template-columns: 1fr 1.5rem;
+			grid-template-columns: 2fr 1fr;
 			padding: 0.5rem;
 			background-color: #b0e8e3;
 			border-radius: 10px;
 			font-weight: bold;
+			align-items: center;
+			margin-bottom: 0.5rem;
 
 			&.block {
 				background-color: transparent;
@@ -26,7 +28,7 @@
 			&.enabled {
 				color: black;
 
-				.scf-check {
+				.toggle {
 					color: green;
 				}
 			}

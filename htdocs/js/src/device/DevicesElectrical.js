@@ -142,6 +142,7 @@ export class DevicesElectrical extends React.Component
 							{this.renderPower(device.power)}
 							{this.renderSOC(device)}
 						</div>
+						{device.offline?(<div className="offline" onClick={ mode=='list'?(() => this.edit(device.device_id)):(() => {}) }>OFFLINE</div>):''}
 					</div>
 					<div>
 						{this.renderAction(device)}
