@@ -57,9 +57,28 @@ export class Control extends React.Component
 		});
 	}
 
+	renderIP() {
+		const value = this.props.value;
+		if(value.type=='arduino')
+			return;
+
+		return (
+			<React.Fragment>
+				<dt>
+					<Tooltip content="IP address of the Shelly device (can be found in Shelly app or Autodetected). Will be configured automatically if you use auto detection wizard.">
+						IP address
+					</Tooltip>
+				</dt>
+				<dd>
+					<input type="text" name="ip" value={value.ip} onChange={this.change} />
+				</dd>
+			</React.Fragment>
+		);
+	}
+
 	renderOutlet() {
 		const value = this.props.value;
-		if(value.type=='plug')
+		if(value.type=='plug' || value.type=='arduino')
 			return;
 
 		let max = value.type=='pro'?3:2;
@@ -124,14 +143,7 @@ export class Control extends React.Component
 						{this.renderTiles()}
 					</div>
 				</dd>
-				<dt>
-					<Tooltip content="IP address of the Shelly device (can be found in Shelly app or Autodetected). Will be configured automatically if you use auto detection wizard.">
-						IP address
-					</Tooltip>
-				</dt>
-				<dd>
-					<input type="text" name="ip" value={value.ip} onChange={this.change} />
-				</dd>
+				{this.renderIP()}
 				{this.renderOutlet()}
 				{this.renderMQTTID()}
 				{this.renderReverted()}
