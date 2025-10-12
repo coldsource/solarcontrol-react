@@ -151,7 +151,7 @@ export class Summary extends React.Component
 			name = name.substr(0, 20) + '...';
 
 		return (
-			<div className="line">
+			<div className="line line2">
 				<i className="scf scf-bolt" />
 				<span>
 					<KW value={max_device.power} />
@@ -169,14 +169,43 @@ export class Summary extends React.Component
 
 		return (
 			<div className="line">
-				<i className="scf scf-battery" />
+				<div className="icon">
+					<div className="bar" style={this.calcLinearGradient(this.getBatteryPrct(), 0)}></div>
+					<i className="scf scf-battery" />
+				</div>
 				<span>
 					<KW value={this.state.battery} />
 				</span>
-				<span className="energy">
-					<KWh value={this.state.battery_energy} />
+				<span>
+					<span className="energy">
+						<KWh value={this.state.battery_energy} />
+					</span>
+				</span>
+				<span className="prct" style={this.calcLinearGradient(this.state.battery_soc, 90)}>
+					<SOC value={this.state.battery_soc} />
 				</span>
 			</div>
+		);
+	}
+
+	renderDate() {
+		let d = new Date();
+		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+		return (
+			<span>
+				{d.getDate()} {months[d.getMonth()]} {d.getFullYear()}
+			</span>
+		);
+	}
+
+	renderTime() {
+		let d = new Date();
+
+		return (
+			<span>
+				{d.getHours().toString().padStart(2, '0')}:{d.getMinutes().toString().padStart(2, '0')}
+			</span>
 		);
 	}
 
@@ -184,7 +213,10 @@ export class Summary extends React.Component
 		return (
 			<div className="sc-meter-summary">
 				<div className="line">
-					<i className="scf scf-electricity" />
+					<div className="icon">
+						<div className="bar" style={this.calcLinearGradient(this.getGridPrct(), 0, '245, 130, 29')}></div>
+						<i className="scf scf-electricity" />
+					</div>
 					<span>
 						<KW value={this.state.grid} />&#160;{this.renderLeaf()}
 					</span>
@@ -194,7 +226,10 @@ export class Summary extends React.Component
 				</div>
 
 				<div className="line">
-					<i className="scf scf-sun" />
+					<div className="icon">
+						<div className="bar" style={this.calcLinearGradient(this.getPVPrct(), 0)}></div>
+						<i className="scf scf-sun" />
+					</div>
 					<span>
 						<KW value={this.state.pv} />
 					</span>
@@ -210,8 +245,11 @@ export class Summary extends React.Component
 					<span>
 						<KW value={this.state.total} />
 					</span>
-					<span>
-						{this.calcPowerMix().toFixed(0)} % PV
+					<span className="energy">
+						<KWh value={this.state.grid_energy + this.state.pv_energy + this.state.battery_energy - this.state.grid_exported_energy} />
+					</span>
+					<span className="prct" style={this.calcLinearGradient(this.calcPowerMix(), 90)}>
+						{this.calcPowerMix().toFixed(0)}%
 					</span>
 				</div>
 
@@ -229,8 +267,8 @@ export class Summary extends React.Component
 
 				<div className="home" style={this.calcEnergyMixStyle()}>
 					<span><span>{this.getPVRatio().toFixed(0) + '% PV'}</span></span>
-					<i className="scf scf-house" />
-					<span className="energy"><KWh value={this.state.grid_energy + this.state.pv_energy + this.state.battery_energy - this.state.grid_exported_energy} /></span>
+					{this.renderDate()}
+					{this.renderTime()}
 				</div>
 			</div>
 		);

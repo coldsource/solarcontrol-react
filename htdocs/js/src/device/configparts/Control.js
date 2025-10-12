@@ -11,6 +11,7 @@ export class Control extends React.Component
 			'plug': {icon: 'scf-plug', name: 'Plug S'},
 			'pro': {icon: 'scf-plugs', name: 'Pro'},
 			'uni': {icon: 'scf-chip', name: 'Uni'},
+			'arduino': {icon: 'scf-chip', name: 'Arduino'},
 		};
 
 		this.change = this.change.bind(this);

@@ -14,6 +14,7 @@ import {MinOnOff} from './configparts/MinOnOff.js';
 import {HWS} from './configparts/HWS.js';
 import {Thermometer} from './configparts/Thermometer.js';
 import {Hygrometer} from './configparts/Hygrometer.js';
+import {GridDetection} from './configparts/GridDetection.js';
 import {Tooltip} from '../ui/Tooltip.js';
 import {ConfigBlock} from '../ui/ConfigBlock.js';
 
@@ -39,7 +40,7 @@ export class DeviceConfig extends React.Component
 			},
 			Voltmeter: {
 				render: this.renderVoltmeter,
-				config: {voltmeter: {mqtt_id: '', thresholds: []}},
+				config: {voltmeter: {mqtt_id: '', charge_delta: 0.5, thresholds: []}},
 				title: "Voltmeter"
 			},
 			BatteryBackup: {
@@ -69,6 +70,11 @@ export class DeviceConfig extends React.Component
 				render: this.renderInput,
 				config: {input: {type: 'pro', mqtt_id: '', outlet: 0}},
 				title: "Off Peak detection"
+			},
+			GridDetection: {
+				render: this.renderGridDetection,
+				config: {input: {type: 'grid', mqtt_id: ''}},
+				title: "Grid failure detection"
 			},
 			Offload: {
 				render: this.renderOffload,
@@ -261,6 +267,10 @@ export class DeviceConfig extends React.Component
 		);
 	}
 
+	renderGridDetection(device, config, onChange) {
+		return <GridDetection name="input" value={config.input} onChange={onChange} />
+	}
+
 	renderThermometer(device, config, onChange) {
 		return (
 			<Thermometer value={config} onChange={onChange} />
@@ -350,7 +360,7 @@ export class DeviceConfig extends React.Component
 				if(enabled && config.renderTitle!==undefined)
 					title = config.renderTitle(device_config); // Custom title rendering function
 
-				return (
+					return (
 					<ConfigBlock key={part} title={title} enabled={optional?enabled:null} onEnable={ () => this.enablePart(part) } onDisable={ () => this.disablePart(part) }>
 						{config.render(this.props.device, device_config, this.change, options)}
 					</ConfigBlock>

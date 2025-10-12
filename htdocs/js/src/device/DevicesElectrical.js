@@ -74,7 +74,7 @@ export class DevicesElectrical extends React.Component
 
 		return (
 			<React.Fragment>
-				<SOC value={device.soc} /> - {device.voltage.toFixed(2)}V
+				<SOC value={device.soc} /> {device.soc_state=='charging'?(<i className="scf scf-bolt" />):''} - {device.voltage.toFixed(2)}V
 			</React.Fragment>
 		);
 	}

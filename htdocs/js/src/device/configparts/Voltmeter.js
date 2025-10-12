@@ -6,6 +6,11 @@ export class Voltmeter extends React.Component
 	constructor(props) {
 		super(props);
 
+		this.types = {
+			'uni': {icon: 'scf-chip', name: 'Shelly Uni'},
+			'arduino': {icon: 'scf-chip', name: 'Arduino'},
+		};
+
 		this.change = this.change.bind(this);
 		this.addThreshold = this.addThreshold.bind(this);
 	}
@@ -15,6 +20,8 @@ export class Voltmeter extends React.Component
 
 		const name = ev.target.name;
 		let value = ev.target.value;
+		if(name=='charge_delta' && !isNaN(parseFloat(value)))
+			value = parseFloat(value);
 
 		config[name] = value;
 
@@ -61,10 +68,34 @@ export class Voltmeter extends React.Component
 		});
 	}
 
+	renderTiles() {
+		return Object.keys(this.types).map(type => {
+			let icon = this.types[type].icon;
+			let name = this.types[type].name;
+			return (
+				<i
+					key={type}
+					className={"scf " + icon + ((this.props.value.type==type)?' selected':'')}
+					onClick={() => this.change({target: {name: "type", value: type}})}
+				><span>{name}</span></i>
+			);
+		});
+	}
+
 	render() {
 		let value = this.props.value;
 		return (
 			<React.Fragment>
+				<dt>
+					<Tooltip content="Type of device used to monitor battery voltage">
+						Voltmeter type
+					</Tooltip>
+				</dt>
+				<dd>
+					<div className="sc-select-controltype">
+						{this.renderTiles()}
+					</div>
+				</dd>
 				<dt>
 					<Tooltip content="MQTT ID configured on the Shelly device.">
 						Voltmeter MQTT ID
@@ -74,6 +105,12 @@ export class Voltmeter extends React.Component
 				<dt>
 					<Tooltip content="Configure voltage thresholds for detecting Stage Of Charge (SOC).">
 						SOC
+					</Tooltip>
+				</dt>
+				<dd><input type="number" name="charge_delta" value={value.charge_delta} onChange={this.change} /></dd>
+				<dt>
+					<Tooltip content="Voltage increase when battery is in charge. This is used to compute SOC while charging">
+						Charge Delta V
 					</Tooltip>
 				</dt>
 				<dd>
