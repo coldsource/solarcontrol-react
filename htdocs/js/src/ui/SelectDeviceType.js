@@ -21,6 +21,12 @@ export class SelectDeviceType extends React.Component
 						A timed controlled device linked to a thermometer. Will switch on to increase temperature. Can be used to control heaters. When absent, device will keep frost-free conditions and offload.
 					</dd>
 					<dt>
+						<i className="scf scf-heat-pump" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'heatpump'}})} />
+					</dt>
+					<dd>
+						A timed controlled heat pump linked to a thermometer. Will change operating mode and set teperature of the heat pump. When absent, device will keep frost-free conditions and offload.
+					</dd>
+					<dt>
 						<i className="scf scf-snow" onClick={() => this.props.onChange({target: {name: this.props.name, value: 'cooler'}})} />
 					</dt>
 					<dd>

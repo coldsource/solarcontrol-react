@@ -1,0 +1,19 @@
+ul.sc-select-icon {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	margin-bottom: 0.7rem;
+
+	i {
+		@include tile;
+
+		font-size: 3rem;
+		position: relative;
+
+		span {
+			font-size: 0.8rem;
+			position: absolute;
+			top: 3px;
+			right: 10px;
+		}
+	}
+}

@@ -4,6 +4,7 @@ import {SelectDeviceTypeHT} from '../ui/SelectDeviceTypeHT.js';
 import {DeviceHT} from './DeviceHT.js';
 import {HTGraph} from '../logs/HTGraph.js';
 import {Modal} from '../ui/Modal.js';
+import {Temperature} from '../ui/Temperature.js';
 import {Subscreen} from '../ui/Subscreen.js';
 
 export class DevicesHT extends React.Component
@@ -81,7 +82,7 @@ export class DevicesHT extends React.Component
 
 		return (
 			<React.Fragment>
-				<i className="scf scf-thermometer" /> {device.temperature} °C
+				<i className="scf scf-thermometer" /> <Temperature value={device.temperature} />
 				&#160;&#160;
 				<i className="scf scf-droplet" /> {device.humidity} %
 			</React.Fragment>

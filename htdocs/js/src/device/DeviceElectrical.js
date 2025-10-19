@@ -20,6 +20,7 @@ export class DeviceElectrical extends React.Component
 		this.config_parts = {
 			timerange: ['Name*', 'Prio*', 'Control*', 'Offload*', 'Force*', 'Remainder*', 'MinOnOff*'],
 			heater: ['Name*', 'Prio*', 'Control*', 'Thermometer*', 'OffloadTemperature*', 'ForceTemperature*', 'MinOnOff*'],
+			heatpump: ['Name*', 'Prio*', 'Control*', 'Meter', 'Thermometer*', 'HeatPump*','OffloadTemperature*', 'ForceTemperature*', 'MinOnOff*'],
 			cooler: ['Name*', 'Prio*', 'Control*', 'Thermometer*', 'OffloadTemperature*', 'ForceTemperature*', 'MinOnOff*'],
 			cmv: ['Name*', 'Prio*', 'Control*', 'CMV*', 'OffloadMoisture*', 'ForceMoisture*', 'MinOnOffMax*'],
 			hws: ['Meter', 'Control', 'Force*', 'HWS'],
@@ -61,7 +62,7 @@ export class DeviceElectrical extends React.Component
 		if(config.control!==undefined)
 			ip = config.control.ip; // Specific IP (might have been filled by autodetect)
 
-		if(ip)
+		if(ip && !['arduino', 'bsblan'].includes(config.control.type)) // Exclude non shelly devices from this autoconfig
 		{
 			// Setup shelly device
 			await API.instance.command('shelly', 'sysset', {ip: ip, name: device.device_name})

@@ -13,6 +13,7 @@ import {Remainder} from './configparts/Remainder.js';
 import {MinOnOff} from './configparts/MinOnOff.js';
 import {HWS} from './configparts/HWS.js';
 import {Thermometer} from './configparts/Thermometer.js';
+import {HeatPump} from './configparts/HeatPump.js';
 import {Hygrometer} from './configparts/Hygrometer.js';
 import {GridDetection} from './configparts/GridDetection.js';
 import {Tooltip} from '../ui/Tooltip.js';
@@ -130,6 +131,11 @@ export class DeviceConfig extends React.Component
 				render: this.renderThermometer,
 				config: {ht_device_id: 0},
 				title: "Thermometer",
+			},
+			HeatPump: {
+				render: this.renderHeatPump,
+				config: {temperature_offset: 0.5, temperature_eco: 16.0, temperature_comfort: 20.0},
+				title: "Heat Pump",
 			},
 			CMV: {
 				render: this.renderCMV,
@@ -274,6 +280,12 @@ export class DeviceConfig extends React.Component
 	renderThermometer(device, config, onChange) {
 		return (
 			<Thermometer value={config} onChange={onChange} />
+		);
+	}
+
+	renderHeatPump(device, config, onChange) {
+		return (
+			<HeatPump value={config} onChange={onChange} />
 		);
 	}
 

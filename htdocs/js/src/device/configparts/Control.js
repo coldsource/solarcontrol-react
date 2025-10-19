@@ -1,18 +1,20 @@
 import {SelectInteger} from '../../ui/SelectInteger.js';
 import {Tooltip} from '../../ui/Tooltip.js';
 import {Select} from '../../ui/Select.js';
+import {SelectIcon} from '../../ui/SelectIcon.js';
 
 export class Control extends React.Component
 {
 	constructor(props) {
 		super(props);
 
-		this.types = {
-			'plug': {icon: 'scf-plug', name: 'Plug S'},
-			'pro': {icon: 'scf-plugs', name: 'Pro'},
-			'uni': {icon: 'scf-chip', name: 'Uni'},
-			'arduino': {icon: 'scf-chip', name: 'Arduino'},
-		};
+		this.types = [
+			{icon: 'scf-plug', name: 'Plug S', value: 'plug'},
+			{icon: 'scf-plugs', name: 'Pro', value: 'pro'},
+			{icon: 'scf-chip', name: 'Uni', value: 'uni'},
+			{icon: 'scf-chip', name: 'Arduino', value: 'arduino'},
+			{icon: 'scf-bsb-lan', name: 'BSBLan', value: 'bsblan'},
+		];
 
 		this.change = this.change.bind(this);
 	}
@@ -26,40 +28,29 @@ export class Control extends React.Component
 		if(name=='outlet')
 			value = parseInt(value);
 
-		config[name] = value;
-
 		if(name=='type')
 		{
+			// Config reset
 			if(value=='plug')
-				delete config.outlet;
-
-			if(value=='pro' || value=='uni')
-				config.outlet = 0;
+				config = {type: 'plug', ip: '', mqtt_id: ''};
+			else if(value=='pro')
+				config = {type: 'pro', ip: '', mqtt_id: '', outlet: 0};
+			else if(value=='uni')
+				config = {type: 'uni', ip: '', mqtt_id: '', outlet: 0, reverted: true};
+			else if(value=='arduino')
+				config = {type: 'arduino', mqtt_id: '', reverted: true};
+			else if(value=='bsblan')
+				config = {type: 'bsblan', ip: ''};
 		}
-
-		if(name=='mqtt_id' && value=='')
-			delete config.mqtt_id;
+		else
+			config[name] = value;
 
 		this.props.onChange({target: {name: this.props.name, value: config}});
 	}
 
-	renderTiles() {
-		return Object.keys(this.types).map(type => {
-			let icon = this.types[type].icon;
-			let name = this.types[type].name;
-			return (
-				<i
-					key={type}
-					className={"scf " + icon + ((this.props.value.type==type)?' selected':'')}
-					onClick={() => this.change({target: {name: "type", value: type}})}
-				><span>{name}</span></i>
-			);
-		});
-	}
-
 	renderIP() {
 		const value = this.props.value;
-		if(value.type=='arduino')
+		if(!['plug', 'pro', 'uni', 'bsblan'].includes(value.type))
 			return;
 
 		return (
@@ -78,7 +69,7 @@ export class Control extends React.Component
 
 	renderOutlet() {
 		const value = this.props.value;
-		if(value.type=='plug' || value.type=='arduino')
+		if(!['pro', 'uni'].includes(value.type))
 			return;
 
 		let max = value.type=='pro'?3:2;
@@ -93,11 +84,13 @@ export class Control extends React.Component
 				<dd><SelectInteger min={1} max={max} sum={-1} name="outlet" value={value.outlet} onChange={this.change} /></dd>
 			</React.Fragment>
 		);
+
 	}
 
 	renderMQTTID() {
 		const value = this.props.value;
-		let mqtt_id = value.mqtt_id!==undefined?value.mqtt_id:'';
+		if(!['plug', 'pro', 'uni', 'arduino'].includes(value.type))
+			return;
 
 		return (
 			<React.Fragment>
@@ -106,13 +99,14 @@ export class Control extends React.Component
 						MQTT ID
 					</Tooltip>
 				</dt>
-				<dd><input type="text" name="mqtt_id" value={mqtt_id} onChange={this.change} /></dd>
+				<dd><input type="text" name="mqtt_id" value={value} onChange={this.change} /></dd>
 			</React.Fragment>
 		);
 	}
 
 	renderReverted() {
-		if(this.props.revert===undefined || !this.props.revert)
+		const value = this.props.value;
+		if(!['uni', 'arduino'].includes(value.type))
 			return;
 
 		return (
@@ -123,14 +117,15 @@ export class Control extends React.Component
 					</Tooltip>
 				</dt>
 				<dd>
-					<Select name="reverted" value={this.props.value.reverted} values={[{name: 'On', value: true}, {name: 'Off', value: false}]} onChange={this.change} />
+					<Select name="reverted" value={value.reverted} values={[{name: 'On', value: true}, {name: 'Off', value: false}]} onChange={this.change} />
 				</dd>
 			</React.Fragment>
 		);
 	}
 
 	render() {
-		let value = this.props.value;
+		const value = this.props.value;
+
 		return (
 			<React.Fragment>
 				<dt>
@@ -139,9 +134,7 @@ export class Control extends React.Component
 					</Tooltip>
 				</dt>
 				<dd>
-					<div className="sc-select-controltype">
-						{this.renderTiles()}
-					</div>
+					<SelectIcon name="type" values={this.types} value={this.props.value.type} onChange={this.change} />
 				</dd>
 				{this.renderIP()}
 				{this.renderOutlet()}

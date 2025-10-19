@@ -5,6 +5,7 @@ import {DeviceElectrical} from './DeviceElectrical.js';
 import {ControlOnOff} from '../ui/ControlOnOff.js';
 import {KW} from '../ui/KW.js';
 import {SOC} from '../ui/SOC.js';
+import {Temperature} from '../ui/Temperature.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {DragDropZone} from '../ui/DragDropZone.js';
 
@@ -79,6 +80,15 @@ export class DevicesElectrical extends React.Component
 		);
 	}
 
+	renderTemperature(device) {
+		if(device.temperature===undefined)
+			return;
+
+		return (
+			<React.Fragment><i className="scf scf-thermometer" /> <Temperature value={device.temperature} /></React.Fragment>
+		);
+	}
+
 	getAllDevices() {
 		let devices = [...this.state.devices];
 
@@ -141,6 +151,7 @@ export class DevicesElectrical extends React.Component
 						<div className="power">
 							{this.renderPower(device.power)}
 							{this.renderSOC(device)}
+							{this.renderTemperature(device)}
 						</div>
 						{device.offline?(<div className="offline" onClick={ mode=='list'?(() => this.edit(device.device_id)):(() => {}) }>OFFLINE</div>):''}
 					</div>
