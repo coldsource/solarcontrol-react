@@ -25,7 +25,7 @@ export class DeviceElectrical extends React.Component
 			cmv: ['Name*', 'Prio*', 'Control*', 'CMV*', 'OffloadMoisture*', 'ForceMoisture*', 'MinOnOffMax*'],
 			hws: ['Meter', 'Control', 'Force*', 'HWS'],
 			passive: ['Name', 'Meter*'],
-			grid: ['Meter', 'OffPeak'],
+			grid: ['Meter', 'OffPeak', 'GridDetection'],
 			pv: ['Meter'],
 			battery: ['Name*', 'Prio*', 'Voltmeter*', 'Meter', 'ControlBattery', 'BatteryPolicy*', 'BatteryBackup*'],
 			controller: ['Name*', 'Prio*', 'ControlBattery*', 'Offload*', 'Force*'],

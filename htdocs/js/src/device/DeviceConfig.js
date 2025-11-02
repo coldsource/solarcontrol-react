@@ -74,7 +74,7 @@ export class DeviceConfig extends React.Component
 			},
 			GridDetection: {
 				render: this.renderGridDetection,
-				config: {input: {type: 'grid', mqtt_id: ''}},
+				config: {input_grid: {type: 'grid', mqtt_id: ''}},
 				title: "Grid failure detection"
 			},
 			Offload: {
@@ -274,7 +274,7 @@ export class DeviceConfig extends React.Component
 	}
 
 	renderGridDetection(device, config, onChange) {
-		return <GridDetection name="input" value={config.input} onChange={onChange} />
+		return <GridDetection name="input_grid" value={config.input_grid} onChange={onChange} />
 	}
 
 	renderThermometer(device, config, onChange) {

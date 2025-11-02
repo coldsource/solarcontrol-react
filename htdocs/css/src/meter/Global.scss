@@ -70,6 +70,15 @@ $border-size: 3px;
 		grid-template-columns: $item-radius $item-radius $item-radius;
 		justify-content: space-between;
 		margin-top: 2rem;
+
+		.offline {
+			position: absolute;
+			width: 100%;
+			color: red;
+			text-align: center;
+			font-size: 1.4rem;
+			font-weight: bold;
+		}
 	}
 
 	.network {

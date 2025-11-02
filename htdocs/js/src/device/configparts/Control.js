@@ -99,7 +99,7 @@ export class Control extends React.Component
 						MQTT ID
 					</Tooltip>
 				</dt>
-				<dd><input type="text" name="mqtt_id" value={value} onChange={this.change} /></dd>
+				<dd><input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} /></dd>
 			</React.Fragment>
 		);
 	}

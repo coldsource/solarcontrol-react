@@ -17,12 +17,14 @@ export class Global extends React.Component
 			absence: false,
 			limits: {},
 			devices: [],
+			grid_device: null
 		}
 
 		this.ref = React.createRef();
 
 		this.update = this.update.bind(this);
 		this.reload = this.reload.bind(this);
+		this.reload_grid = this.reload_grid.bind(this);
 		this.reloadConfig = this.reloadConfig.bind(this);
 	}
 
@@ -38,6 +40,7 @@ export class Global extends React.Component
 		this.setState({limits: limits});
 
 		ProtocolDevice.instance.Subscribe('electrical', 0, this.reload);
+		ProtocolDevice.instance.Subscribe('electrical', 'grid', this.reload_grid);
 	}
 
 	componentWillUnmount() {
@@ -45,6 +48,7 @@ export class Global extends React.Component
 
 		Config.instance.Unsubscribe(this.reloadConfig);
 		ProtocolDevice.instance.Unsubscribe('electrical', 0, this.reload);
+		ProtocolDevice.instance.Unsubscribe('electrical', 'grid', this.reload_grid);
 	}
 
 	reloadConfig(config) {
@@ -60,6 +64,10 @@ export class Global extends React.Component
 
 	reload(devices) {
 		this.setState({devices: devices});
+	}
+
+	reload_grid(grid_device) {
+		this.setState({grid_device: grid_device});
 	}
 
 	getGridPrct() {
@@ -196,6 +204,16 @@ export class Global extends React.Component
 		return (<div className="on center"><b>Absence mode on</b></div>);
 	}
 
+	renderGrid() {
+		if(this.state.grid_device!==null && this.state.grid_device.grid_state=='offline')
+			return (<div className="offline">Offline</div>);
+
+
+		return (
+			<div><i className="scf scf-electricity" /></div>
+		);
+	}
+
 	renderBattery() {
 		if(!this.state.has_battery)
 			return (<div></div>);
@@ -233,7 +251,7 @@ export class Global extends React.Component
 				{this.renderAbsence()}
 				<div className="production">
 					<div className="round" style={this.calcLinearGradient(this.getGridPrct(), 0, '245, 130, 29')}>
-						<div><i className="scf scf-electricity" /></div>
+						{this.renderGrid()}
 						<Tooltip content="Total energy consumed today from the grid in Wh or kWh">
 							<span className="meter top energy"><KWh value={this.state.grid_energy} /></span>
 						</Tooltip>
