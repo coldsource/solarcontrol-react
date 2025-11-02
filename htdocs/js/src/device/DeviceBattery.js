@@ -52,8 +52,6 @@ export class DeviceBattery extends React.Component
 				<dd><SOC value={this.state.devicebattery.soc} /></dd>
 				<dt>SOC State</dt>
 				<dd>{this.state.devicebattery.soc_state}</dd>
-				<dt>Grid State</dt>
-				<dd>{this.state.devicebattery.grid_state}</dd>
 			</dl>
 		);
 	}
