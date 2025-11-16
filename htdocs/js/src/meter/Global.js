@@ -165,6 +165,9 @@ export class Global extends React.Component
 		let max = -1, max_device = null;
 		for(const device of devices)
 		{
+			if(device.device_type=='battery')
+				continue; // Exclude batteries as they produce energy
+
 			if(device.power && device.power>max)
 			{
 				max = device.power;
