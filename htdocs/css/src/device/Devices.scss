@@ -39,6 +39,11 @@ div.sc-devices {
 				font-weight: bold;
 			}
 
+			.power {
+				font-style: italic;
+				font-size: 0.9rem;
+			}
+
 			ul.power {
 				display: block;
 				margin: 0;
@@ -50,8 +55,6 @@ div.sc-devices {
 
 				li {
 					display: inline-block;
-					font-style: italic;
-					font-size: 0.9rem;
 				}
 			}
 
