@@ -13,7 +13,7 @@ export class BatteryBackup extends React.Component
 		let config = Object.assign({}, this.props.value);
 
 		const name = ev.target.name;
-		let value = ev.target.value;
+		let value = parseFloat(ev.target.value);
 
 		config[name] = value;
 
