@@ -1,4 +1,5 @@
 import {SelectLetter} from '../../ui/SelectLetter.js';
+import {SelectIcon} from '../../ui/SelectIcon.js';
 import {Tooltip} from '../../ui/Tooltip.js';
 
 export class Meter extends React.Component
@@ -6,11 +7,12 @@ export class Meter extends React.Component
 	constructor(props) {
 		super(props);
 
-		this.types = {
-			'plug': {icon: 'scf-plug', name: 'Plug S'},
-			'em': {icon: 'scf-meter', name: 'Pro EM'},
-			'3em': {icon: 'scf-meter', name: 'Pro 3EM'}
-		};
+		this.types = [
+			{icon: 'scf-plug', name: 'Plug S', value: 'plug'},
+			{icon: 'scf-meter', name: 'Pro EM', value: 'em'},
+			{icon: 'scf-meter', name: 'Pro 3EM', value: '3em'},
+			{icon: 'scf-chip', name: 'Arduino', value: 'arduino'}
+		];
 
 		this.change = this.change.bind(this);
 	}
@@ -24,20 +26,6 @@ export class Meter extends React.Component
 		config[name] = value;
 
 		this.props.onChange({target: {name: this.props.name, value: config}});
-	}
-
-	renderTiles() {
-		return Object.keys(this.types).map(type => {
-			let icon = this.types[type].icon;
-			let name = this.types[type].name;
-			return (
-				<i
-					key={type}
-					className={"scf " + icon + ((this.props.value.type==type)?' selected':'')}
-					onClick={() => this.change({target: {name: "type", value: type}})}
-				><span>{name}</span></i>
-			);
-		});
 	}
 
 	renderPhase() {
@@ -74,9 +62,7 @@ export class Meter extends React.Component
 					</Tooltip>
 				</dt>
 				<dd>
-					<div className="sc-select-controltype">
-						{this.renderTiles()}
-					</div>
+					<SelectIcon name="type" values={this.types} value={this.props.value.type} onChange={this.change} />
 				</dd>
 				<dt>
 					<Tooltip content="MQTT ID configured on the Shelly device. This is mandatory to get power consumption. Will be configured automatically if you use auto detection wizard.">

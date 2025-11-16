@@ -65,7 +65,7 @@ export class DevicesElectrical extends React.Component
 			return;
 
 		return (
-			<React.Fragment><i className="scf scf-bolt" /> <KW value={power} /></React.Fragment>
+			<li><i className="scf scf-bolt" /> <KW value={power} /></li>
 		);
 	}
 
@@ -75,7 +75,8 @@ export class DevicesElectrical extends React.Component
 
 		return (
 			<React.Fragment>
-				<SOC value={device.soc} /> {device.soc_state=='charging'?(<i className="scf scf-bolt" />):''} - {device.voltage.toFixed(2)}V
+				<li><SOC value={device.soc} /> {device.soc_state=='charging'?(<i className="scf scf-bolt" />):''}</li>
+				<li>{device.voltage.toFixed(2)}V</li>
 			</React.Fragment>
 		);
 	}
@@ -148,11 +149,11 @@ export class DevicesElectrical extends React.Component
 					</div>
 					<div>
 						<span className="name" onClick={ mode=='list'?(() => this.edit(device.device_id)):(() => {}) }>{device.device_name}</span>
-						<div className="power">
+						<ul className="power">
 							{this.renderPower(device.power)}
 							{this.renderSOC(device)}
 							{this.renderTemperature(device)}
-						</div>
+						</ul>
 						{device.offline?(<div className="offline" onClick={ mode=='list'?(() => this.edit(device.device_id)):(() => {}) }>OFFLINE</div>):''}
 					</div>
 					<div>
