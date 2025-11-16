@@ -103,14 +103,14 @@ export class Voltmeter extends React.Component
 				</dt>
 				<dd><input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} /></dd>
 				<dt>
-					<Tooltip content="Configure voltage thresholds for detecting Stage Of Charge (SOC).">
-						SOC
+					<Tooltip content="Voltage increase when battery is in charge. This is used to compute SOC while charging">
+						Charge Delta V
 					</Tooltip>
 				</dt>
 				<dd><input type="number" name="charge_delta" value={value.charge_delta} onChange={this.change} /></dd>
 				<dt>
-					<Tooltip content="Voltage increase when battery is in charge. This is used to compute SOC while charging">
-						Charge Delta V
+					<Tooltip content="Configure voltage thresholds for detecting Stage Of Charge (SOC).">
+						SOC
 					</Tooltip>
 				</dt>
 				<dd>
