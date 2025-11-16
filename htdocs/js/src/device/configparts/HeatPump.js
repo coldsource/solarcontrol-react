@@ -22,12 +22,20 @@ export class HeatPump extends React.Component
 		return (
 			<React.Fragment>
 				<dt>
-					<Tooltip content="Offset between current temperature and set temperature of the heat pump. A low value will make heat pump consume less power but also heat more slowly.">
-						Temperature offset
+					<Tooltip content="Offset between current temperature and set temperature of the heat pump. A low value will make heat pump consume less power but also heat more slowly. Setting for slow mode.">
+						Temperature offset (slow)
 					</Tooltip>
 				</dt>
 				<dd>
-					<input type="number" name="temperature_offset" value={value.temperature_offset} onChange={this.change} />
+					<input type="number" name="temperature_offset" value={value.temperature_offset_slow} onChange={this.change} />
+				</dd>
+				<dt>
+					<Tooltip content="Offset between current temperature and set temperature of the heat pump. A low value will make heat pump consume less power but also heat more slowly. Setting for fast mode.">
+						Temperature offset (fast)
+					</Tooltip>
+				</dt>
+				<dd>
+					<input type="number" name="temperature_offset" value={value.temperature_offset_fast} onChange={this.change} />
 				</dd>
 				<dt>
 					<Tooltip content="Temperature setpoint when heat pump is off">

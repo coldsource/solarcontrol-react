@@ -88,6 +88,12 @@ export class DeviceConfig extends React.Component
 				options: {temperature: true},
 				title: "Offload"
 			},
+			OffloadHeatPump: {
+				render: this.renderOffload,
+				config: {expected_consumption: 0, offload: []},
+				options: {temperature: true, speed: true},
+				title: "Offload"
+			},
 			OffloadMoisture: {
 				render: this.renderOffload,
 				config: {expected_consumption: 0, offload: []},
@@ -103,6 +109,12 @@ export class DeviceConfig extends React.Component
 				render: this.renderForce,
 				config: {force: []},
 				options: {temperature: true},
+				title: "Forced period"
+			},
+			ForceHeatPump: {
+				render: this.renderForce,
+				config: {force: []},
+				options: {temperature: true, speed: true},
 				title: "Forced period"
 			},
 			ForceMoisture: {
@@ -134,7 +146,7 @@ export class DeviceConfig extends React.Component
 			},
 			HeatPump: {
 				render: this.renderHeatPump,
-				config: {temperature_offset: 0.5, temperature_eco: 16.0, temperature_comfort: 20.0},
+				config: {temperature_offset_slow: 0.5, temperature_offset_fast: 2.0, temperature_eco: 16.0, temperature_comfort: 20.0},
 				title: "Heat Pump",
 			},
 			CMV: {

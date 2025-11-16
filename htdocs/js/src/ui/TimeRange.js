@@ -1,3 +1,5 @@
+import {SelectSlowFast} from './SelectSlowFast.js';
+
 export class TimeRange extends React.Component
 {
 	constructor(props) {
@@ -90,9 +92,28 @@ export class TimeRange extends React.Component
 
 	changeData(ev) {
 		let val = Object.assign({}, this.props.value);
-		val.data = {};
-		val.data[ev.target.name] = parseFloat(ev.target.value);
+		const name = ev.target.name;
+
+		if(val.data===undefined)
+			val.data = {};
+
+		if(name=='moisture' || name=='temperature')
+			val.data[name] = parseFloat(ev.target.value);
+		else
+			val.data[name] = ev.target.value;
+
 		this.props.onChange({target: {name: this.props.name, value: val}});
+	}
+
+	renderComplementarySlowFast() {
+		if(this.props.options===undefined || !this.props.options.speed)
+			return;
+
+		let val = '';
+		if(this.props.value.data && this.props.value.data.speed)
+			val = this.props.value.data.speed;
+
+		return (<SelectSlowFast name="speed" value={val} onChange={this.changeData} />);
 	}
 
 	renderComplementaryFields() {
@@ -114,8 +135,11 @@ export class TimeRange extends React.Component
 
 		return (
 			<div className="options">
-				<input type="number" value={val} name={field.name} onChange={this.changeData} />
-				<i className={"scf " + field.icon} />
+				<div>
+					<i className={"scf " + field.icon} />
+					<input type="number" value={val} name={field.name} onChange={this.changeData} />
+					{this.renderComplementarySlowFast()}
+				</div>
 				<div className="tooltip">
 					{field.tooltip}
 				</div>
