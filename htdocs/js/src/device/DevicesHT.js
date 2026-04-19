@@ -84,7 +84,7 @@ export class DevicesHT extends React.Component
 			<React.Fragment>
 				<i className="scf scf-thermometer" /> <Temperature value={device.temperature} />
 				&#160;&#160;
-				<i className="scf scf-droplet" /> {device.humidity} %
+				<i className="scf scf-droplet" /> { device.humidity.toFixed(1) } %
 			</React.Fragment>
 		);
 	}
