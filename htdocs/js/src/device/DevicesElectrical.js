@@ -148,7 +148,10 @@ export class DevicesElectrical extends React.Component
 						<i className={"scf " + ((device.manual)?'scf-hand':cl_auto)} onClick={mode=='list'?(() => { if(device.manual) this.setManualState(device.device_id, "auto") }):(() => {})} />
 					</div>
 					<div>
-						<span className="name" onClick={ mode=='list'?(() => this.edit(device.device_id)):(() => {}) }>{device.device_name}</span>
+						<span className="name" onClick={ mode=='list'?(() => this.edit(device.device_id)):(() => {}) }>
+							{device.device_name}
+							{!device.enabled?(<span className="notice"> (disabled)</span>):''}
+						</span>
 						<ul className="power">
 							{this.renderPower(device.power)}
 							{this.renderSOC(device)}

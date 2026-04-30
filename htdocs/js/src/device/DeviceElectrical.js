@@ -84,8 +84,42 @@ export class DeviceElectrical extends React.Component
 		});
 	}
 
+	setenabled(enabled) {
+		API.instance.command('deviceelectrical', 'setenabled', {device_id:parseInt(this.state.device.device_id), enabled:enabled}).then(res => {
+			if(enabled)
+				App.message("Device enabled");
+			else
+				App.message("Device disabled");
+			this.props.onClose();
+		});
+	}
+
 	changeConfig(device) {
 		this.setState({device: device});
+	}
+
+	renderEnableDisable() {
+		if(this.props.id<=0)
+			return; // Special devices can't be disabled
+
+		if(this.state.device.enabled)
+		{
+			return (
+				<React.Fragment>
+					<br />
+					<div className="warning-btn" onClick={() => this.setenabled(false)}>Disable device</div>
+				</React.Fragment>
+			);
+		}
+		else
+		{
+			return (
+				<React.Fragment>
+					<br />
+					<div className="submit" onClick={() => this.setenabled(true)}>Enable device</div>
+				</React.Fragment>
+			);
+		}
 	}
 
 	renderDelete() {
@@ -195,6 +229,7 @@ export class DeviceElectrical extends React.Component
 						{this.renderAutoDetect()}
 						<DeviceConfig parts={parts} device={device} onChange={this.changeConfig} />
 						<div className="submit" onClick={this.save}>Save</div>
+						{this.renderEnableDisable()}
 						{this.renderDelete()}
 					</div>
 				</Subscreen>
