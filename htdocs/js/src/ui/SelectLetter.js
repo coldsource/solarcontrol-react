@@ -16,6 +16,14 @@ export class SelectLetter extends React.Component
 			));
 		}
 
+		if(this.props.all!==undefined && this.props.all)
+		{
+			let cl = (this.props.value == 'z')?'selected':'';
+			tiles.push((
+				<li key={'z'} className={cl} onClick={ ev => this.props.onChange({target: {name: this.props.name, value: 'z'}}) }>All</li>
+			));
+		}
+
 		return tiles;
 	}
 

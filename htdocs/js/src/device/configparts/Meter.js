@@ -47,7 +47,7 @@ export class Meter extends React.Component
 						Meter Phase
 					</Tooltip>
 				</dt>
-				<dd><SelectLetter from="a" to={last_letter} name="phase" value={value.phase} onChange={this.change} /></dd>
+				<dd><SelectLetter from="a" to={last_letter} name="phase" all={true} value={value.phase} onChange={this.change} /></dd>
 			</React.Fragment>
 		);
 	}
