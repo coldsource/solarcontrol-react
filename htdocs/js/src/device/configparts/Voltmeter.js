@@ -9,6 +9,7 @@ export class Voltmeter extends React.Component
 		this.types = {
 			'uni': {icon: 'scf-chip', name: 'Shelly Uni'},
 			'arduino': {icon: 'scf-chip', name: 'Arduino'},
+			'sc': {icon: 'scf-chip', name: 'Solar Control'},
 		};
 
 		this.change = this.change.bind(this);
@@ -82,6 +83,43 @@ export class Voltmeter extends React.Component
 		});
 	}
 
+	renderChargeDeltaV() {
+		if(this.props.value.type=='sc')
+			return;
+
+		let value = this.props.value;
+		return (
+			<React.Fragment>
+				<dd><input type="number" name="charge_delta" value={value.charge_delta} onChange={this.change} /></dd>
+				<dt>
+					<Tooltip content="Configure voltage thresholds for detecting Stage Of Charge (SOC).">
+						SOC
+					</Tooltip>
+				</dt>
+			</React.Fragment>
+		);
+	}
+
+	renderThresholdsBlock() {
+		if(this.props.value.type=='sc')
+			return;
+
+		return (
+			<React.Fragment>
+				<dd>
+					<div className="sc-voltmeter">
+						<div className="threshold">
+							<span><b>Percentage</b></span>
+							<span><b>Voltage</b></span>
+						</div>
+						{this.renderThresholds()}
+						<div onClick={this.addThreshold} className="add">Add threshold</div>
+					</div>
+				</dd>
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		let value = this.props.value;
 		return (
@@ -107,22 +145,8 @@ export class Voltmeter extends React.Component
 						Charge Delta V
 					</Tooltip>
 				</dt>
-				<dd><input type="number" name="charge_delta" value={value.charge_delta} onChange={this.change} /></dd>
-				<dt>
-					<Tooltip content="Configure voltage thresholds for detecting Stage Of Charge (SOC).">
-						SOC
-					</Tooltip>
-				</dt>
-				<dd>
-					<div className="sc-voltmeter">
-						<div className="threshold">
-							<span><b>Percentage</b></span>
-							<span><b>Voltage</b></span>
-						</div>
-						{this.renderThresholds()}
-						<div onClick={this.addThreshold} className="add">Add threshold</div>
-					</div>
-				</dd>
+				{this.renderChargeDeltaV()}
+				{this.renderThresholdsBlock()}
 			</React.Fragment>
 		);
 	}
