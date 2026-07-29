@@ -59,15 +59,15 @@ export class Limits extends React.Component
 			<div className="sc-pricing">
 				<div className="layout-form">
 					<dl>
-						<dt>Grid maximum power (Wh)</dt>
+						<dt>Grid maximum power (W)</dt>
 						<dd>
 							<input type="number" name="grid" value={this.state.grid} onChange={this.change} />
 						</dd>
-						<dt>PV maximum power (Wh)</dt>
+						<dt>PV maximum power (W)</dt>
 						<dd>
 							<input type="number" name="pv" value={this.state.pv} onChange={this.change} />
 						</dd>
-						<dt>Battery maximum power (Wh)</dt>
+						<dt>Battery maximum power (W)</dt>
 						<dd>
 							<input type="number" name="battery" value={this.state.battery} onChange={this.change} />
 						</dd>
