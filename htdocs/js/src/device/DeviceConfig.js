@@ -5,7 +5,9 @@ import {Control} from './configparts/Control.js';
 import {Meter} from './configparts/Meter.js';
 import {Voltmeter} from './configparts/Voltmeter.js';
 import {BatteryBackup} from './configparts/BatteryBackup.js';
+import {BatteryOffload} from './configparts/BatteryOffload.js';
 import {BatteryPolicy} from './configparts/BatteryPolicy.js';
+import {OnBattery} from './configparts/OnBattery.js';
 import {Offload} from './configparts/Offload.js';
 import {Force} from './configparts/Force.js';
 import {Input} from './configparts/Input.js';
@@ -48,6 +50,11 @@ export class DeviceConfig extends React.Component
 				render: this.renderBatteryBackup,
 				config: {backup: {battery_low: 30, battery_high: 50, min_grid_time: 7200}},
 				title: "Battery backup"
+			},
+			BatteryOffload: {
+				render: this.renderBatteryOffload,
+				config: {offload: {soc_low: 90, soc_high: 98, max: "0"}},
+				title: "Battery offload"
 			},
 			BatteryPolicy: {
 				render: this.renderBatteryPolicy,
@@ -166,7 +173,12 @@ export class DeviceConfig extends React.Component
 			BLE: {
 				render: this.renderBLE,
 				config: {ble_addr: ''}
-			}
+			},
+			OnBattery: {
+				render: this.renderOnBattery,
+				config: {battery: {enabled: false, controller_id: 0}},
+				title: "Battery"
+			},
 		};
 
 		this.int_fields = ['prio', 'expected_consumption', 'min_on_time', 'min_on_for_last', 'min_on', 'min_off', 'ht_device_id', 'max_on', 'min_energy_for_last'];
@@ -176,11 +188,31 @@ export class DeviceConfig extends React.Component
 	}
 
 	componentDidMount() {
+		let device = this.props.device;
+		let default_config = this.buildDefaultConfig();
+
 		if(this.props.device.device_config===undefined)
 		{
+			// Config is empty, init with default
 			let device = this.props.device;
-			device.device_config = this.buildDefaultConfig();
+			device.device_config = default_config;
 			this.props.onChange(device);
+		}
+		else
+		{
+			// Check we have a full config for backward compatibility (new configurations may exists in current version)
+			let changed = false;
+			for(const key in default_config)
+			{
+				if(device.device_config[key]===undefined)
+				{
+					device.device_config[key] = default_config[key];
+					changed = true;
+				}
+			}
+
+			if(changed)
+				this.props.onChange(device);
 		}
 	}
 
@@ -264,6 +296,12 @@ export class DeviceConfig extends React.Component
 	renderBatteryBackup(device, config, onChange) {
 		return (
 			<BatteryBackup name="backup" value={config.backup} onChange={onChange} />
+		);
+	}
+
+	renderBatteryOffload(device, config, onChange) {
+		return (
+			<BatteryOffload name="offload" value={config.offload} onChange={onChange} />
 		);
 	}
 
@@ -364,6 +402,12 @@ export class DeviceConfig extends React.Component
 					<input type="text" name="ble_addr" value={config.ble_addr} onChange={onChange} />
 				</dd>
 			</React.Fragment>
+		);
+	}
+
+	renderOnBattery(device, config, onChange) {
+		return (
+			<OnBattery name="battery" value={config.battery} onChange={onChange} />
 		);
 	}
 

@@ -9,7 +9,7 @@ export class Voltmeter extends React.Component
 		this.types = {
 			'uni': {icon: 'scf-chip', name: 'Shelly Uni'},
 			'arduino': {icon: 'scf-chip', name: 'Arduino'},
-			'sc': {icon: 'scf-chip', name: 'Solar Control'},
+			'sc': {icon: 'scf-sun', name: 'SCBat'},
 		};
 
 		this.change = this.change.bind(this);

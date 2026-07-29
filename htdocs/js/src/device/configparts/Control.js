@@ -13,6 +13,7 @@ export class Control extends React.Component
 			{icon: 'scf-plugs', name: 'Pro', value: 'pro'},
 			{icon: 'scf-chip', name: 'Uni', value: 'uni'},
 			{icon: 'scf-chip', name: 'Arduino', value: 'arduino'},
+			{icon: 'scf-sun', name: 'SCBat', value: 'sc'},
 			{icon: 'scf-bsb-lan', name: 'BSBLan', value: 'bsblan'},
 		];
 
@@ -39,6 +40,8 @@ export class Control extends React.Component
 				config = {type: 'uni', ip: '', mqtt_id: '', outlet: 0, reverted: true};
 			else if(value=='arduino')
 				config = {type: 'arduino', mqtt_id: '', reverted: true};
+			else if(value=='sc')
+				config = {type: 'sc', mqtt_id: '', reverted: true};
 			else if(value=='bsblan')
 				config = {type: 'bsblan', ip: ''};
 		}
@@ -89,7 +92,7 @@ export class Control extends React.Component
 
 	renderMQTTID() {
 		const value = this.props.value;
-		if(!['plug', 'pro', 'uni', 'arduino'].includes(value.type))
+		if(!['plug', 'pro', 'uni', 'arduino', 'sc'].includes(value.type))
 			return;
 
 		return (
@@ -106,7 +109,7 @@ export class Control extends React.Component
 
 	renderReverted() {
 		const value = this.props.value;
-		if(!['uni', 'arduino'].includes(value.type))
+		if(!['uni', 'arduino', 'sc'].includes(value.type))
 			return;
 
 		return (
