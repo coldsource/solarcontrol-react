@@ -11,21 +11,29 @@ export class BatteryState extends React.Component
 
 		this.state = {
 			devicebattery: null,
+			devices: [],
 		};
 
-		this.reload = this.reload.bind(this);
+		this.reload_battery = this.reload_battery.bind(this);
+		this.reload_devices = this.reload_devices.bind(this);
 	}
 
 	componentDidMount() {
-		Device.instance.Subscribe('electrical', 'battery', this.reload);
+		Device.instance.Subscribe('electrical', 'battery', this.reload_battery);
+		Device.instance.Subscribe('electrical', 0, this.reload_devices);
 	}
 
 	componentWillUnmount() {
-		Device.instance.Unsubscribe('electrical', 'battery', this.reload);
+		Device.instance.Unsubscribe('electrical', 'battery', this.reload_battery);
+		Device.instance.Unsubscribe('electrical', 0, this.reload_devices);
 	}
 
-	reload(devicebattery) {
+	reload_battery(devicebattery) {
 		this.setState({devicebattery: devicebattery});
+	}
+
+	reload_devices(devices) {
+		this.setState({devices: devices});
 	}
 
 	calcLinearGradient(prct, angle, color = '51,201,85,1') {
@@ -44,6 +52,17 @@ export class BatteryState extends React.Component
 				<SOC value={this.state.devicebattery.soc} />
 			</div>
 		);
+	}
+
+	renderBatteryDevices() {
+		return this.state.devices.map(device => {
+			if(device.on_battery===undefined || !device.on_battery)
+				return;
+
+			return (
+				<div key={device.device_id}>{device.device_name}</div>
+			);
+		});
 	}
 
 	render() {
@@ -80,6 +99,8 @@ export class BatteryState extends React.Component
 					<dt>Frequency</dt>
 					<dd>{battery.output_frequency.toFixed(1)}&#160;Hz</dd>
 				</dl>
+				<h2>Devices on battery</h2>
+				{this.renderBatteryDevices()}
 			</div>
 		);
 	}
