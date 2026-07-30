@@ -123,7 +123,6 @@ export class App extends React.Component
 	}
 
 	render() {
-		console.log(this.devices);
 		if(this.getPath()=='summary')
 			return (<Summary />);
 

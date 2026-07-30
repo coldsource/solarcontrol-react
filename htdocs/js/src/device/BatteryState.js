@@ -71,8 +71,10 @@ export class BatteryState extends React.Component
 					<dt>Offload State</dt>
 					<dd>{battery.offload_state}</dd>
 				</dl>
-				<h2>Output</h2>
+				<h2>Inverter output</h2>
 				<dl>
+					<dt>Power</dt>
+					<dd><KW value={battery.power} /></dd>
 					<dt>Voltage</dt>
 					<dd>{battery.output_voltage.toFixed(1)}&#160;V</dd>
 					<dt>Frequency</dt>
