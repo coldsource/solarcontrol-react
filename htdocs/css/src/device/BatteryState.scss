@@ -1,0 +1,21 @@
+.sc-batterystate {
+	.soc {
+		border: 1px solid black;
+		border-radius: 10px;
+		height: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-weight: bold;
+	}
+
+	dl {
+		display: grid;
+		grid-template-columns: 1fr 2fr;
+		gap: 0.5rem;
+
+		dd {
+			font-weight: bold;
+		}
+	}
+}

@@ -5,7 +5,7 @@ import {Global} from '../meter/Global.js';
 import {Summary} from '../meter/Summary.js';
 import {DevicesElectrical} from '../device/DevicesElectrical.js';
 import {DevicesHT} from '../device/DevicesHT.js';
-import {DeviceHWS} from '../device/DeviceHWS.js';
+import {BatteryState} from '../device/BatteryState.js';
 import {Energy} from '../logs/Energy.js';
 import {Configs} from '../config/Configs.js';
 import {Loader} from '../ui/Loader.js';
@@ -90,8 +90,8 @@ export class App extends React.Component
 			return (<DevicesElectrical />);
 		else if(path=='devicesht')
 			return (<DevicesHT />);
-		else if(path=='devicehws')
-			return (<DeviceHWS />);
+		else if(path=='batterystate')
+			return (<BatteryState />);
 		else if(path=='energy')
 			return (<Energy />);
 		else if(path=='config')
@@ -105,13 +105,17 @@ export class App extends React.Component
 		return (<Loader />);
 	}
 
+	renderMenuBattery() {
+		return (<i className="scf scf-battery" onClick={() => this.changeURL('?loc=batterystate')}></i>);
+	}
+
 	renderMenu() {
 		return (
 			<div className="menu">
 				<i className="scf scf-meter" onClick={() => this.changeURL('?loc=meter')} />
 				<i className="scf scf-plug" onClick={() => this.changeURL('?loc=deviceselectrical')} />
 				<i className="scf scf-weather" onClick={() => this.changeURL('?loc=devicesht')} />
-				<i className="scf scf-droplet" onClick={() => this.changeURL('?loc=devicehws')}></i>
+				{this.renderMenuBattery()}
 				<i className="scf scf-electricity" onClick={() => this.changeURL('?loc=energy')} />
 				<i className="scf scf-settings" onClick={() => this.changeURL('?loc=config')} />
 			</div>
@@ -119,6 +123,7 @@ export class App extends React.Component
 	}
 
 	render() {
+		console.log(this.devices);
 		if(this.getPath()=='summary')
 			return (<Summary />);
 

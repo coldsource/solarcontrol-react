@@ -19,9 +19,9 @@ export class DeviceElectrical extends React.Component
 
 		this.config_parts = {
 			timerange: ['Name*', 'Prio*', 'Control*', 'Offload*', 'Force*', 'Remainder*', 'MinOnOff*', 'OnBattery*'],
-			heater: ['Name*', 'Prio*', 'Control*', 'Thermometer*', 'OffloadTemperature*', 'ForceTemperature*', 'MinOnOff*'],
+			heater: ['Name*', 'Prio*', 'Control*', 'Thermometer*', 'OffloadTemperature*', 'ForceTemperature*', 'MinOnOff*', 'OnBattery*'],
 			heatpump: ['Name*', 'Prio*', 'Control*', 'Meter', 'Thermometer*', 'HeatPump*','OffloadHeatPump*', 'ForceHeatPump*', 'MinOnOff*'],
-			cooler: ['Name*', 'Prio*', 'Control*', 'Thermometer*', 'OffloadTemperature*', 'ForceTemperature*', 'MinOnOff*'],
+			cooler: ['Name*', 'Prio*', 'Control*', 'Thermometer*', 'OffloadTemperature*', 'ForceTemperature*', 'MinOnOff*', 'OnBattery*'],
 			cmv: ['Name*', 'Prio*', 'Control*', 'CMV*', 'OffloadMoisture*', 'ForceMoisture*', 'MinOnOffMax*'],
 			hws: ['Meter', 'Control', 'Force*', 'HWS'],
 			passive: ['Name', 'Meter*'],
