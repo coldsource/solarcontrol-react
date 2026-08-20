@@ -7,6 +7,7 @@ import {Stats} from './Stats.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {DeviceElectrical} from '../device/DeviceElectrical.js';
 import {DeviceBattery} from '../device/DeviceBattery.js';
+import {DeviceHWS} from '../device/DeviceHWS.js';
 import {App} from '../app/App.js';
 import {API} from '../websocket/API.js';
 import {Config} from '../websocket/Config.js';
@@ -154,7 +155,7 @@ export class Configs extends React.Component
 		else if(this.state.screen=='pv')
 			return (<div className="sc-deviceconfig"><DeviceElectrical id="-2" /></div>);
 		else if(this.state.screen=='hws')
-			return (<div className="sc-deviceconfig"><DeviceElectrical id="-3" parts={['Meter', 'Control']}/></div>);
+			return (<div className="sc-deviceconfig"><DeviceHWS /></div>);
 		else if(this.state.screen=='battery')
 			return (<div className="sc-deviceconfig"><DeviceBattery id="-4" parts={['Voltmeter', 'Meter', 'ControlBattery', 'BatteryPolicy*', 'BatteryBackup*', 'BatteryOffload*']} /></div>);
 	}
