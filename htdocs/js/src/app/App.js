@@ -106,6 +106,13 @@ export class App extends React.Component
 	}
 
 	renderMenuBattery() {
+		const battery = this.devices.GetBattery();
+		if(battery===null)
+			return;
+
+		if(!battery.enabled)
+			return;
+
 		return (<i className="scf scf-battery" onClick={() => this.changeURL('?loc=batterystate')}></i>);
 	}
 

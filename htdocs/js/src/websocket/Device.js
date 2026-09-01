@@ -126,6 +126,11 @@ export class Device extends Events
 		return this.hws;
 	}
 
+	GetBattery()
+	{
+		return this.battery;
+	}
+
 	Subscribe(type, id, cbk)
 	{
 		this.subscriptions.push({type: type, id: id, cbk: cbk});
