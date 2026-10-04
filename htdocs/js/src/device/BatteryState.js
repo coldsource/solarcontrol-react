@@ -65,6 +65,20 @@ export class BatteryState extends React.Component
 		});
 	}
 
+	renderTemperature() {
+		const battery = this.state.devicebattery;
+
+		if(battery.temperature===null)
+			return;
+
+		return (
+			<React.Fragment>
+				<dt>Temperature</dt>
+				<dd>{battery.temperature.toFixed(1)} °C</dd>
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		if(this.state.devicebattery===null)
 			return;
@@ -89,6 +103,7 @@ export class BatteryState extends React.Component
 					<dd>{battery.soc_state}</dd>
 					<dt>Offload State</dt>
 					<dd>{battery.offload_state}</dd>
+					{this.renderTemperature()}
 				</dl>
 				<h2>Inverter output</h2>
 				<dl>
