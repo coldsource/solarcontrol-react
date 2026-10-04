@@ -83,7 +83,7 @@ export class BatteryState extends React.Component
 	renderEstimatedTime() {
 		const battery = this.state.devicebattery;
 
-		if(battery.estimated_time===null)
+		if(battery.estimated_time===null || battery.estimated_time===0)
 			return;
 
 		if(battery.estimated_time>=0)
