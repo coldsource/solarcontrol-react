@@ -3,6 +3,7 @@ import {API} from '../websocket/API.js';
 import {Device} from '../websocket/Device.js';
 import {SOC} from '../ui/SOC.js';
 import {KW} from '../ui/KW.js';
+import {Time} from '../ui/Time.js';
 
 export class BatteryState extends React.Component
 {
@@ -79,6 +80,30 @@ export class BatteryState extends React.Component
 		);
 	}
 
+	renderEstimatedTime() {
+		const battery = this.state.devicebattery;
+
+		if(battery.estimated_time===null)
+			return;
+
+		if(battery.estimated_time>=0)
+		{
+			return (
+				<React.Fragment>
+					<dt>Charging time</dt>
+					<dd><Time value={battery.estimated_time} /></dd>
+				</React.Fragment>
+			);
+		}
+
+		return (
+			<React.Fragment>
+				<dt>Discharging time</dt>
+				<dd><Time value={Math.abs(battery.estimated_time)} /></dd>
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		if(this.state.devicebattery===null)
 			return;
@@ -104,6 +129,7 @@ export class BatteryState extends React.Component
 					<dt>Offload State</dt>
 					<dd>{battery.offload_state}</dd>
 					{this.renderTemperature()}
+					{this.renderEstimatedTime()}
 				</dl>
 				<h2>Inverter output</h2>
 				<dl>
