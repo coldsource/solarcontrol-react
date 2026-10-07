@@ -5,13 +5,17 @@ export class Time extends React.Component
 	}
 
 	render() {
-		let val = this.props.value;
-		const hours = Math.floor(val / 3600);
-		const minutes = (Math.floor((val % 3600) / 60)).toString().padStart(2, '0');
-		const secs = Math.floor(val % 60).toString().padStart(2, '0');
+		const val = this.props.value;
+		const days = Math.floor(val / 86400);
+		const hours = Math.floor((val % 86400) / 3600);
+		const minutes = (Math.floor((val % 3600) / 60));
+		const secs = Math.floor(val % 60);
 
-		return (<span>{`${hours}:${minutes}:${secs}`}</span>);
-
-		return (<React.Fragment>{parseFloat(this.props.value).toFixed(0)}%</React.Fragment>);
+		if(days > 0)
+			return (<span>{`${days}d ${hours}h`}</span>);
+		else if(hours > 0)
+			return (<span>{`${hours}h ${minutes}m`}</span>);
+		else
+			return (<span>{`${minutes}m`}</span>);
 	}
 }
