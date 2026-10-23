@@ -46,10 +46,10 @@ export class DeviceHWS extends React.Component
 
 		return (
 			<span
-				className={this.state.devicehws.state?'off':'on'}
+				className={device.state?'off':'on'}
 				onClick={() => this.setManualState(device.state?"off":"on")}
 			>
-				<b>{this.state.devicehws.state?'Forced':'Solar offload'}</b>
+				<b>{device.state?'Forced':'Solar offload'}</b>
 			</span>
 		);
 	}
@@ -68,7 +68,7 @@ export class DeviceHWS extends React.Component
 						</tr>
 					</tbody>
 				</table>
-				<DeviceElectrical id={this.state.devicehws.device_id} parts={['Meter', 'Control', 'Force*', 'HWS*']}/>
+				<DeviceElectrical id={this.state.devicehws.device_id} parts={['Meter', 'Control', 'Offload*', 'Force*', 'HWS*', 'OnBattery*']}/>
 			</div>
 		);
 	}
