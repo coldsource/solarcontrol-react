@@ -90,12 +90,12 @@ export class Voltmeter extends React.Component
 		let value = this.props.value;
 		return (
 			<React.Fragment>
-				<dd><input type="number" name="charge_delta" value={value.charge_delta} onChange={this.change} /></dd>
 				<dt>
-					<Tooltip content="Configure voltage thresholds for detecting Stage Of Charge (SOC).">
-						SOC
+					<Tooltip content="Voltage increase when battery is in charge. This is used to compute SOC while charging">
+						Charge Delta V
 					</Tooltip>
 				</dt>
+				<dd><input type="number" name="charge_delta" value={value.charge_delta} onChange={this.change} /></dd>
 			</React.Fragment>
 		);
 	}
@@ -106,6 +106,11 @@ export class Voltmeter extends React.Component
 
 		return (
 			<React.Fragment>
+				<dt>
+					<Tooltip content="Configure voltage thresholds for detecting Stage Of Charge (SOC).">
+						SOC
+					</Tooltip>
+				</dt>
 				<dd>
 					<div className="sc-voltmeter">
 						<div className="threshold">
@@ -140,11 +145,6 @@ export class Voltmeter extends React.Component
 					</Tooltip>
 				</dt>
 				<dd><input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} /></dd>
-				<dt>
-					<Tooltip content="Voltage increase when battery is in charge. This is used to compute SOC while charging">
-						Charge Delta V
-					</Tooltip>
-				</dt>
 				{this.renderChargeDeltaV()}
 				{this.renderThresholdsBlock()}
 			</React.Fragment>
