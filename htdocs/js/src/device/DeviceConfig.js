@@ -65,7 +65,7 @@ export class DeviceConfig extends React.Component
 			BatteryCharge: {
 				component: BatteryCharge,
 				config: {charge: {soc_low: 40, soc_high: 80, timeranges: []}},
-				title: "Battery charge"
+				title: "Grid charging"
 			},
 			Control: {
 				render: this.renderControl,
