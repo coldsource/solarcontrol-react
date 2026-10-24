@@ -7,6 +7,7 @@ import {Voltmeter} from './configparts/Voltmeter.js';
 import {BatteryBackup} from './configparts/BatteryBackup.js';
 import {BatteryOffload} from './configparts/BatteryOffload.js';
 import {BatteryPolicy} from './configparts/BatteryPolicy.js';
+import {BatteryCharge} from './configparts/BatteryCharge.js';
 import {OnBattery} from './configparts/OnBattery.js';
 import {Offload} from './configparts/Offload.js';
 import {Force} from './configparts/Force.js';
@@ -47,19 +48,24 @@ export class DeviceConfig extends React.Component
 				title: "Voltmeter"
 			},
 			BatteryBackup: {
-				render: this.renderBatteryBackup,
+				component: BatteryBackup,
 				config: {backup: {battery_low: 30, battery_high: 50, min_grid_time: 7200}},
 				title: "Battery backup"
 			},
 			BatteryOffload: {
-				render: this.renderBatteryOffload,
+				component: BatteryOffload,
 				config: {offload: {soc_low: 90, soc_high: 98, max: "0"}},
 				title: "Battery offload"
 			},
 			BatteryPolicy: {
-				render: this.renderBatteryPolicy,
+				component: BatteryPolicy,
 				config: {policy: "battery"},
 				title: "Battery Policy"
+			},
+			BatteryCharge: {
+				component: BatteryCharge,
+				config: {charge: {soc_low: 40, soc_high: 80, timeranges: []}},
+				title: "Battery charge"
 			},
 			Control: {
 				render: this.renderControl,
@@ -299,18 +305,6 @@ export class DeviceConfig extends React.Component
 		);
 	}
 
-	renderBatteryOffload(device, config, onChange) {
-		return (
-			<BatteryOffload name="offload" value={config.offload} onChange={onChange} />
-		);
-	}
-
-	renderBatteryPolicy(device, config, onChange) {
-		return (
-			<BatteryPolicy name="policy" value={config.policy} onChange={onChange} />
-		);
-	}
-
 	renderControl(device, config, onChange, options = {revert: false}) {
 		return (
 			<Control name="control" value={config.control} onChange={onChange} revert={options.revert} />
@@ -411,6 +405,19 @@ export class DeviceConfig extends React.Component
 		);
 	}
 
+	renderConfigPart(config) {
+		const options = config.options!==undefined?config.options:{};
+		const device_config = this.props.device.device_config;
+
+		if(config.component!==undefined && config.render===undefined)
+		{
+			let config_name = Object.keys(config.config)[0];
+			return (<config.component name={config_name} value={device_config[config_name]} onChange={this.change} />);
+		}
+
+		return config.render(this.props.device, device_config, this.change, options);
+	}
+
 	renderConfigParts() {
 		return this.props.parts.map(part => {
 			const device_config = this.props.device.device_config;
@@ -429,15 +436,15 @@ export class DeviceConfig extends React.Component
 					title = config.renderTitle(device_config); // Custom title rendering function
 
 					return (
-					<ConfigBlock key={part} title={title} enabled={optional?enabled:null} onEnable={ () => this.enablePart(part) } onDisable={ () => this.disablePart(part) }>
-						{config.render(this.props.device, device_config, this.change, options)}
-					</ConfigBlock>
+						<ConfigBlock key={part} title={title} enabled={optional?enabled:null} onEnable={ () => this.enablePart(part) } onDisable={ () => this.disablePart(part) }>
+							{this.renderConfigPart(config)}
+						</ConfigBlock>
 				);
 			}
 
 			return (
 				<React.Fragment key={part}>
-					{config.render(this.props.device, device_config, this.change, options)}
+					{this.renderConfigPart(config)}
 				</React.Fragment>
 			);
 		});

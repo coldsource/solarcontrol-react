@@ -104,6 +104,32 @@ export class BatteryState extends React.Component
 		);
 	}
 
+	renderOffloadState() {
+		const battery = this.state.devicebattery;
+		if(battery.device_config.offload===undefined)
+			return;
+
+		return (
+			<React.Fragment>
+				<dt>Offload State</dt>
+				<dd>{battery.offload_state}</dd>
+			</React.Fragment>
+		);
+	}
+
+	renderChargeRequired() {
+		const battery = this.state.devicebattery;
+		if(battery.device_config.charge===undefined)
+			return;
+
+		return (
+			<React.Fragment>
+				<dt>Charge required</dt>
+				<dd>{battery.charge_required?'Yes':'No'}</dd>
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		if(this.state.devicebattery===null)
 			return;
@@ -126,10 +152,10 @@ export class BatteryState extends React.Component
 					<dd><KW value={power} /></dd>
 					<dt>SOC State</dt>
 					<dd>{battery.soc_state}</dd>
-					<dt>Offload State</dt>
-					<dd>{battery.offload_state}</dd>
-					{this.renderTemperature()}
 					{this.renderEstimatedTime()}
+					{this.renderOffloadState()}
+					{this.renderChargeRequired()}
+					{this.renderTemperature()}
 				</dl>
 				<h2>Inverter output</h2>
 				<dl>
