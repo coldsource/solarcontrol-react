@@ -1,6 +1,7 @@
 import {Tooltip} from '../../ui/Tooltip.js';
 import {TimeRanges} from '../../ui/TimeRanges.js';
 import {SliderDuration} from '../../ui/SliderDuration.js';
+import {InputEnergy} from '../../ui/InputEnergy.js';
 
 export class HWS extends React.Component
 {
@@ -18,7 +19,7 @@ export class HWS extends React.Component
 						Ensure minimum Wh of
 					</Tooltip>
 				</dt>
-				<dd><input type="number" name="min_energy" value={value.min_energy} onChange={this.props.onChange} /></dd>
+				<dd><InputEnergy name="min_energy" value={value.min_energy} onChange={this.props.onChange} /></dd>
 				<dt>
 					<Tooltip content={tooltip}>
 						For the last

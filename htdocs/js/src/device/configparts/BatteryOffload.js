@@ -1,4 +1,5 @@
 import {Tooltip} from '../../ui/Tooltip.js';
+import {InputPower} from '../../ui/InputPower.js';
 
 export class BatteryOffload extends React.Component
 {
@@ -31,7 +32,7 @@ export class BatteryOffload extends React.Component
 					</Tooltip>
 				</dt>
 				<dd>
-					<input type="text" name="max" value={value.max} onChange={this.change} />
+					<InputPower name="max" value={value.max} onChange={this.change} />
 				</dd>
 				<dt>
 					<Tooltip content="Offload will be allowed until this SOC if reached">

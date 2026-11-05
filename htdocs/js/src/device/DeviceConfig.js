@@ -188,7 +188,7 @@ export class DeviceConfig extends React.Component
 		};
 
 		this.int_fields = ['prio', 'expected_consumption', 'min_on_time', 'min_on_for_last', 'min_on', 'min_off', 'ht_device_id', 'max_on', 'min_energy_for_last'];
-		this.float_fields = ['force_max_temperature', 'offload_max_temperature', 'force_max_moisture', 'offload_max_moisture', 'min_energy'];
+		this.float_fields = ['force_max_temperature', 'offload_max_temperature', 'force_max_moisture', 'offload_max_moisture'];
 
 		this.change = this.change.bind(this);
 	}
