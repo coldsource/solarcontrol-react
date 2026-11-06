@@ -96,7 +96,7 @@ $border-size: 3px;
 			position: relative;
 			border-left: $border-size solid black;
 			border-bottom: $border-size solid black;
-			margin-left: calc(#{$item-radius} / 2);
+			margin-left: calc(#{$item-radius} / 2 - 2px);
 			margin-bottom: calc(#{$item-radius} / 2);
 			border-radius: 0 0 0 10px;
 
@@ -123,7 +123,7 @@ $border-size: 3px;
 			position: relative;
 			border-right: $border-size solid black;
 			border-bottom: $border-size solid black;
-			margin-right: calc(#{$item-radius} / 2);
+			margin-right: calc(#{$item-radius} / 2 - 2px);
 			margin-bottom: calc(#{$item-radius} / 2);
 			border-radius: 0 0 10px 0;
 
