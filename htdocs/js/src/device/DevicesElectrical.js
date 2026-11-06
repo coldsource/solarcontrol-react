@@ -82,7 +82,7 @@ export class DevicesElectrical extends React.Component
 	}
 
 	renderTemperature(device) {
-		if(device.temperature===undefined)
+		if(device.temperature===undefined || device.temperature===null)
 			return;
 
 		return (
