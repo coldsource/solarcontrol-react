@@ -236,7 +236,11 @@ export class Global extends React.Component
 
 
 		return (
-			<div><i className="scf scf-electricity" /></div>
+			<div>
+				<Tooltip content="Grid power supply. Will fill with orange color depending on your current consumption if you setup «&#160;Limits&#160;» in settings">
+					<i className="scf scf-electricity" />
+				</Tooltip>
+			</div>
 		);
 	}
 
@@ -261,10 +265,12 @@ export class Global extends React.Component
 				<div className="icontray"></div>
 				<div className="round" style={this.calcLinearGradient(this.getBatteryPrct(), 0)}>
 
-					<div>
-						<i className="scf scf-battery" />
+					<div><i className="scf scf-battery" /></div>
+					<div className="soc">
+						<Tooltip content="Battery power supply. Will fill with green color depending on your current injection if you setup «&#160;Limits&#160;» in settings">
+							<SOC value={this.state.battery_soc} />
+						</Tooltip>
 					</div>
-					<div className="soc"><SOC value={this.state.battery_soc} /></div>
 					<Tooltip content="Total energy injected by battery in Wh or kWh">
 						<span className="meter top energy"><KWh value={this.state.battery_energy} /></span>
 					</Tooltip>
@@ -308,7 +314,11 @@ export class Global extends React.Component
 			<div className="icontray-left">
 				<div className="icontray"></div>
 				<div className="round" style={this.calcLinearGradient(this.getPVPrct(), 0)}>
-					<div><i className="scf scf-sun" /></div>
+					<div>
+						<Tooltip content="PV power supply. Will fill with green color depending on your current production if you setup «&#160;Limits&#160;» in settings">
+							<i className="scf scf-sun" />
+						</Tooltip>
+					</div>
 					<Tooltip content="Total energy produced today by PV in Wh or kWh">
 						<span className="meter top energy"><KWh value={this.state.pv_energy} /></span>
 					</Tooltip>
