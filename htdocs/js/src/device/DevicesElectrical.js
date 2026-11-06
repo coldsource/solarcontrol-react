@@ -6,6 +6,7 @@ import {ControlOnOff} from '../ui/ControlOnOff.js';
 import {KW} from '../ui/KW.js';
 import {SOC} from '../ui/SOC.js';
 import {Temperature} from '../ui/Temperature.js';
+import {Time} from '../ui/Time.js';
 import {Subscreen} from '../ui/Subscreen.js';
 import {DragDropZone} from '../ui/DragDropZone.js';
 
@@ -90,6 +91,24 @@ export class DevicesElectrical extends React.Component
 		);
 	}
 
+	renderManualRemaining(device) {
+		if(device.manual_timeout===undefined || device.manual_timeout==0)
+			return;
+
+		if(device.manual_elapsed===undefined || device.manual_elapsed==0)
+			return;
+
+		let remaining_seconds = (device.manual_timeout - device.manual_elapsed);
+		if(remaining_seconds<=0)
+			return;
+
+		return (
+			<React.Fragment>
+				<li><i className="scf scf-hand" /> <Time value={remaining_seconds} seconds={true} /></li>
+			</React.Fragment>
+		);
+	}
+
 	getAllDevices() {
 		let devices = [...this.state.devices];
 
@@ -142,10 +161,14 @@ export class DevicesElectrical extends React.Component
 			else if(device.device_type=='battery')
 				cl_auto = 'scf-battery';
 
+			let cl_manual = 'scf-hand';
+			if(device.manual_timeout!==undefined && device.manual_timeout>0)
+				cl_manual = 'scf-spinner';
+
 			return (
 				<div key={device.device_id} className="device">
 					<div>
-						<i className={"scf " + ((device.manual)?'scf-hand':cl_auto)} onClick={mode=='list'?(() => { if(device.manual) this.setManualState(device.device_id, "auto") }):(() => {})} />
+						<i className={"scf " + ((device.manual)?cl_manual:cl_auto)} onClick={mode=='list'?(() => { if(device.manual) this.setManualState(device.device_id, "auto") }):(() => {})} />
 					</div>
 					<div>
 						<span className="name" onClick={ mode=='list'?(() => this.edit(device.device_id)):(() => {}) }>
@@ -156,6 +179,7 @@ export class DevicesElectrical extends React.Component
 							{this.renderPower(device.power)}
 							{this.renderSOC(device)}
 							{this.renderTemperature(device)}
+							{this.renderManualRemaining(device)}
 						</ul>
 						{device.offline?(<div className="offline" onClick={ mode=='list'?(() => this.edit(device.device_id)):(() => {}) }>OFFLINE</div>):''}
 					</div>

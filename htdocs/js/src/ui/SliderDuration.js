@@ -156,6 +156,9 @@ export class SliderDuration extends React.Component
 			if(this.props.type!==undefined && this.props.type=="days")
 				return "Today";
 
+			if(this.props.type!==undefined && this.props.type=="forever")
+				return "Forever";
+
 			return '0 seconds';
 		}
 

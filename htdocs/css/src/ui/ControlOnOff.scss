@@ -1,0 +1,24 @@
+.sc-control-onoff {
+	font-size: 1rem;
+	padding: 1rem;
+
+	div.description {
+		font-style: italic;
+		margin-bottom: 1rem;
+	}
+
+	div.states {
+		&>div {
+			display: grid;
+			grid-template-columns: 3rem 1fr;
+			align-items: center;
+			gap: 1rem;
+			margin-bottom: 1rem;
+
+			i {
+				text-align: center;
+				font-size: 3rem;
+			}
+		}
+	}
+}

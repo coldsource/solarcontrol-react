@@ -16,6 +16,11 @@ export class Time extends React.Component
 		else if(hours > 0)
 			return (<span>{`${hours}h ${minutes}m`}</span>);
 		else
+		{
+			if(this.props.seconds!==undefined && this.props.seconds && minutes==0)
+				return (<span>{`${secs}s`}</span>);
+
 			return (<span>{`${minutes}m`}</span>);
+		}
 	}
 }
