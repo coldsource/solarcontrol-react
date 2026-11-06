@@ -17,7 +17,9 @@ export class Global extends React.Component
 			absence: false,
 			limits: {},
 			devices: [],
-			grid_device: null
+			grid_device: null,
+			battery_device: null,
+			hws_device: null
 		}
 
 		this.ref = React.createRef();
@@ -25,6 +27,8 @@ export class Global extends React.Component
 		this.update = this.update.bind(this);
 		this.reload = this.reload.bind(this);
 		this.reload_grid = this.reload_grid.bind(this);
+		this.reload_battery = this.reload_battery.bind(this);
+		this.reload_hws = this.reload_hws.bind(this);
 		this.reloadConfig = this.reloadConfig.bind(this);
 	}
 
@@ -41,6 +45,8 @@ export class Global extends React.Component
 
 		ProtocolDevice.instance.Subscribe('electrical', 0, this.reload);
 		ProtocolDevice.instance.Subscribe('electrical', 'grid', this.reload_grid);
+		ProtocolDevice.instance.Subscribe('electrical', 'battery', this.reload_battery);
+		ProtocolDevice.instance.Subscribe('electrical', 'hws', this.reload_hws);
 	}
 
 	componentWillUnmount() {
@@ -49,6 +55,8 @@ export class Global extends React.Component
 		Config.instance.Unsubscribe(this.reloadConfig);
 		ProtocolDevice.instance.Unsubscribe('electrical', 0, this.reload);
 		ProtocolDevice.instance.Unsubscribe('electrical', 'grid', this.reload_grid);
+		ProtocolDevice.instance.Unsubscribe('electrical', 'battery', this.reload_battery);
+		ProtocolDevice.instance.Unsubscribe('electrical', 'hws', this.reload_hws);
 	}
 
 	reloadConfig(config) {
@@ -70,6 +78,14 @@ export class Global extends React.Component
 		this.setState({grid_device: grid_device});
 	}
 
+	reload_battery(battery_device) {
+		this.setState({battery_device: battery_device});
+	}
+
+	reload_hws(hws_device) {
+		this.setState({hws_device: hws_device});
+	}
+
 	getGridPrct() {
 		if(!this.state.limits.grid)
 			return 0;
@@ -89,13 +105,6 @@ export class Global extends React.Component
 			return 0;
 
 		return parseFloat(this.state.battery) / parseFloat(this.state.limits.battery) * 100;
-	}
-
-	renderLeaf() {
-		if(!this.state.offpeak)
-			return;
-
-		return (<i className="scf scf-leaf" />);
 	}
 
 	calcLinearGradient(prct, angle, color = '51,201,85,1') {
@@ -208,6 +217,20 @@ export class Global extends React.Component
 	}
 
 	renderGrid() {
+		return (
+			<div className="icontray-right">
+				<div className="round" style={this.calcLinearGradient(this.getGridPrct(), 0, '245, 130, 29')}>
+					{this.renderGridStatus()}
+					<Tooltip content="Total energy consumed today from the grid in Wh or kWh">
+						<span className="meter top energy"><KWh value={this.state.grid_energy} /></span>
+					</Tooltip>
+				</div>
+				<div className="icontray">{this.renderGridIcons()}</div>
+			</div>
+		);
+	}
+
+	renderGridStatus() {
 		if(this.state.grid_device!==null && this.state.grid_device.grid_state=='offline')
 			return (<div className="offline">Offline</div>);
 
@@ -217,21 +240,53 @@ export class Global extends React.Component
 		);
 	}
 
+	renderGridIcons() {
+		if(this.state.grid_device===null)
+			return; // Grid not yet loaded
+
+		let ret = [];
+
+		if(this.state.offpeak)
+			ret.push((<i className="scf scf-leaf" key="offpeak"/>));
+
+		return ret;
+	}
+
 	renderBattery() {
 		if(!this.state.has_battery)
 			return (<div></div>);
 
 		return (
-			<div className="round" style={this.calcLinearGradient(this.getBatteryPrct(), 0)}>
-				<div>
-					<i className="scf scf-battery" />
+			<div className="icontray-both">
+				<div className="icontray"></div>
+				<div className="round" style={this.calcLinearGradient(this.getBatteryPrct(), 0)}>
+
+					<div>
+						<i className="scf scf-battery" />
+					</div>
+					<div className="soc"><SOC value={this.state.battery_soc} /></div>
+					<Tooltip content="Total energy injected by battery in Wh or kWh">
+						<span className="meter top energy"><KWh value={this.state.battery_energy} /></span>
+					</Tooltip>
 				</div>
-				<div className="soc"><SOC value={this.state.battery_soc} /></div>
-				<Tooltip content="Total energy injected by battery in Wh or kWh">
-					<span className="meter top energy"><KWh value={this.state.battery_energy} /></span>
-				</Tooltip>
+				<div className="icontray">{this.renderBatteryIcons()}</div>
 			</div>
 		);
+	}
+
+	renderBatteryIcons() {
+		if(this.state.battery_device===null)
+			return; // Battery not yet loaded
+
+		let ret = [];
+
+		if(this.state.battery_device.manual)
+			ret.push((<i className="scf scf-hand" key="manual"/>));
+
+		if(this.state.battery_device.soc_state == 'charging')
+			ret.push((<i className="scf scf-bolt" key="charging" />));
+
+		return ret;
 	}
 
 	renderBatteryConnector() {
@@ -248,31 +303,64 @@ export class Global extends React.Component
 		);
 	}
 
+	renderPV() {
+		return (
+			<div className="icontray-left">
+				<div className="icontray"></div>
+				<div className="round" style={this.calcLinearGradient(this.getPVPrct(), 0)}>
+					<div><i className="scf scf-sun" /></div>
+					<Tooltip content="Total energy produced today by PV in Wh or kWh">
+						<span className="meter top energy"><KWh value={this.state.pv_energy} /></span>
+					</Tooltip>
+				</div>
+			</div>
+		);
+	}
+
+	renderHWS() {
+		return (
+			<div className="icontray-right">
+				<div className="round" style={this.calcHWSMixStyle()}>
+					<div><i className="scf scf-droplet" /></div>
+					<Tooltip content="Total energy taken by HWS for today">
+						<span className="meter bottom energy"><KWh value={this.state.hws_energy} /></span>
+					</Tooltip>
+				</div>
+				<div className="icontray">{this.renderHWSIcons()}</div>
+			</div>
+		);
+	}
+
+	renderHWSIcons() {
+		if(this.state.hws_device===null)
+			return;
+
+		let ret = [];
+
+		if(this.state.hws_device.manual)
+			ret.push((<i className="scf scf-hand" key="manual"/>));
+
+		if(this.state.hws_device.state)
+			ret.push((<i className="scf scf-bolt" key="charging"/>));
+
+		return ret;
+	}
+
 	render() {
 		return (
 			<div className="sc-meter-global">
 				{this.renderAbsence()}
 				<div className="production">
-					<div className="round" style={this.calcLinearGradient(this.getGridPrct(), 0, '245, 130, 29')}>
-						{this.renderGrid()}
-						<Tooltip content="Total energy consumed today from the grid in Wh or kWh">
-							<span className="meter top energy"><KWh value={this.state.grid_energy} /></span>
-						</Tooltip>
-					</div>
+					{this.renderGrid()}
 					{this.renderBattery()}
-					<div className="round" style={this.calcLinearGradient(this.getPVPrct(), 0)}>
-						<div><i className="scf scf-sun" /></div>
-						<Tooltip content="Total energy produced today by PV in Wh or kWh">
-							<span className="meter top energy"><KWh value={this.state.pv_energy} /></span>
-						</Tooltip>
-					</div>
+					{this.renderPV()}
 				</div>
 				<div className="network">
 					<div className="connector-grid">
 						{this.state.grid<0?(<img className="arrow-grid" src="/images/arrow-up.svg" />):''}
 						{this.state.grid>=0?(<img className="arrow-bolt" src="/images/arrow-right.svg" />):''}
 						<Tooltip content="Instant power currently taken from or sent back to the grid">
-							<span className="meter gridpv"><KW value={this.state.grid} />&#160;{this.renderLeaf()}</span>
+							<span className="meter gridpv"><KW value={this.state.grid} /></span>
 						</Tooltip>
 					</div>
 					<div className="mix">
@@ -306,19 +394,13 @@ export class Global extends React.Component
 				<div className="home-devices">
 					<div>
 						<div>
-							<div className="label">HWS</div>
 							<div className="network-vert">
 								<img className="arrow-down" src="/images/arrow-down.svg" />
 								<Tooltip content="Instant power HWS">
 									<span className="meter"><KW value={this.state.hws} /></span>
 								</Tooltip>
 							</div>
-							<div className="round" style={this.calcHWSMixStyle()}>
-								<div><i className="scf scf-droplet" /></div>
-								<Tooltip content="Total energy taken by HWS for today">
-									<span className="meter bottom energy"><KWh value={this.state.hws_energy} /></span>
-								</Tooltip>
-							</div>
+							{this.renderHWS()}
 						</div>
 					</div>
 					<div>

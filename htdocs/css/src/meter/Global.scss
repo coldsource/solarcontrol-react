@@ -1,4 +1,5 @@
 $item-radius: 5rem;
+$icontray-width: 2rem;
 $meter-width: 5.5rem;
 $network-size: 4rem;
 $border-size: 3px;
@@ -67,7 +68,7 @@ $border-size: 3px;
 
 	.production {
 		display: grid;
-		grid-template-columns: $item-radius $item-radius $item-radius;
+		grid-template-columns: ($item-radius + $icontray-width) ($item-radius + 2 * $icontray-width) ($item-radius + $icontray-width);
 		justify-content: space-between;
 		margin-top: 2rem;
 
@@ -156,14 +157,36 @@ $border-size: 3px;
 		}
 	}
 
+	.icontray-right {
+		display:grid;
+		grid-template-columns: $item-radius $icontray-width;
+	}
+
+	.icontray-both {
+		display:grid;
+		grid-template-columns: $icontray-width $item-radius $icontray-width;
+	}
+
+	.icontray-left {
+		display:grid;
+		grid-template-columns: $icontray-width $item-radius;
+	}
+
+	.icontray {
+		display: grid;
+		grid-template-columns: 1fr;
+		font-size: 1.5rem;
+		text-align: center;
+	}
+
 	.home {
 		display: grid;
 		grid-template-columns: 1fr 3rem 1fr;
 		border: $border-size solid black;
 		align-items: center;
 		border-radius: 10px;
-		margin-left: 2rem;
-		margin-right: 2rem;
+		margin-left: 1rem;
+		margin-right: 1rem;
 		padding: 0.2rem;
 		text-align: center;
 
@@ -183,7 +206,7 @@ $border-size: 3px;
 	.home-devices {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, $item-radius);
-		justify-content: space-around;
+		justify-content: space-between;
 
 		&>div {
 			.label {
