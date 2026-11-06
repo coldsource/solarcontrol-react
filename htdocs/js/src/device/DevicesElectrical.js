@@ -87,7 +87,7 @@ export class DevicesElectrical extends React.Component
 			return;
 
 		return (
-			<React.Fragment><i className="scf scf-thermometer" /> <Temperature value={device.temperature} /></React.Fragment>
+			<li><i className="scf scf-thermometer" /> <Temperature value={device.temperature} /></li>
 		);
 	}
 
