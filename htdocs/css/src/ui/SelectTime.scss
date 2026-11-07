@@ -1,0 +1,14 @@
+.sc-select-time {
+	display: inline-block;
+	border: 1px solid $color-selected;
+	border-radius: 5px;
+	padding: 0.4rem 0.2rem 0.4rem 0rem;
+
+	input {
+		border: none;
+		outline: none;
+		padding: 0;
+		text-align: center;
+		width: 2rem;
+	}
+}

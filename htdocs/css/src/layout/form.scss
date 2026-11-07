@@ -84,7 +84,7 @@
 		}
 	}
 
-	&>div:has(input[type="text"]:not(.energy, .power)) {
+	&>div:has(>input[type="text"]:not(.energy, .power)) {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		align-items: center;

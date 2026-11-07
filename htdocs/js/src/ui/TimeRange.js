@@ -1,4 +1,5 @@
 import {SelectSlowFast} from './SelectSlowFast.js';
+import {SelectTime} from './SelectTime.js';
 
 export class TimeRange extends React.Component
 {
@@ -8,7 +9,7 @@ export class TimeRange extends React.Component
 		const value = this.props.value;
 
 		this.state = {
-			display_days: (value.days_of_week!==undefined && Object.keys(value.days_of_week).length > 0)
+			display_days: (value.days_of_week!==undefined && Object.keys(value.days_of_week).length > 0),
 		}
 
 		this.changeData = this.changeData.bind(this);
@@ -81,8 +82,8 @@ export class TimeRange extends React.Component
 		return (
 			<div className="hours">
 				<span>
-					<input type="time" step="60" value={this.normalize_time(this.props.value.from)} onChange={ ev => this.change('from', ev) } />
-					<input type="time" step="60" value={this.normalize_time(this.props.value.to)} onChange={ ev => this.change('to', ev) } />
+					<SelectTime name="from" value={this.props.value.from} onChange={ ev => this.change('from', ev) } />
+					<SelectTime name="to" value={this.props.value.to} onChange={ ev => this.change('to', ev) } />
 					<span className="buttons">
 						<i className="scf scf-calendar" onClick={() => this.setState({display_days: !this.state.display_days})} />
 						<i className={"scf scf-leaf" + (this.props.value.offpeak?" on":"")} onClick={() => this.toggleOffpeak()} />
@@ -152,19 +153,6 @@ export class TimeRange extends React.Component
 				{this.renderComplementarySlowFast()}
 			</div>
 		);
-
-		/*return (
-			<div className="layout-form">
-				<div>
-					<i className={"scf " + field.icon} />
-					<input type="number" value={val} name={field.name} onChange={this.changeData} />
-					{this.renderComplementarySlowFast()}
-				</div>
-				<div className="tooltip">
-					{field.tooltip}
-				</div>
-			</div>
-		);*/
 	}
 
 	render() {

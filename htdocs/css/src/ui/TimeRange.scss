@@ -48,17 +48,14 @@ div.sc-timerange {
 	.hours {
 		display: grid;
 		grid-template-columns: 1fr 2rem;
+		align-items: center;
 		margin-bottom: 0.5rem;
 
-		input {
+		.sc-select-time {
 			&:nth-of-type(1) {
 				margin-right: 0.5rem;
+				font-size: 120%;
 			}
-
-			border: 1px solid $color-form-border;
-			border-radius: 5px;
-			padding: 0.2rem;
-			font-size: 150%;
 		}
 
 		.buttons {

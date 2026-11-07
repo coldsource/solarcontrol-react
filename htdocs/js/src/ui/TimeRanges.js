@@ -6,21 +6,8 @@ export class TimeRanges extends React.Component
 		super(props);
 	}
 
-	normalize_time(t) {
-		const parts = /^([0-9]+):([0-9]+)(:([0-9]+))?/.exec(t);
-		let nt = parts[1].padStart(2, '0') + ':' + parts[2].padStart(2, '0');
-		if(parts.length>=5 && parts[4]!==undefined)
-			nt += ':' + parts[4].padStart(2, '0');
-		else
-			nt += ':00';
-		return nt;
-	}
-
 	changeTimeRange(idx, value) {
 		const name = this.props.name;
-
-		value.from = this.normalize_time(value.from);
-		value.to = this.normalize_time(value.to);
 
 		let time_ranges = this.props.value;
 		time_ranges[idx] = value;
