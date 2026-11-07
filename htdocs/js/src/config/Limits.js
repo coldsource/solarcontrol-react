@@ -10,6 +10,7 @@ export class Limits extends React.Component
 			grid: '',
 			pv: '',
 			battery: '',
+			battery_low_temp: ''
 		};
 
 		this.change = this.change.bind(this);
@@ -46,10 +47,18 @@ export class Limits extends React.Component
 	}
 
 	save() {
-		if(!this.checkFloat(this.state.grid) || !this.checkFloat(this.state.pv) || !this.checkFloat(this.state.battery))
+		let limits = {};
+
+		for(const name in this.state)
+		{
+			if(this.state[name]!='' && this.checkFloat(this.state[name]))
+				limits[name] = this.state[name];
+		}
+
+		if(Object.keys(limits).length==0)
 			return;
 
-		API.instance.command('storage', 'set', {name: 'limits', value: this.state}).then(res => {
+		API.instance.command('storage', 'set', {name: 'limits', value: limits}).then(res => {
 			App.message("Limits saved");
 		});
 	}
@@ -70,6 +79,10 @@ export class Limits extends React.Component
 						<dt>Battery maximum power (W)</dt>
 						<dd>
 							<input type="number" name="battery" value={this.state.battery} onChange={this.change} />
+						</dd>
+						<dt>Battery low temperature (°C)</dt>
+						<dd>
+							<input type="number" name="battery_low_temp" value={this.state.battery_low_temp} onChange={this.change} />
 						</dd>
 					</dl>
 					<div className="submit" onClick={this.save}>Save</div>

@@ -262,7 +262,7 @@ export class Global extends React.Component
 
 		return (
 			<div className="icontray-both">
-				<div className="icontray"></div>
+				<div className="icontray">{this.renderBatteryIcons('left')}</div>
 				<div className="round" style={this.calcLinearGradient(this.getBatteryPrct(), 0)}>
 
 					<div><i className="scf scf-battery" /></div>
@@ -275,22 +275,30 @@ export class Global extends React.Component
 						<span className="meter top energy"><KWh value={this.state.battery_energy} /></span>
 					</Tooltip>
 				</div>
-				<div className="icontray">{this.renderBatteryIcons()}</div>
+				<div className="icontray">{this.renderBatteryIcons('right')}</div>
 			</div>
 		);
 	}
 
-	renderBatteryIcons() {
+	renderBatteryIcons(side) {
 		if(this.state.battery_device===null)
 			return; // Battery not yet loaded
 
 		let ret = [];
 
-		if(this.state.battery_device.manual)
-			ret.push((<i className="scf scf-hand" key="manual"/>));
+		if(side=='right')
+		{
+			if(this.state.battery_device.manual)
+				ret.push((<i className="scf scf-hand" key="manual"/>));
 
-		if(this.state.battery_device.soc_state == 'charging')
-			ret.push((<i className="scf scf-bolt" key="charging" />));
+			if(this.state.battery_device.soc_state == 'charging')
+				ret.push((<i className="scf scf-bolt" key="charging" />));
+		}
+		else
+		{
+			if(this.state.battery_device.temperature!==undefined && this.state.limits.battery_low_temp!==undefined && this.state.battery_device.temperature < this.state.limits.battery_low_temp)
+				ret.push((<i className="scf scf-snow" key="frost" />));
+		}
 
 		return ret;
 	}
