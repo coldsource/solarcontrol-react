@@ -89,14 +89,14 @@ export class Voltmeter extends React.Component
 
 		let value = this.props.value;
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="Voltage increase when battery is in charge. This is used to compute SOC while charging">
 						Charge Delta V
 					</Tooltip>
-				</dt>
-				<dd><input type="number" name="charge_delta" value={value.charge_delta} onChange={this.change} /></dd>
-			</React.Fragment>
+				</div>
+				<input type="number" name="charge_delta" value={value.charge_delta} onChange={this.change} />
+			</div>
 		);
 	}
 
@@ -105,49 +105,49 @@ export class Voltmeter extends React.Component
 			return;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="Configure voltage thresholds for detecting Stage Of Charge (SOC).">
 						SOC
 					</Tooltip>
-				</dt>
-				<dd>
-					<div className="sc-voltmeter">
-						<div className="threshold">
-							<span><b>Percentage</b></span>
-							<span><b>Voltage</b></span>
-						</div>
-						{this.renderThresholds()}
-						<div onClick={this.addThreshold} className="add">Add threshold</div>
+				</div>
+				<div className="sc-voltmeter">
+					<div className="threshold">
+						<span><b>Percentage</b></span>
+						<span><b>Voltage</b></span>
 					</div>
-				</dd>
-			</React.Fragment>
+					{this.renderThresholds()}
+					<div onClick={this.addThreshold} className="add">Add threshold</div>
+				</div>
+			</div>
 		);
 	}
 
 	render() {
 		let value = this.props.value;
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Type of device used to monitor battery voltage">
-						Voltmeter type
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
+					<div>
+						<Tooltip content="Type of device used to monitor battery voltage">
+							Voltmeter type
+						</Tooltip>
+					</div>
 					<div className="sc-select-controltype">
 						{this.renderTiles()}
 					</div>
-				</dd>
-				<dt>
-					<Tooltip content="MQTT ID configured on the Shelly device.">
-						Voltmeter MQTT ID
-					</Tooltip>
-				</dt>
-				<dd><input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} /></dd>
+				</div>
+				<div>
+					<div>
+						<Tooltip content="MQTT ID configured on the Shelly device.">
+							Voltmeter MQTT ID
+						</Tooltip>
+					</div>
+					<input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} />
+				</div>
 				{this.renderChargeDeltaV()}
 				{this.renderThresholdsBlock()}
-			</React.Fragment>
+			</div>
 		);
 	}
 }

@@ -22,32 +22,32 @@ export class BatteryBackup extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Controller will switch to grid if this threshold is reached">
-						Battery low threshold
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
+					<div>
+						<Tooltip content="Controller will switch to grid if this threshold is reached">
+							Battery low threshold (%)
+						</Tooltip>
+					</div>
 					<input type="number" min="0" max="100" name="battery_low" value={value.battery_low} onChange={this.change} />
-				</dd>
-				<dt>
-					<Tooltip content="Controller will back to battery at this threshold">
-						Battery high threshold
-					</Tooltip>
-				</dt>
-				<dd>
+				</div>
+				<div>
+					<div>
+						<Tooltip content="Controller will back to battery at this threshold">
+							Battery high threshold (%)
+						</Tooltip>
+					</div>
 					<input type="number" min="0" max="100" name="battery_high" value={value.battery_high} onChange={this.change} />
-				</dd>
-				<dt>
-					<Tooltip content="After switching from battery to grid, Controller will not switch back to battery before this time">
-						Minimum grid time
-					</Tooltip>
-				</dt>
-				<dd>
+				</div>
+				<div>
+					<div>
+						<Tooltip content="After switching from battery to grid, Controller will not switch back to battery before this time">
+							Minimum grid time
+						</Tooltip>
+					</div>
 					<SliderDuration name="min_grid_time" value={value.min_grid_time} onChange={this.change} long={true} />
-				</dd>
-			</React.Fragment>
+				</div>
+			</div>
 		);
 	}
 }

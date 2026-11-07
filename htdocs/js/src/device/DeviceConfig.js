@@ -30,7 +30,8 @@ export class DeviceConfig extends React.Component
 		this.config_parts = {
 			Name: {
 				render: this.renderName,
-				config: {}
+				config: {},
+				top: true
 			},
 			Prio: {
 				render: this.renderPrio,
@@ -50,7 +51,8 @@ export class DeviceConfig extends React.Component
 			BatteryBackup: {
 				component: BatteryBackup,
 				config: {backup: {battery_low: 30, battery_high: 50, min_grid_time: 7200}},
-				title: "Battery backup"
+				title: "Battery backup",
+				tooltip: "Switch back to grid if battery SOC is too low"
 			},
 			BatteryOffload: {
 				component: BatteryOffload,
@@ -65,7 +67,7 @@ export class DeviceConfig extends React.Component
 			BatteryCharge: {
 				component: BatteryCharge,
 				config: {charge: {soc_low: 40, soc_high: 80, timeranges: []}},
-				title: "Grid charging"
+				title: "Grid charging",
 			},
 			Control: {
 				render: this.renderControl,
@@ -81,7 +83,7 @@ export class DeviceConfig extends React.Component
 				renderTitle: config => "Controller : " + config.control.type,
 			},
 			OffPeak: {
-				render: this.renderInput,
+				component: Input,
 				config: {input: {type: 'pro', mqtt_id: '', outlet: 0}},
 				title: "Off Peak detection"
 			},
@@ -93,7 +95,8 @@ export class DeviceConfig extends React.Component
 			Offload: {
 				render: this.renderOffload,
 				config: {expected_consumption: 0, offload: []},
-				title: "Offload"
+				title: "Offload",
+				tooltip: "Time ranges when the device will be in «\xa0Offload\xa0» mode. In offload mode the device will be switched on only if sufficient PV power is available (see «\xa0Expected Consumption\xa0»). Leaf indicates offpeak hours if configured."
 			},
 			OffloadTemperature: {
 				render: this.renderOffload,
@@ -114,24 +117,25 @@ export class DeviceConfig extends React.Component
 				title: "Offload"
 			},
 			Force: {
-				render: this.renderForce,
+				component: Force,
 				config: {force: []},
-				title: "Forced period"
+				title: "Forced period",
+				tooltip: "Time ranges when the device will be in «\xa0Forced\xa0» mode. In forced mode the device will be switched on whatever the current production is. Leaf indicates offpeak hours if configured."
 			},
 			ForceTemperature: {
-				render: this.renderForce,
+				component: Force,
 				config: {force: []},
 				options: {temperature: true},
 				title: "Forced period"
 			},
 			ForceHeatPump: {
-				render: this.renderForce,
+				component: Force,
 				config: {force: []},
 				options: {temperature: true, speed: true},
 				title: "Forced period"
 			},
 			ForceMoisture: {
-				render: this.renderForce,
+				component: Force,
 				config: {force: []},
 				options: {moisture: true},
 				title: "Forced period"
@@ -139,7 +143,8 @@ export class DeviceConfig extends React.Component
 			Remainder: {
 				render: this.renderRemainder,
 				config: {remainder: [], min_on_time: 0, min_on_for_last: 0},
-				title: "Remainder"
+				title: "Remainder",
+				tooltip: "Compute how long this device has been turned on during the period represented by «\xa0For the last\xa0». If the device has been on for less than «\xa0Ensure minimum charging time of\xa0», it will be switched on in the period indicated by «\xa0During this period\xa0» to make the remainder."
 			},
 			MinOnOff: {
 				render: this.renderMinOnOff,
@@ -156,6 +161,7 @@ export class DeviceConfig extends React.Component
 				render: this.renderThermometer,
 				config: {ht_device_id: 0},
 				title: "Thermometer",
+				tooltip: "Themometer used to get current temperature for this device"
 			},
 			HeatPump: {
 				render: this.renderHeatPump,
@@ -165,7 +171,8 @@ export class DeviceConfig extends React.Component
 			CMV: {
 				render: this.renderCMV,
 				config: {ht_device_ids: []},
-				title: "Hygrometers"
+				title: "Hygrometers",
+				tooltip: "Hygrometer used to get current humidity for this device."
 			},
 			HWS: {
 				render: this.renderHWS,
@@ -174,16 +181,19 @@ export class DeviceConfig extends React.Component
 			},
 			MQTT: {
 				render: this.renderMQTT,
-				config: {mqtt_id: ''}
+				config: {mqtt_id: ''},
+				top: true,
 			},
 			BLE: {
 				render: this.renderBLE,
-				config: {ble_addr: ''}
+				config: {ble_addr: ''},
+				top: true
 			},
 			OnBattery: {
-				render: this.renderOnBattery,
+				component: OnBattery,
 				config: {battery: {enabled: false, controller_id: 0}},
-				title: "Battery"
+				title: "Battery",
+				tooltip: "Declare that this devices runs on battery. Offload will be computed based on battery state instead of exported power."
 			},
 		};
 
@@ -272,14 +282,10 @@ export class DeviceConfig extends React.Component
 
 	renderName(device, config, onChange) {
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Name of the device, only used by you">
-						Name
-					</Tooltip>
-				</dt>
-				<dd><input type="text" name="device_name" value={device.device_name} onChange={onChange} /></dd>
-			</React.Fragment>
+			<div>
+				<div><Tooltip content="Name of the device, only used by you">Name</Tooltip></div>
+				<input type="text" name="device_name" value={device.device_name} onChange={onChange} />
+			</div>
 		);
 	}
 
@@ -308,12 +314,6 @@ export class DeviceConfig extends React.Component
 	renderControl(device, config, onChange, options = {revert: false}) {
 		return (
 			<Control name="control" value={config.control} onChange={onChange} revert={options.revert} />
-		);
-	}
-
-	renderInput(device, config, onChange) {
-		return (
-			<Input name="input" value={config.input} onChange={onChange} />
 		);
 	}
 
@@ -351,12 +351,6 @@ export class DeviceConfig extends React.Component
 		);
 	}
 
-	renderForce(device, config, onChange, options = {}) {
-		return (
-			<Force value={config} onChange={onChange} options={options} />
-		);
-	}
-
 	renderHWS(device, config, onChange) {
 		return (
 			<HWS value={config} onChange={onChange} />
@@ -371,37 +365,27 @@ export class DeviceConfig extends React.Component
 
 	renderMQTT(device, config, onChange) {
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="MQTT ID configured on the Shelly device.">
 						MQTT ID
 					</Tooltip>
-				</dt>
-				<dd>
-					<input type="text" name="mqtt_id" value={config.mqtt_id} onChange={onChange} />
-				</dd>
-			</React.Fragment>
+				</div>
+				<input type="text" name="mqtt_id" value={config.mqtt_id} onChange={onChange} />
+			</div>
 		);
 	}
 
 	renderBLE(device, config, onChange) {
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="Bluetooth addres of the device.">
 						Bluetooth address
 					</Tooltip>
-				</dt>
-				<dd>
-					<input type="text" name="ble_addr" value={config.ble_addr} onChange={onChange} />
-				</dd>
-			</React.Fragment>
-		);
-	}
-
-	renderOnBattery(device, config, onChange) {
-		return (
-			<OnBattery name="battery" value={config.battery} onChange={onChange} />
+				</div>
+				<input type="text" name="ble_addr" value={config.ble_addr} onChange={onChange} />
+			</div>
 		);
 	}
 
@@ -412,13 +396,13 @@ export class DeviceConfig extends React.Component
 		if(config.component!==undefined && config.render===undefined)
 		{
 			let config_name = Object.keys(config.config)[0];
-			return (<config.component name={config_name} value={device_config[config_name]} onChange={this.change} />);
+			return (<config.component name={config_name} value={device_config[config_name]} options={config.options} onChange={this.change} />);
 		}
 
 		return config.render(this.props.device, device_config, this.change, options);
 	}
 
-	renderConfigParts() {
+	renderConfigParts(top) {
 		return this.props.parts.map(part => {
 			const device_config = this.props.device.device_config;
 
@@ -429,6 +413,12 @@ export class DeviceConfig extends React.Component
 			const enabled = Object.keys(config.config).filter(value => !Object.keys(device_config).includes(value)).length==0
 			const options = config.options!==undefined?config.options:{};
 
+			if(top && config.top===undefined)
+				return;
+
+			if(!top && config.top!==undefined && config.top)
+				return;
+
 			if(config.title!==undefined)
 			{
 				let title = config.title;
@@ -436,7 +426,7 @@ export class DeviceConfig extends React.Component
 					title = config.renderTitle(device_config); // Custom title rendering function
 
 					return (
-						<ConfigBlock key={part} title={title} enabled={optional?enabled:null} onEnable={ () => this.enablePart(part) } onDisable={ () => this.disablePart(part) }>
+						<ConfigBlock key={part} title={title} tooltip={config.tooltip} enabled={optional?enabled:null} onEnable={ () => this.enablePart(part) } onDisable={ () => this.disablePart(part) }>
 							{this.renderConfigPart(config)}
 						</ConfigBlock>
 				);
@@ -455,9 +445,14 @@ export class DeviceConfig extends React.Component
 			return; // Not initialized yet
 
 		return (
-			<dl>
-				{this.renderConfigParts()}
-			</dl>
+			<React.Fragment>
+				<div className="layout-form">
+					{this.renderConfigParts(true)}
+				</div>
+				<dl>
+					{this.renderConfigParts(false)}
+				</dl>
+			</React.Fragment>
 		);
 	}
 }

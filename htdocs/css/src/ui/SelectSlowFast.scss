@@ -1,4 +1,8 @@
 .sc-select-slowfast {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	justify-items: center;
+
 	i.selected {
 		color: green;
 	}

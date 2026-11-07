@@ -22,16 +22,16 @@ export class GridDetection extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="MQTT ID configured on the detection device">
-						Input MQTT ID
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
+					<div>
+						<Tooltip content="MQTT ID configured on the detection device">
+							Input MQTT ID
+						</Tooltip>
+					</div>
 					<input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} />
-				</dd>
-			</React.Fragment>
+				</div>
+			</div>
 		);
 	}
 }

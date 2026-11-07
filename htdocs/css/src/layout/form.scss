@@ -1,19 +1,23 @@
-.layout-form {
-	dl {
+.layout-form-sections {
+	&>dl {
 		margin: 0px 0px 1rem 0px;
 
-		dt {
+		&>dt {
 			display: grid;
-			grid-template-columns: 2fr 1fr;
+			grid-template-columns: 1fr 8rem 3rem;
 			padding: 0.5rem;
-			background-color: #b0e8e3;
-			border-radius: 10px;
+			background: linear-gradient(90deg, $color-card-background 0%, #FFFFFF 100%);
+			border-radius: $border-radius;
 			font-weight: bold;
 			align-items: center;
 			margin-bottom: 0.5rem;
 
+			.toggle {
+				display: inline-block;
+				text-align: right;
+			}
+
 			&.block {
-				background-color: transparent;
 				font-size: 1.2rem;
 			}
 
@@ -32,57 +36,106 @@
 					color: green;
 				}
 			}
-		}
 
-		dd {
-			margin-bottom: 1rem;
-		}
-
-		dd:not(:has(*)) {
-			margin-left: 0px;
-			padding: 0.5rem;
-		}
-
-		dd:has(*) {
-			margin-left: 0px;
-		}
-
-		dd:has(input[type="text"]) {
-			&>input {
-				width: 100%;
-				border: 1px solid $color-form-border;
-				border-radius: 5px;
-				padding: 0.5rem;
-				margin-top: 0.5rem;
+			.info {
+				text-align: right;
 			}
 		}
 
-		dd:has(input[type="number"]) {
-			&>input {
-				width: 100%;
-				border: 1px solid $color-form-border;
-				border-radius: 5px;
-				padding: 0.5rem;
-				margin-top: 0.5rem;
-				-moz-appearance: textfield;
-				&::-webkit-outer-spin-button,
-				&input::-webkit-inner-spin-button {
-					-webkit-appearance: none;
-				}
-			}
+		&>dd {
+			margin-left: 0;
 		}
 
-		dd {
-			.sc-select-htdevice, .sc-slider-duration, .sc-select-controltype, .sc-select-integer {
-				margin-top: 0.5rem;
-			}
+		&>dt:has(+ dd) {
+			margin-top: 0.5rem;
 		}
+	}
+}
 
-		input {
-			box-sizing: border-box;
+.layout-form {
+	input {
+		box-sizing: border-box;
+	}
+
+	&>div {
+		margin-bottom: 0.5rem;
+
+		&>div:first-child {
+			font-weight: bold;
 		}
 	}
 
+	&>div:has(>input[type="number"]), &>div:has(>input[type="text"].energy), &>div:has(>input[type="text"].power) {
+		display: grid;
+		grid-template-columns: 1fr 8rem;
+		align-items: center;
+		margin-bottom: 0.5rem;
+
+		&>input {
+			width: 100%;
+			border: 1px solid $color-form-border;
+			border-radius: 5px;
+			padding: 0.5rem;
+			-moz-appearance: textfield;
+			&::-webkit-outer-spin-button,
+			&input::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+			}
+		}
+	}
+
+	&>div:has(input[type="text"]:not(.energy, .power)) {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-items: center;
+
+		&>input {
+			width: 100%;
+			border: 1px solid $color-form-border;
+			border-radius: 5px;
+			padding: 0.5rem;
+			-moz-appearance: textfield;
+			&::-webkit-outer-spin-button,
+			&input::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+			}
+		}
+	}
+
+	&>div:has([class^="sc-select-"]) {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.5rem;
+	}
+
+	&>div:has(.sc-select-integer) {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-items: center;
+	}
+
+	&>div:has(.sc-slider-duration) {
+		display: grid;
+		grid-template-columns: 1fr;
+		align-items: center;
+		gap: 0.7rem;
+	}
+
+	&>div:has(>.sc-select-slowfast) {
+		display: grid;
+		grid-template-columns: 1fr 8rem;
+		align-items: center;
+	}
+
+	&>div.spacer {
+		height: 0;
+		border-top: 1px solid lightgrey;
+		width:80%;
+		margin: 1rem auto 1rem auto;
+	}
+}
+
+.layout-form, .layout-form-sections {
 	.submit {
 		text-align: center;
 		font-weight: bold;

@@ -10,16 +10,12 @@ export class Hygrometer extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Hygrometer used to get current humidity.">
-						Linked hygrometers
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
+					<div></div>
 					<SelectHTDevice SelectHTDevice type="humidity" multiple="yes" name="ht_device_ids" value={value.ht_device_ids} onChange={this.props.onChange} />
-				</dd>
-			</React.Fragment>
+				</div>
+			</div>
 		);
 	}
 }

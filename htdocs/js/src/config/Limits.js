@@ -67,24 +67,22 @@ export class Limits extends React.Component
 		return (
 			<div className="sc-pricing">
 				<div className="layout-form">
-					<dl>
-						<dt>Grid maximum power (W)</dt>
-						<dd>
-							<input type="number" name="grid" value={this.state.grid} onChange={this.change} />
-						</dd>
-						<dt>PV maximum power (W)</dt>
-						<dd>
-							<input type="number" name="pv" value={this.state.pv} onChange={this.change} />
-						</dd>
-						<dt>Battery maximum power (W)</dt>
-						<dd>
-							<input type="number" name="battery" value={this.state.battery} onChange={this.change} />
-						</dd>
-						<dt>Battery low temperature (°C)</dt>
-						<dd>
-							<input type="number" name="battery_low_temp" value={this.state.battery_low_temp} onChange={this.change} />
-						</dd>
-					</dl>
+					<div>
+						<div>Grid maximum power (W)</div>
+						<input type="number" name="grid" value={this.state.grid} onChange={this.change} />
+					</div>
+					<div>
+						<div>PV maximum power (W)</div>
+						<input type="number" name="pv" value={this.state.pv} onChange={this.change} />
+					</div>
+					<div>
+						<div>Battery maximum power (W)</div>
+						<input type="number" name="battery" value={this.state.battery} onChange={this.change} />
+					</div>
+					<div>
+						<div>Battery low temperature (°C)</div>
+						<input type="number" name="battery_low_temp" value={this.state.battery_low_temp} onChange={this.change} />
+					</div>
 					<div className="submit" onClick={this.save}>Save</div>
 				</div>
 			</div>

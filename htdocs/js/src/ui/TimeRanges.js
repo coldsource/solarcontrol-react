@@ -48,7 +48,7 @@ export class TimeRanges extends React.Component
 
 		return time_ranges.map((time_range, idx) => {
 			return (
-				<React.Fragment>
+				<React.Fragment key={idx}>
 					<TimeRange value={time_range} onChange={ev => this.changeTimeRange(idx, ev.target.value)} onRemove={ ev => this.removeTimeRange(idx) } options={this.props.options} />
 					<div className="spacer"></div>
 				</React.Fragment>

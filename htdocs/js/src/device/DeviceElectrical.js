@@ -225,7 +225,7 @@ export class DeviceElectrical extends React.Component
 		return (
 			<div className="sc-device">
 				<Subscreen title={device.device_name} onClose={this.props.onClose}>
-					<div className="layout-form">
+					<div className="layout-form-sections">
 						{this.renderAutoDetect()}
 						<DeviceConfig parts={parts} device={device} onChange={this.changeConfig} />
 						<div className="submit" onClick={this.save}>Save</div>

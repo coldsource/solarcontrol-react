@@ -1,3 +1,5 @@
+import {Tooltip} from './Tooltip.js';
+
 export class ConfigBlock extends React.Component
 {
 	constructor(props) {
@@ -33,7 +35,7 @@ export class ConfigBlock extends React.Component
 
 	renderEnable() {
 		if(this.props.enabled===null)
-			return; // Config block is mandatory
+			return (<span></span>); // Config block is mandatory
 
 		return (<span className="toggle" onClick={this.toggleEnable}>{this.props.enabled?"enabled":"disabled"}</span>);
 	}
@@ -56,14 +58,19 @@ export class ConfigBlock extends React.Component
 		if(!this.state.displayed || this.props.enabled===false)
 			return;
 
+		return this.props.children;
+	}
+
+	renderInfo() {
+		if(!this.props.tooltip)
+			return;
+
 		return (
-			<dd>
-				<div className="layout-form">
-					<dl>
-						{this.props.children}
-					</dl>
-				</div>
-			</dd>
+			<span className="info">
+				<Tooltip content={this.props.tooltip}>
+					<i className="scf scf-info" />
+				</Tooltip>
+			</span>
 		);
 	}
 
@@ -76,8 +83,11 @@ export class ConfigBlock extends React.Component
 			<React.Fragment>
 				<dt className={cl}>
 					{this.renderShowHide()}
+					{this.renderInfo()}
 				</dt>
-				{this.renderContent()}
+				<dd>
+					{this.renderContent()}
+				</dd>
 			</React.Fragment>
 		);
 	}

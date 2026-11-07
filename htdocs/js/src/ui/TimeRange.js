@@ -118,7 +118,12 @@ export class TimeRange extends React.Component
 		if(this.props.value.data && this.props.value.data.speed)
 			val = this.props.value.data.speed;
 
-		return (<SelectSlowFast name="speed" value={val} onChange={this.changeData} />);
+		return (
+			<div>
+				<div>Heating speed</div>
+				<SelectSlowFast name="speed" value={val} onChange={this.changeData} />
+			</div>
+		);
 	}
 
 	renderComplementaryFields() {
@@ -139,7 +144,17 @@ export class TimeRange extends React.Component
 			val = this.props.value.data[field.name];
 
 		return (
-			<div className="options">
+			<div className="layout-form">
+				<div>
+					<div>{field.tooltip}</div>
+					<input type="number" value={val} name={field.name} onChange={this.changeData} />
+				</div>
+				{this.renderComplementarySlowFast()}
+			</div>
+		);
+
+		/*return (
+			<div className="layout-form">
 				<div>
 					<i className={"scf " + field.icon} />
 					<input type="number" value={val} name={field.name} onChange={this.changeData} />
@@ -149,15 +164,15 @@ export class TimeRange extends React.Component
 					{field.tooltip}
 				</div>
 			</div>
-		);
+		);*/
 	}
 
 	render() {
 		return (
 			<div className="sc-timerange">
+				{this.renderComplementaryFields()}
 				{this.renderWeekDays()}
 				{this.renderFromTo()}
-				{this.renderComplementaryFields()}
 			</div>
 		);
 	}

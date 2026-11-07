@@ -41,37 +41,35 @@ export class Meter extends React.Component
 			return;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="Phase plugged on the Shelly device">
 						Meter Phase
 					</Tooltip>
-				</dt>
-				<dd><SelectLetter from="a" to={last_letter} name="phase" all={true} value={value.phase} onChange={this.change} /></dd>
-			</React.Fragment>
+				</div>
+				<SelectLetter from="a" to={last_letter} name="phase" all={true} value={value.phase} onChange={this.change} />
+			</div>
 		);
 	}
 
 	render() {
 		let value = this.props.value;
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Type of Shelly device used to monitor your device">
-						Device meter type
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
+					<div></div>
 					<SelectIcon name="type" values={this.types} value={this.props.value.type} onChange={this.change} />
-				</dd>
-				<dt>
-					<Tooltip content="MQTT ID configured on the Shelly device. This is mandatory to get power consumption. Will be configured automatically if you use auto detection wizard.">
-						Meter MQTT ID
-					</Tooltip>
-				</dt>
-				<dd><input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} /></dd>
+				</div>
+				<div>
+					<div>
+						<Tooltip content="MQTT ID configured on the Shelly device. This is mandatory to get power consumption. Will be configured automatically if you use auto detection wizard.">
+							Meter MQTT ID
+						</Tooltip>
+					</div>
+					<input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} />
+				</div>
 				{this.renderPhase()}
-			</React.Fragment>
+			</div>
 		);
 	}
 }

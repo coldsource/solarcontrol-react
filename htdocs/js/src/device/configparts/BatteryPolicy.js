@@ -16,17 +16,13 @@ export class BatteryPolicy extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Sets how battery vs grid should be used">
-						Usage policy
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
+					<div></div>
 					<Select name="policy" value={this.props.value} values={[{name: 'Battery', value: 'battery'}, {name: 'Offload', value: 'offload'}, {name: 'Grid', value: 'grid'}]} onChange={this.props.onChange} />
 					<br /><i>{this.tips[this.props.value]}</i>
-				</dd>
-			</React.Fragment>
+				</div>
+			</div>
 		);
 	}
 }

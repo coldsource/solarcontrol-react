@@ -30,17 +30,14 @@ export class OnBattery extends React.Component
 			return; // Not on battery, no need to choose controller
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="If the device is managed by a controller (ie it can be switched from grid to battery), select the correct controller device">
 						Battery Controller
 					</Tooltip>
-				</dt>
-				<dd>
-					<SelectBatteryControllerDevice name="controller_id" value={value.controller_id} onChange={this.change} />
-				</dd>
-
-			</React.Fragment>
+				</div>
+				<SelectBatteryControllerDevice name="controller_id" value={value.controller_id} onChange={this.change} />
+			</div>
 		);
 	}
 
@@ -48,17 +45,13 @@ export class OnBattery extends React.Component
 		const value = this.props.value;
 
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Declare that this devices runs on battery. Offload will be computed based on battery state instead of exported power.">
-						Device is on battery
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
+					<div>Device is on battery</div>
 					<Select name="enabled" value={value.enabled} values={[{name: 'Yes', value: true}, {name: 'No', value: false}]} onChange={this.change} />
-				</dd>
+				</div>
 				{this.renderControllerSelector()}
-			</React.Fragment>
+			</div>
 		);
 	}
 }

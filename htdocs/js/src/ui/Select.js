@@ -14,8 +14,12 @@ export class Select extends React.Component
 	}
 
 	render() {
+		let cl = 'sc-select';
+		if(this.props.small!==undefined && this.props.small)
+			cl = 'sc-select-integer';
+
 		return (
-			<ul className="sc-select-integer">
+			<ul className={cl}>
 				{this.renderTiles()}
 			</ul>
 		);

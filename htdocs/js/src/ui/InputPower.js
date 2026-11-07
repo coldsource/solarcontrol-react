@@ -31,7 +31,7 @@ export class InputPower extends React.Component
 			style = {color: 'red'};
 
 		return (
-			<input type="text" name={this.props.name} value={this.props.value} onChange={this.change} style={style} />
+			<input type="text" className="power" name={this.props.name} value={this.props.value} onChange={this.change} style={style} />
 		);
 	}
 }

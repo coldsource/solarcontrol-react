@@ -14,14 +14,14 @@ export class MinOnOff extends React.Component
 		let value = this.props.value;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="Once switched on, the device will always be switched off after this amount of time.">
 						Maximum on time
 					</Tooltip>
-				</dt>
-				<dd><SliderDuration name="max_on" value={value.max_on} onChange={this.props.onChange} /></dd>
-			</React.Fragment>
+				</div>
+				<SliderDuration name="max_on" value={value.max_on} onChange={this.props.onChange} />
+			</div>
 		);
 	}
 
@@ -29,23 +29,25 @@ export class MinOnOff extends React.Component
 		let value = this.props.value;
 
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Once switched on, the device will never be switched off before this amount of time. Use this to avoid too frequent on/off when offloading.">
-						Minimum on time
-					</Tooltip>
-				</dt>
-				<dd><SliderDuration name="min_on" value={value.min_on} onChange={this.props.onChange} /></dd>
-				<dt>
-					<Tooltip content="Once switched off, the device will never be switched on before this amount of time. Use this to avoid too frequent on/off when offloading.">
-						Minimum off time
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
+					<div>
+						<Tooltip content="Once switched on, the device will never be switched off before this amount of time. Use this to avoid too frequent on/off when offloading.">
+							Minimum on time
+						</Tooltip>
+					</div>
+					<SliderDuration name="min_on" value={value.min_on} onChange={this.props.onChange} />
+				</div>
+				<div>
+					<div>
+						<Tooltip content="Once switched off, the device will never be switched on before this amount of time. Use this to avoid too frequent on/off when offloading.">
+							Minimum off time
+						</Tooltip>
+					</div>
 					<SliderDuration name="min_off" value={value.min_off} onChange={this.props.onChange} />
-				</dd>
+				</div>
 				{this.renderMaxOn()}
-			</React.Fragment>
+			</div>
 		);
 	}
 }

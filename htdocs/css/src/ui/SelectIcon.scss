@@ -2,6 +2,7 @@ ul.sc-select-icon {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	margin-bottom: 0.7rem;
+	padding: 0;
 
 	i {
 		@include tile;

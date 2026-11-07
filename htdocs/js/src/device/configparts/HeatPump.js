@@ -20,40 +20,40 @@ export class HeatPump extends React.Component
 	render() {
 		let value = this.props.value;
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Offset between current temperature and set temperature of the heat pump. A low value will make heat pump consume less power but also heat more slowly. Setting for slow mode.">
-						Temperature offset (slow)
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
+					<div>
+						<Tooltip content="Offset between current temperature and set temperature of the heat pump. A low value will make heat pump consume less power but also heat more slowly. Setting for slow mode.">
+							Temperature offset (slow)
+						</Tooltip>
+					</div>
 					<input type="number" name="temperature_offset" value={value.temperature_offset_slow} onChange={this.change} />
-				</dd>
-				<dt>
-					<Tooltip content="Offset between current temperature and set temperature of the heat pump. A low value will make heat pump consume less power but also heat more slowly. Setting for fast mode.">
-						Temperature offset (fast)
-					</Tooltip>
-				</dt>
-				<dd>
+				</div>
+				<div>
+					<div>
+						<Tooltip content="Offset between current temperature and set temperature of the heat pump. A low value will make heat pump consume less power but also heat more slowly. Setting for fast mode.">
+							Temperature offset (fast)
+						</Tooltip>
+					</div>
 					<input type="number" name="temperature_offset" value={value.temperature_offset_fast} onChange={this.change} />
-				</dd>
-				<dt>
-					<Tooltip content="Temperature setpoint when heat pump is off">
-						Eco temperature
-					</Tooltip>
-				</dt>
-				<dd>
+				</div>
+				<div>
+					<div>
+						<Tooltip content="Temperature setpoint when heat pump is off">
+							Eco temperature
+						</Tooltip>
+					</div>
 					<input type="number" name="temperature_eco" value={value.temperature_eco} onChange={this.change} />
-				</dd>
-				<dt>
-					<Tooltip content="Temperature setpoint when heat pump is on">
-						Comfort temperature
-					</Tooltip>
-				</dt>
-				<dd>
+				</div>
+				<div>
+					<div>
+						<Tooltip content="Temperature setpoint when heat pump is on">
+							Comfort temperature
+						</Tooltip>
+					</div>
 					<input type="number" name="temperature_comfort" value={value.temperature_comfort} onChange={this.change} />
-				</dd>
-			</React.Fragment>
+				</div>
+			</div>
 		);
 	}
 }

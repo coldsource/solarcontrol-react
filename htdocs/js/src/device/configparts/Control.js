@@ -14,7 +14,7 @@ export class Control extends React.Component
 			{icon: 'scf-chip', name: 'Uni', value: 'uni'},
 			{icon: 'scf-chip', name: 'Arduino', value: 'arduino'},
 			{icon: 'scf-sun', name: 'SCBat', value: 'sc'},
-			{icon: 'scf-bsb-lan', name: 'BSBLan', value: 'bsblan'},
+			{icon: 'scf-bsb-lan', name: '', value: 'bsblan'},
 		];
 
 		this.change = this.change.bind(this);
@@ -57,16 +57,14 @@ export class Control extends React.Component
 			return;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="IP address of the Shelly device (can be found in Shelly app or Autodetected). Will be configured automatically if you use auto detection wizard.">
 						IP address
 					</Tooltip>
-				</dt>
-				<dd>
+				</div>
 					<input type="text" name="ip" value={value.ip} onChange={this.change} />
-				</dd>
-			</React.Fragment>
+			</div>
 		);
 	}
 
@@ -78,14 +76,14 @@ export class Control extends React.Component
 		let max = value.type=='pro'?3:2;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="Outlet number on the Shelly device">
 						Outlet number
 					</Tooltip>
-				</dt>
-				<dd><SelectInteger min={1} max={max} sum={-1} name="outlet" value={value.outlet} onChange={this.change} /></dd>
-			</React.Fragment>
+				</div>
+				<SelectInteger min={1} max={max} sum={-1} name="outlet" value={value.outlet} onChange={this.change} />
+			</div>
 		);
 
 	}
@@ -96,14 +94,14 @@ export class Control extends React.Component
 			return;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="MQTT ID configured on the Shelly device. This is mandatory to get power consumption. Will be configured automatically if you use auto detection wizard.">
 						MQTT ID
 					</Tooltip>
-				</dt>
-				<dd><input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} /></dd>
-			</React.Fragment>
+				</div>
+				<input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} />
+			</div>
 		);
 	}
 
@@ -113,16 +111,14 @@ export class Control extends React.Component
 			return;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="Sets how controller relay is used">
 						When on battery, relay is
 					</Tooltip>
-				</dt>
-				<dd>
-					<Select name="reverted" value={value.reverted} values={[{name: 'On', value: true}, {name: 'Off', value: false}]} onChange={this.change} />
-				</dd>
-			</React.Fragment>
+				</div>
+				<Select name="reverted" small={true} value={value.reverted} values={[{name: 'On', value: true}, {name: 'Off', value: false}]} onChange={this.change} />
+			</div>
 		);
 	}
 
@@ -130,20 +126,15 @@ export class Control extends React.Component
 		const value = this.props.value;
 
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Type of Shelly device used to switch on or off your device">
-						Device controller type
-					</Tooltip>
-				</dt>
-				<dd>
+			<div className="layout-form">
+				<div>
 					<SelectIcon name="type" values={this.types} value={this.props.value.type} onChange={this.change} />
-				</dd>
+				</div>
 				{this.renderIP()}
 				{this.renderOutlet()}
 				{this.renderMQTTID()}
 				{this.renderReverted()}
-			</React.Fragment>
+			</div>
 		);
 	}
 }

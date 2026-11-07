@@ -46,14 +46,14 @@ export class Input extends React.Component
 			return;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="Input number on the Shelly device">
 						Outlet number
 					</Tooltip>
-				</dt>
-				<dd><SelectInteger min={1} max={3} sum={-1} name="outlet" value={value.outlet} onChange={this.change} /></dd>
-			</React.Fragment>
+				</div>
+				<SelectInteger min={1} max={3} sum={-1} name="outlet" value={value.outlet} onChange={this.change} />
+			</div>
 		);
 	}
 
@@ -63,16 +63,14 @@ export class Input extends React.Component
 			return;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="MQTT ID configured on the Shelly device. Will be configured automatically if you use auto detection wizard.">
 						Input MQTT ID
 					</Tooltip>
-				</dt>
-				<dd>
-					<input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} />
-				</dd>
-			</React.Fragment>
+				</div>
+				<input type="text" name="mqtt_id" value={value.mqtt_id} onChange={this.change} />
+			</div>
 		);
 	}
 
@@ -82,37 +80,35 @@ export class Input extends React.Component
 			return;
 
 		return (
-			<React.Fragment>
-				<dt>
+			<div>
+				<div>
 					<Tooltip content="IP address of the Shelly device (can be found in Shelly app or Autodetected). Will be configured automatically if you use auto detection wizard.">
 						IP address
 					</Tooltip>
-				</dt>
-				<dd>
-					<input type="text" name="ip" value={value.ip} onChange={this.change} />
-				</dd>
-			</React.Fragment>
+				</div>
+				<input type="text" name="ip" value={value.ip} onChange={this.change} />
+			</div>
 		);
 	}
 
 	render() {
 		let value = this.props.value;
 		return (
-			<React.Fragment>
-				<dt>
-					<Tooltip content="Type of Shelly device used to switch on or off your device">
-						Device input type
-					</Tooltip>
-				</dt>
-				<dd>
-					<div className="sc-select-controltype">
+			<div className="layout-form">
+				<div>
+					<div>
+						<Tooltip content="Type of Shelly device used to switch on or off your device">
+							Device input type
+						</Tooltip>
+					</div>
+					<div className="sc-select-inputtype">
 						{this.renderTiles()}
 					</div>
-				</dd>
+				</div>
 				{this.renderIP()}
 				{this.renderMQTT()}
 				{this.renderOutlet()}
-			</React.Fragment>
+			</div>
 		);
 	}
 }

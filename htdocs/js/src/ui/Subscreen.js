@@ -11,7 +11,7 @@ export class Subscreen extends React.Component
 		return (
 			<div className="sc-subscreen">
 				<div className="title-bar" onClick={() => this.props.onClose()}>
-					{this.props.title}
+					<span>{this.props.title}</span>
 					<i className="scf scf-cross" />
 				</div>
 				<div className="content">
