@@ -7,6 +7,8 @@ export class SelectTime extends React.Component
 		this.changeMinutes = this.changeMinutes.bind(this);
 
 		this.ref = React.createRef();
+		this.ref_hours = React.createRef();
+		this.ref_minutes = React.createRef();
 	}
 
 	changeHours(ev) {
@@ -19,6 +21,12 @@ export class SelectTime extends React.Component
 
 		if(hours>23)
 			return;
+
+		if(hours.length==2)
+		{
+			this.ref_minutes.current.focus();
+			minutes = '';
+		}
 
 		this.change(hours + ':' + minutes);
 	}
@@ -48,10 +56,10 @@ export class SelectTime extends React.Component
 
 		return (
 			<div className="sc-select-time">
-				<input type="time" ref={this.ref} style={{display: 'none'}} value={this.props.value} onChange={this.props.onChange} />
-				<input inputMode="numeric" type="text" name="hours" value={hours} onChange={this.changeHours} onFocus={() => this.change(':' + minutes)} />
+				<input ref={this.ref} type="time" style={{display: 'none'}} value={this.props.value} onChange={this.props.onChange} />
+				<input ref={this.ref_hours} inputMode="numeric" type="text" name="hours" value={hours} onChange={this.changeHours} onFocus={() => this.change(':' + minutes)} />
 				&#160;:&#160;
-				<input inputMode="numeric" type="text" name="minutes" value={minutes} onChange={this.changeMinutes} onFocus={() => this.change(hours + ':')} />
+				<input ref={this.ref_minutes} inputMode="numeric" type="text" name="minutes" value={minutes} onChange={this.changeMinutes} onFocus={() => this.change(hours + ':')} />
 				<i className="scf scf-clock" onClick={ () => this.ref.current.showPicker() } />
 			</div>
 		);

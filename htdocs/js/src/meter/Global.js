@@ -378,7 +378,7 @@ export class Global extends React.Component
 						{this.state.grid<0?(<img className="arrow-grid" src="/images/arrow-up.svg" />):''}
 						{this.state.grid>=0?(<img className="arrow-bolt" src="/images/arrow-right.svg" />):''}
 						<Tooltip content="Instant power currently taken from or sent back to the grid">
-							<span className="meter gridpv"><KW value={this.state.grid} /></span>
+							<span className="meter grid"><KW value={this.state.grid} /></span>
 						</Tooltip>
 					</div>
 					<div className="mix">
@@ -390,7 +390,7 @@ export class Global extends React.Component
 					<div className="connector-pv">
 						<img className="arrow-bolt" src="/images/arrow-left.svg" />
 						<Tooltip content="Instant power currently produced by PV">
-							<span className="meter gridpv"><KW value={this.state.pv} /></span>
+							<span className="meter pv"><KW value={this.state.pv} /></span>
 						</Tooltip>
 					</div>
 				</div>
