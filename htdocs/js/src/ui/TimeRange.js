@@ -5,8 +5,10 @@ export class TimeRange extends React.Component
 	constructor(props) {
 		super(props);
 
+		const value = this.props.value;
+
 		this.state = {
-			display_days: false
+			display_days: (value.days_of_week!==undefined && Object.keys(value.days_of_week).length > 0)
 		}
 
 		this.changeData = this.changeData.bind(this);
@@ -69,23 +71,26 @@ export class TimeRange extends React.Component
 			return;
 
 		return (
-			<div>
+			<div className="days">
 				{this.renderWeekDaysDetail()}
-				<i className="scf scf-clock" onClick={() => this.setState({display_days: false})} />
 			</div>
 		);
 	}
 
 	renderFromTo() {
-		if(this.state.display_days)
-			return;
-
 		return (
-			<div>
-				<input type="time" step="60" value={this.normalize_time(this.props.value.from)} onChange={ ev => this.change('from', ev) } />
-				<input type="time" step="60" value={this.normalize_time(this.props.value.to)} onChange={ ev => this.change('to', ev) } />
-				<i className="scf scf-calendar" onClick={() => this.setState({display_days: true})} />
-				<i className={"scf scf-leaf" + (this.props.value.offpeak?" on":"")} onClick={() => this.toggleOffpeak()} />
+			<div className="hours">
+				<span>
+					<input type="time" step="60" value={this.normalize_time(this.props.value.from)} onChange={ ev => this.change('from', ev) } />
+					<input type="time" step="60" value={this.normalize_time(this.props.value.to)} onChange={ ev => this.change('to', ev) } />
+					<span className="buttons">
+						<i className="scf scf-calendar" onClick={() => this.setState({display_days: !this.state.display_days})} />
+						<i className={"scf scf-leaf" + (this.props.value.offpeak?" on":"")} onClick={() => this.toggleOffpeak()} />
+					</span>
+				</span>
+				<span>
+					<i className="scf scf-cross" onClick={this.props.onRemove} />
+				</span>
 			</div>
 		);
 	}
@@ -150,8 +155,8 @@ export class TimeRange extends React.Component
 	render() {
 		return (
 			<div className="sc-timerange">
-				{this.renderFromTo()}
 				{this.renderWeekDays()}
+				{this.renderFromTo()}
 				{this.renderComplementaryFields()}
 			</div>
 		);

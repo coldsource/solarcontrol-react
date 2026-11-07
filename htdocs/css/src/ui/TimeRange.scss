@@ -1,16 +1,41 @@
-div.sc-timerange {
-	display: inline-block;
+div.sc-timeranges {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.7rem;
 
-	div {
+	div.spacer {
+		width: 80%;
+		height: 0px;
+		margin: auto;
+		border-top: 1px solid lightgrey;
+	}
+
+	.add-timerange {
+		text-align: center;
+		font-style: italic;
+                font-size: 120%;
+		color: grey;
+		margin-top: 0.7rem;
+	}
+}
+
+div.sc-timerange {
+	.days {
+		margin-bottom: 0.7rem;
+		display: grid;
+		grid-template-columns: repeat(7, max-content);
+		justify-content: space-around;
+
 		&>span {
-			display: inline-block;
 			margin-left: 0.5rem;
 			margin-right: 0.5rem;
-			padding: 0.2rem;
+			padding: 0.4rem;
 			cursor: pointer;
+			font-size: 120%;
 
 			&.selected {
-				border: 1px solid $color-selected;
+				border-radius: 5px;
+				background-color: $color-selected;
 			}
 		}
 	}
@@ -23,11 +48,11 @@ div.sc-timerange {
 		border: 1px solid $color-form-border;
 		border-radius: 5px;
 		padding: 0.2rem;
+		font-size: 150%;
 	}
 
 	i {
-		font-size: 1.7rem;
-		margin-left: 0.5rem;
+		font-size: 2rem;
 		vertical-align: middle;
 	}
 
@@ -47,6 +72,18 @@ div.sc-timerange {
 		.tooltip {
 			margin-top: 0.3rem;
 			font-style: italic;
+		}
+	}
+
+	.hours {
+		display: grid;
+		grid-template-columns: 1fr 2rem;
+		margin-bottom: 0.5rem;
+
+		.buttons {
+			i {
+				margin-left:0.7rem;
+			}
 		}
 	}
 }

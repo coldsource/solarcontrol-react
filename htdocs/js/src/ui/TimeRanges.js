@@ -43,30 +43,22 @@ export class TimeRanges extends React.Component
 		this.props.onChange({target: {name: name, value: time_ranges}});
 	}
 
-	renderTimeRange(time_range, idx) {
-		return (
-			<div className="timerange">
-				<TimeRange value={time_range} onChange={ev => this.changeTimeRange(idx, ev.target.value)} options={this.props.options} />
-				<i className="scf scf-cross" onClick={ev => this.removeTimeRange(idx)} />
-			</div>
-		);
-	}
-
 	renderTimeRanges() {
 		const time_ranges = this.props.value;
 
 		return time_ranges.map((time_range, idx) => {
 			return (
-				<div key={idx}>
-					{this.renderTimeRange(time_range, idx)}
-				</div>
+				<React.Fragment>
+					<TimeRange value={time_range} onChange={ev => this.changeTimeRange(idx, ev.target.value)} onRemove={ ev => this.removeTimeRange(idx) } options={this.props.options} />
+					<div className="spacer"></div>
+				</React.Fragment>
 			);
 		});
 	}
 
 	render() {
 		return (
-			<div>
+			<div className="sc-timeranges">
 				{this.renderTimeRanges()}
 				<div className="add-timerange" onClick={ev => this.addTimeRange()}>Add time range</div>
 			</div>
